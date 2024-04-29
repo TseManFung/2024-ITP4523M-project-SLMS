@@ -1,6 +1,6 @@
 // 要操作的元素
 const body=document.body;
-const eye=document.querySelector('.eye');
+const eye=document.querySelector('.fa-regular');
 const beam=document.querySelector('.beam');
 const passwordInput=document.getElementById('password');
 
@@ -20,6 +20,7 @@ eye.addEventListener('click',function(e){
     e.preventDefault();
     body.classList.toggle('show-password');
     passwordInput.type=passwordInput.type==='password'?'text':'password';
-    eye.className='eye fa '+(passwordInput.type==='password'?'fa-eye-slash':'fa-eye');
+    eye.className='fa-regular '+(passwordInput.type==='password'?'fa-eye-slash':'fa-eye');
+    eye.style='color: '+(passwordInput.type==='password'?'':'white');
     passwordInput.focus();
 })

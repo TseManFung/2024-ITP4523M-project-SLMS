@@ -81,7 +81,7 @@ h1{
     display: none;
 }
 /* 密码框小眼睛 */
-.ipt-box .eye{
+.ipt-box .fa-regular{
     position: absolute;
     top: 50%;
     right: 15px;
