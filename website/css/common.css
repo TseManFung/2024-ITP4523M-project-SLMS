@@ -2,6 +2,7 @@ html {
     overflow: scroll;
     scroll-behavior: smooth;
 }
+
 .content-wrap {
     max-width: 1250px;
     width: 100%;
@@ -9,7 +10,7 @@ html {
     padding: 50px 25px 1px 25px;
     margin: 0 auto;
     z-index: 50;
-  }
+}
 
 
 /*selection*/
@@ -20,50 +21,70 @@ ul.selection-wrap {
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 -1.5% -3% -1.5%;
-  }
-  
-  ul.selection-wrap li {
+    padding: 10% 20% 10% 20%;
+}
+
+ul.selection-wrap li {
     flex-basis: 50%;
     padding: 0 1.5%;
     margin-bottom: 3%;
     box-sizing: border-box;
     cursor: pointer;
-  
+
     :hover {
-      opacity: 0.7;
+        opacity: 0.7;
     }
-  }
-  
-  ul.selection-wrap .smail_li {
-    flex-basis: 20vw;
-  }
-  
-  ul.selection-wrap li .selection {
+}
+
+ul.selection-wrap .smail_li {
+    flex-basis: 15vw;
+}
+
+ul.selection-wrap li .selection {
     background: #fff;
-  
+
     border: 5px solid #5e0200;
-  
+
     border-radius: 7px;
-  
+
     box-sizing: border-box;
-  }
-  
-  ul.selection-wrap li .selection img {
+}
+
+ul.selection-wrap li .selection svg {
     width: 100%;
-  }
-  
-  ul.selection-wrap li .selection img:hover,
-  ul.selection-wrap li .selection h3:hover,
-  ul.selection-wrap li .selection figure {
+}
+
+ul.selection-wrap li .selection svg:hover,
+ul.selection-wrap li .selection h3:hover,
+ul.selection-wrap li .selection figure {
     opacity: 1;
-  }
-  
-  ul.selection-wrap li .selection h3 {
+}
+
+ul.selection-wrap li .selection figure {
+    margin: 5px;
+}
+
+ul.selection-wrap li .selection h3 {
     text-align: center;
-  
     padding: 0.5em;
-  }
-  h3 {
-    font-size: 1em;
+}
+
+h3 {
+    font-size: 1vw !important;
     text-align: center;
-  }
+}
+
+@media only screen and (max-width: 600px) {
+    ul.selection-wrap {
+        padding: 10% 0% 0% 0%;
+    }
+
+    ul.selection-wrap .smail_li {
+        flex-basis: 45vw;
+    }
+
+    h3 {
+        font-size: 3.9vw !important;
+
+    }
+}
