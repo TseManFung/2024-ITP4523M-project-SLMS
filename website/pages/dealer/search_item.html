@@ -11,6 +11,8 @@
     <!-- icon -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/common.css">
+
     <link rel="stylesheet" href="../../css/bs/bootstrap.css">
     <!-- /css -->
 
@@ -20,6 +22,7 @@
 </head>
 
 <body>
+  <div class="fixed-top">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Navbar</a>
@@ -49,13 +52,16 @@
                 <a class="nav-link disabled" aria-disabled="true">Disabled</a>
               </li>
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+
           </div>
         </div>
       </nav>
+      <div class="position-fixed start-0 end-0 d-flex justify-content-center" style="margin-top: 10px;">
+        <form class="d-flex search-bar " role="search">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </form></div>
+    </div>
 
     <div class="d-flex justify-content-center"></div>
 </body>

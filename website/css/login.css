@@ -1,21 +1,21 @@
 *{
-    /* 初始化 */
+
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 body{
-    /* 100%窗口宽高 */
+
     height: 100vh;
-    /* 弹性布局 水平+垂直居中 */
+
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #fefefe;
-    /* 溢出隐藏 */
+
     overflow: hidden;
 }
-/* 弄两个圆点缀一下背景 */
+
 body::before,
 body::after{
     content: "";
@@ -37,7 +37,7 @@ body::after{
     bottom: -15vh;
     right: -15vh;
 }
-/* 登录框 */
+
 .container{
     position: relative;
     z-index: 1;
@@ -75,12 +75,12 @@ h1{
     position: relative;
     z-index: 2;
 }
-/* 接下来去除密码框自带的小眼睛 */
+
 .ipt-box input[type="password"]::-ms-reveal,
 .ipt-box input[type="password"]::-ms-clear{
     display: none;
 }
-/* 密码框小眼睛 */
+
 .ipt-box .fa-regular{
     position: absolute;
     top: 50%;
@@ -89,7 +89,7 @@ h1{
     z-index: 3;
     cursor: pointer;
 }
-/* 登录按钮 */
+
 .btn-login{
     width: 75%;
     height: 50px;
@@ -104,7 +104,7 @@ h1{
     text-indent: 8px;
     cursor: pointer;
 }
-/* 灯光照射 */
+
 .beam{
     width: 100vw;
     height: 25vw;
@@ -112,17 +112,17 @@ h1{
     z-index: 1;
     top: 50%;
     right: 30px;
-    /* 绘制三角形 */
+
     clip-path: polygon(100% 50%,100% 50%,0 0,0 100%);
-    /* --beam-deg为CSS的自定义属性，这里用作设置灯光的角度，这个值在js中会进行计算 */
+
     transform: translateY(-50%) rotate(var(--beam-deg,0));
-    /* 设置旋转基点 */
+
     transform-origin: 100% 50%;
-    /* 设置过渡 */
+
     transition: transform 0.2s ease-out;
 }
 
-/* 接下来是打开密码灯后的样式变化 */
+
 body.show-password{
     background-color: #000;
 }

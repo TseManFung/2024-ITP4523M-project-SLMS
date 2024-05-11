@@ -1,6 +1,14 @@
 html {
     overflow: scroll;
     scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
 }
 
 .content-wrap {
@@ -16,9 +24,12 @@ body {
     background-color: skyblue !important;
 }
 
-.space-wrap{
+.space-wrap {
     padding: 10% 20% 10% 20%;
-    
+    height: 100lvh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 /*selection*/
@@ -29,6 +40,7 @@ ul.selection-wrap {
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 -1.5% -3% -1.5%;
+    align-items: center;
 }
 
 ul.selection-wrap li {
@@ -45,6 +57,7 @@ ul.selection-wrap li {
 
 ul.selection-wrap .smail_li {
     flex-basis: 15vw;
+
 }
 
 ul.selection-wrap li .selection {
@@ -55,14 +68,17 @@ ul.selection-wrap li .selection {
     border-radius: 7px;
 
     box-sizing: border-box;
+
 }
 
 ul.selection-wrap li .selection svg {
     width: 14vw;
     height: 14vw;
+
 }
 
 ul.selection-wrap li .selection svg:hover,
+ul.selection-wrap li .selection path:hover,
 ul.selection-wrap li .selection h3:hover,
 ul.selection-wrap li .selection figure {
     opacity: 1;
@@ -70,6 +86,7 @@ ul.selection-wrap li .selection figure {
 
 ul.selection-wrap li .selection figure {
     margin: 5px;
+
 }
 
 ul.selection-wrap li .selection h3 {
@@ -82,14 +99,30 @@ h3 {
     text-align: center;
 }
 
+.search-bar{
+    width: 33vw !important;
+    transition: width 0.3s ease-in-out;
+}
+
+@media (max-width: 992px){
+    .search-bar{
+        width: 100vw !important;
+    }
+}
+
+
+/*phone*/
+
 @media only screen and (max-width: 600px) {
     ul.selection-wrap {
         padding: 10% 0% 0% 0%;
     }
+
     ul.selection-wrap li .selection svg {
         width: 39vw;
         height: 39vw;
     }
+
     ul.selection-wrap .smail_li {
         flex-basis: 40vw;
     }
