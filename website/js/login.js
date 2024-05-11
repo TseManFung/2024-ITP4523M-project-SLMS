@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function() {
 // 要操作的元素
 const body=document.body;
 const eye=document.querySelector('.fa-regular');
@@ -23,4 +24,5 @@ eye.addEventListener('click',function(e){
     eye.className='fa-regular '+(passwordInput.type==='password'?'fa-eye-slash':'fa-eye');
     eye.style='color: '+(passwordInput.type==='password'?'':'white');
     passwordInput.focus();
+})
 })
