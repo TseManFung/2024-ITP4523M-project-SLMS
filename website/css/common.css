@@ -12,6 +12,14 @@ html {
     z-index: 50;
 }
 
+body {
+    background-color: skyblue !important;
+}
+
+.space-wrap{
+    padding: 10% 20% 10% 20%;
+    
+}
 
 /*selection*/
 
@@ -21,7 +29,6 @@ ul.selection-wrap {
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 -1.5% -3% -1.5%;
-    padding: 10% 20% 10% 20%;
 }
 
 ul.selection-wrap li {
