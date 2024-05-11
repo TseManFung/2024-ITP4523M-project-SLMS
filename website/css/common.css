@@ -10,3 +10,64 @@ html {
     margin: 0 auto;
     z-index: 50;
   }
+
+
+/*selection*/
+
+ul.selection-wrap {
+    list-style: none;
+  
+    display: flex;
+  
+    flex-wrap: wrap;
+  
+    justify-content: center;
+  
+    margin: 0 -1.5% -3% -1.5%;
+  }
+  
+  ul.selection-wrap li {
+    flex-basis: 50%;
+    padding: 0 1.5%;
+    margin-bottom: 3%;
+    box-sizing: border-box;
+    cursor: pointer;
+  
+    :hover {
+      opacity: 0.7;
+    }
+  }
+  
+  ul.selection-wrap .smail_li {
+    flex-basis: 15vw;
+  }
+  
+  ul.selection-wrap li .selection {
+    background: #fff;
+  
+    border: 5px solid #5e0200;
+  
+    border-radius: 7px;
+  
+    box-sizing: border-box;
+  }
+  
+  ul.selection-wrap li .selection img {
+    width: 100%;
+  }
+  
+  ul.selection-wrap li .selection img:hover,
+  ul.selection-wrap li .selection h3:hover,
+  ul.selection-wrap li .selection figure {
+    opacity: 1;
+  }
+  
+  ul.selection-wrap li .selection h3 {
+    text-align: center;
+  
+    padding: 0.5em;
+  }
+  h3 {
+    font-size: 1em;
+    text-align: center;
+  }
