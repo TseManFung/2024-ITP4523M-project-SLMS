@@ -25,8 +25,11 @@ eye.addEventListener('click',function(e){
 })
 
 btnLogin.addEventListener('click',function(e){
-if(accountInput.value !== ''){
-    window.location.href = "pages/menu.html";
+if(accountInput.value === 'D'){
+    window.location.href = "pages/dealer/search_item.html";
+}else if(accountInput.value === 'SM'){
+    window.location.href = "pages/dealer/search_item.html";
+
 }
 });
 })
