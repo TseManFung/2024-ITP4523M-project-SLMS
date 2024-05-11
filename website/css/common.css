@@ -16,13 +16,9 @@ html {
 
 ul.selection-wrap {
     list-style: none;
-  
     display: flex;
-  
     flex-wrap: wrap;
-  
     justify-content: center;
-  
     margin: 0 -1.5% -3% -1.5%;
   }
   
@@ -39,7 +35,7 @@ ul.selection-wrap {
   }
   
   ul.selection-wrap .smail_li {
-    flex-basis: 15vw;
+    flex-basis: 20vw;
   }
   
   ul.selection-wrap li .selection {
