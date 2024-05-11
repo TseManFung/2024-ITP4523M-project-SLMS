@@ -1,9 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\css",
-    "\\pages"
+    "\\doc",
+    "\\pages",
+    "\\website",
+    "\\website\\css",
+    "\\website\\images",
+    "\\website\\images\\A-Sheet Metal",
+    "\\website\\pages"
   ],
-  "SelectedNode": "\\css\\login.css",
   "PreviewInSolutionExplorer": false
 }
