@@ -51,7 +51,8 @@ ul.selection-wrap li .selection {
 }
 
 ul.selection-wrap li .selection svg {
-    width: 100%;
+    width: 14vw;
+    height: 14vw;
 }
 
 ul.selection-wrap li .selection svg:hover,
@@ -70,7 +71,7 @@ ul.selection-wrap li .selection h3 {
 }
 
 h3 {
-    font-size: 1vw !important;
+    font-size: 2.3vw !important;
     text-align: center;
 }
 
@@ -78,9 +79,12 @@ h3 {
     ul.selection-wrap {
         padding: 10% 0% 0% 0%;
     }
-
+    ul.selection-wrap li .selection svg {
+        width: 39vw;
+        height: 39vw;
+    }
     ul.selection-wrap .smail_li {
-        flex-basis: 45vw;
+        flex-basis: 40vw;
     }
 
     h3 {
