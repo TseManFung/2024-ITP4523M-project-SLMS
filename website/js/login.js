@@ -1,22 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-// 要操作的元素
 const body=document.body;
 const eye=document.querySelector('.fa-regular');
 const beam=document.querySelector('.beam');
 const passwordInput=document.getElementById('password');
+const accountInput=document.getElementById('account');
+const btnLogin = document.getElementsByClassName("btn-login")[0];
 
-// 为body绑定鼠标移动事件
 body.addEventListener('mousemove',function(e){
     let rect=beam.getBoundingClientRect();
     let mouseX=rect.right+(rect.width/2);
     let mouseY=rect.top+(rect.height/2);
     let rad=Math.atan2(mouseX-e.pageX,mouseY-e.pageY);
     let deg=(rad*(20/Math.PI)*-1)-350;
-    // 设置CSS自定义属性--beam-deg（灯光射线角度）
     body.style.setProperty('--beam-deg',deg+'deg');
 })
 
-// 为密码框小眼睛绑定点击事件
 eye.addEventListener('click',function(e){
     e.preventDefault();
     body.classList.toggle('show-password');
@@ -25,4 +23,39 @@ eye.addEventListener('click',function(e){
     eye.style='color: '+(passwordInput.type==='password'?'':'white');
     passwordInput.focus();
 })
+
+btnLogin.addEventListener('click',function(e){
+if(accountInput.value !== ''){
+    window.location.href = "pages/menu.html";
+}
+});
 })
+
+/* 
+// 构建要发送的数据对象
+var data = {
+  key1: 'value1',
+  key2: 'value2'
+};
+
+// 发送POST请求
+fetch('your_php_file.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+.then(function(response) {
+  if (response.ok) {
+    // 请求成功，重定向到目标页面
+    window.location.href = 'target_page.php';
+  } else {
+    // 请求失败
+    console.log('Error:', response.statusText);
+  }
+})
+.catch(function(error) {
+  console.log('Error:', error);
+});
+*/
