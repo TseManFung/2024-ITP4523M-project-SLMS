@@ -28,8 +28,23 @@ body {
     flex-direction: column;
 }
 
+.cart-number-label {
 
-
+    left: 25px;
+    top: 5px;
+    background: #ee4054;
+    border-bottom: 2px solid #c04054;
+    width: 24px;
+    height: 22px;
+    font-size: 12px;
+    line-height: 22px;
+    display: block;
+    text-align: center;
+    color: #fff;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+  }
 
 
 
