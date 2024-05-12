@@ -10,7 +10,11 @@ html {
     background: transparent;
     /* Optional: just make scrollbar invisible */
 }
-
+.content-bg {
+    width: 100%;
+  
+    background: rgba(255, 255, 255, 0.8);
+  }
 .content-wrap {
     max-width: 1250px;
     width: 100%;
