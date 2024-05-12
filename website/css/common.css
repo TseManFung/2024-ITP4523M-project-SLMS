@@ -10,19 +10,23 @@ html {
     background: transparent;
     /* Optional: just make scrollbar invisible */
 }
+
 .content-bg {
     width: 100%;
-  
+
     background: rgba(255, 255, 255, 0.8);
-  }
+}
+
 .nav-wrap {
     max-width: 1250px;
     width: 100%;
 }
+
 .content-wrap {
     max-width: 1600px;
     width: 100%;
 }
+
 body {
     background-color: skyblue !important;
 }
@@ -51,7 +55,7 @@ body {
     -webkit-border-radius: 12px;
     -moz-border-radius: 12px;
     border-radius: 12px;
-  }
+}
 
 
 
@@ -122,11 +126,12 @@ h3 {
     text-align: center;
 }
 
-.search-bar{
+.search-bar {
     width: 33vw !important;
     transition: width 0.3s ease-in-out;
 
 }
+
 .search-bar .search-box {
     position: absolute;
     top: 3px;
@@ -140,53 +145,58 @@ h3 {
     height: 32px;
     border: none;
     border-radius: 6px;
-/*     color: var(--text1); */
+    /*     color: var(--text1); */
     line-height: 32px;
     cursor: pointer;
     transition: background-color .3s;
 
-  }
-  .search-box:hover{
+}
+
+.search-box:hover {
     background-color: rgb(211, 211, 211);
 }
 
 footer {
     text-align: center;
-  
+
     padding: 30px;
-  
+
     background: skyblue;
-  
+
     color: #000;
-  }
-  
-  footer ul.sns {
+}
+
+footer ul.sns {
     list-style: none;
-  
+
     display: flex;
-  
+
     flex-wrap: wrap;
-  
+
     justify-content: center;
-  
+
     margin-bottom: 1em;
-  }
-  
-  footer ul.sns li {
+}
+
+footer ul.sns li {
     width: 40px;
-  
+
     margin: 0 5px;
-  }
-  
-  footer ul.sns li img {
+}
+
+footer ul.sns li img {
     width: 100%;
-  }
-@media (max-width: 992px){
-    .search-bar{
+}
+
+@media (max-width: 992px) {
+    .search-bar {
         width: 100vw !important;
     }
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
 
 /*phone*/
 
