@@ -15,11 +15,14 @@ html {
   
     background: rgba(255, 255, 255, 0.8);
   }
-.content-wrap {
+.nav-wrap {
     max-width: 1250px;
     width: 100%;
 }
-
+.content-wrap {
+    max-width: 1600px;
+    width: 100%;
+}
 body {
     background-color: skyblue !important;
 }
@@ -147,6 +150,37 @@ h3 {
     background-color: rgb(211, 211, 211);
 }
 
+footer {
+    text-align: center;
+  
+    padding: 30px;
+  
+    background: skyblue;
+  
+    color: #000;
+  }
+  
+  footer ul.sns {
+    list-style: none;
+  
+    display: flex;
+  
+    flex-wrap: wrap;
+  
+    justify-content: center;
+  
+    margin-bottom: 1em;
+  }
+  
+  footer ul.sns li {
+    width: 40px;
+  
+    margin: 0 5px;
+  }
+  
+  footer ul.sns li img {
+    width: 100%;
+  }
 @media (max-width: 992px){
     .search-bar{
         width: 100vw !important;
