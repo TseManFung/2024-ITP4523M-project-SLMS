@@ -102,6 +102,29 @@ h3 {
 .search-bar{
     width: 33vw !important;
     transition: width 0.3s ease-in-out;
+
+}
+.search-bar .search-box {
+    position: absolute;
+    top: 3px;
+    right: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+/*     color: var(--text1); */
+    line-height: 32px;
+    cursor: pointer;
+    transition: background-color .3s;
+
+  }
+  .search-box:hover{
+    background-color: rgb(211, 211, 211);
 }
 
 @media (max-width: 992px){
