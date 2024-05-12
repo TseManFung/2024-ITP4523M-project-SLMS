@@ -126,6 +126,16 @@ h3 {
     text-align: center;
 }
 
+.flex-set li.cursor-pointer {
+    width: 32px;
+    height: 32px;
+
+    
+}
+.flex-set li.cursor-pointer:hover {
+    opacity: 0.7;
+}
+
 .search-bar {
     width: 33vw !important;
     transition: width 0.3s ease-in-out;

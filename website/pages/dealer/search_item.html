@@ -100,30 +100,66 @@
       <div class="row">
         <div class="col-3">
           <form class="position-relative d-flex flex-column">
-            <h4>Category</h3>
-            <div>
+            <h4>Category</h4>
+            <div class="form-check">
               <input id="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked>
-              <label for="A" class="cursor-pointer">Sheet Metal</label>
+              <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
             </div>
-            <div>
+            <div class="form-check">
               <input id="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked>
-              <label for="B" class="cursor-pointer">Major Assemblies</label>
+              <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
             </div>
-            <div>
+            <div class="form-check">
               <input id="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked>
-              <label for="C" class="cursor-pointer">Light Components</label>
+              <label for="C" class="cursor-pointer form-check-label">Light Components</label>
             </div>
-            <div>
+            <div class="form-check">
               <input id="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked>
-              <label for="D" class="cursor-pointer">Accessories</label>
+              <label for="D" class="cursor-pointer form-check-label">Accessories</label>
             </div>
+            <br>
+            <h4>Price</h4>
+            <div class="row">
+              <div class="col-4">
+                <!-- use js to set placeholder and min and max and value of minPrice and maxPrice -->
+                <input id="minPrice" class="form-control" type="number" min="0" placeholder="0" value=""></div>
+              <div class="col-1 text-center">-</div>
+              <div class="col-4">
+                <input id="maxPrice" class="form-control" type="number" max="1000" placeholder="1000" value=""></div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
         <div class="col-9">
           <div class="row">
-            <div class="col">display</div>
+            <div class="col position-relative">
+              <ul class="d-flex flex-wrap p-0 m-0 position-absolute bottom-0 start-0 flex-set" style="list-style: none; gap:2px">
+                <li class="cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path
+                          d="M448 96V224H288V96H448zm0 192V416H288V288H448zM224 224H64V96H224V224zM64 288H224V416H64V288zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z" />
+                    </svg></li>
+                <li style="width: 5px;"></li>
+                <li class="cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path
+                          d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zm64 0v64h64V96H64zm384 0H192v64H448V96zM64 224v64h64V224H64zm384 0H192v64H448V224zM64 352v64h64V352H64zm384 0H192v64H448V352z" />
+                  </svg></li>
+              </ul>
+            </div>
             <div class="col"></div>
-            <div class="col">sort</div>
+            <div class="col">
+              <div class="form-floating">
+                <select class="form-select" id="sort">
+                  <option value="R" selected>Recommend</option>
+                  <option value="NA">Newest Arrivals</option>
+                  <option value="PLH">Price: Low to High</option>
+                  <option value="PHL">Price: High to Low</option>
+                </select>
+                <label for="sort">Sort</label>
+              </div>
+            </div>
           </div>
           <div class="row">item</div>
         </div>
