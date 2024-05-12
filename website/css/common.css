@@ -14,10 +14,6 @@ html {
 .content-wrap {
     max-width: 1250px;
     width: 100%;
-    box-sizing: border-box;
-    padding: 50px 25px 1px 25px;
-    margin: 0 auto;
-    z-index: 50;
 }
 
 body {
@@ -31,6 +27,11 @@ body {
     justify-content: center;
     flex-direction: column;
 }
+
+
+
+
+
 
 /*selection*/
 
