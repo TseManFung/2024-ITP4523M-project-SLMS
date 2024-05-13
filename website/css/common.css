@@ -57,23 +57,29 @@ body {
     border-radius: 12px;
 }
 
+.page-nav {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*pagetop*/
 
 #page-top {
     position: fixed;
-  
+
     bottom: 0;
-  
+
     right: 0;
-  
+
     z-index: 100;
-  
+
     width: 100px;
-  }
-  
-  #page-top img {
+}
+
+#page-top img {
     width: 100%;
-  }
+}
 
 /*selection*/
 
@@ -248,6 +254,10 @@ footer ul.sns li img {
 
 }
 
+.item-wrap.cell p.item-desc {
+    display: none;
+}
+
 .item-wrap.cell .item-box {
     cursor: pointer;
 
@@ -259,6 +269,8 @@ footer ul.sns li img {
     flex-direction: column;
     width: 100%;
 }
+
+
 
 .item-wrap.list .item-box {
     flex-direction: row;
