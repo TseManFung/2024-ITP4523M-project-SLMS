@@ -344,4 +344,10 @@ footer ul.sns li img {
         font-size: 3.9vw !important;
 
     }
+    .category-item{
+        flex-direction: column;
+    }
+    .col-3,.col-9{
+        width: 100% !important;
+    }
 }
