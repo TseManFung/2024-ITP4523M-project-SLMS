@@ -1,4 +1,4 @@
 
 function toindex() {
-    window.location.href = "../pages/dealer_information_update.html";
+    window.location.href = "../../pages/dealer/dealer_information_update.html";
     }
