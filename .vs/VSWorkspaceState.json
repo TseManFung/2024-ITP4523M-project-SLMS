@@ -2,12 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\doc",
-    "\\pages",
     "\\website",
     "\\website\\css",
     "\\website\\images",
     "\\website\\images\\A-Sheet Metal",
-    "\\website\\pages"
+    "\\website\\js",
+    "\\website\\pages",
+    "\\website\\pages\\dealer"
   ],
+  "SelectedNode": "\\website\\pages\\dealer\\search_item.html",
   "PreviewInSolutionExplorer": false
 }
