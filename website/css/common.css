@@ -57,7 +57,23 @@ body {
     border-radius: 12px;
 }
 
+/*pagetop*/
 
+#page-top {
+    position: fixed;
+  
+    bottom: 0;
+  
+    right: 0;
+  
+    z-index: 100;
+  
+    width: 100px;
+  }
+  
+  #page-top img {
+    width: 100%;
+  }
 
 /*selection*/
 
@@ -277,7 +293,6 @@ footer ul.sns li img {
     height: 4rem;
     font-size: 1.2rem !important;
     margin: 0;
-    padding: 0.5em;
     overflow: hidden;
 }
 
