@@ -77,9 +77,11 @@ ul.selection-wrap li {
     box-sizing: border-box;
     cursor: pointer;
 
-    :hover {
-        opacity: 0.7;
-    }
+
+}
+
+ul.selection-wrap li:hover {
+    opacity: 0.7;
 }
 
 ul.selection-wrap .smail_li {
@@ -98,15 +100,13 @@ ul.selection-wrap li .selection {
 
 }
 
-ul.selection-wrap li .selection svg {
+ul.selection-wrap li .selection svg,
+ul.selection-wrap li .selection img {
     width: 14vw;
     height: 14vw;
 
 }
 
-ul.selection-wrap li .selection svg:hover,
-ul.selection-wrap li .selection path:hover,
-ul.selection-wrap li .selection h3:hover,
 ul.selection-wrap li .selection figure {
     opacity: 1;
 }
@@ -130,8 +130,9 @@ h3 {
     width: 32px;
     height: 32px;
 
-    
+
 }
+
 .flex-set li.cursor-pointer:hover {
     opacity: 0.7;
 }
@@ -207,6 +208,98 @@ footer ul.sns li img {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.item-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    align-content: flex-start;
+}
+
+.item-wrap .item-box {
+    position: relative;
+    background-color: #fff;
+    height: 310px;
+    margin: 8px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    
+}
+.item-wrap.cell .item-box {
+    flex-direction: column;
+    width: 225px;
+
+}
+.item-wrap.cell{
+}
+
+.item-wrap .item-box img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    max-height: 162px;
+    border-radius: 10px;
+}
+.item-wrap .item-box .item-info{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.item-wrap .item-box .item-info p {
+    text-align: left;
+    width: 100%;
+    height: 4rem;
+    font-size: 1.2rem !important;
+    margin: 0;
+    padding: 0.5em;
+    overflow: hidden;
+}
+
+.item-box .item-btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-wrap.cell .item-btn{
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.item-wrap.cell .item-box:hover .item-btn{
+    z-index: 1;
+}
+.item-wrap.cell .item-box:hover .item-btn button{
+    z-index: 2;
+}
+.item-wrap.cell .item-box:hover .item-btn .bg{
+    opacity: 0.5;
+    z-index: 1;
+}
+.item-wrap.cell .item-box .item-btn .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+}
+
+
+
 
 /*phone*/
 
