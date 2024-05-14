@@ -59,7 +59,60 @@
   <div class="d-flex position-relative content-bg justify-content-center">
     <div class="container content-wrap">
       <br>
-      <!-- all thing add in there -->
+      <div>
+        <form action="" method="post">
+          <div class="row">
+            <h1 class="center-LR" style="width: fit-content;">New Spare Part<h1>
+          </div>
+          <hr>
+          <div class="g-10">
+            <div class="row">
+              <div class="col">
+                <div class="form-floating">
+                  <select class="form-select" id="category" >
+                    <option value="A">A - Sheet Metal</option>
+                    <option value="B">B - Major Asssemblies</option>
+                    <option value="C">C - Light Components</option>
+                    <option value="D">D - Accessories</option>
+                  </select>
+                  <label for="category">Category</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="name" placeholder="Name">
+                  <label for="name">Name</label></div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col">
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="qty" placeholder="Quantity" min="0">
+                  <label for="qty">Quantity</label></div>
+              </div>
+              <div class="col">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">$</span>
+                  <div class="form-floating">
+                    <input type="number" class="form-control" id="price" placeholder="Price" min="0">
+                    <label for="price">Price</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="input-group mb-3">
+                  <div class="form-floating">
+                    <input type="number" class="form-control" id="weight" placeholder="Weight" min="0">
+                    <label for="weight">Weight</label>
+                  </div>
+                  <span class="input-group-text">g</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
   <!-- <img src="../../images/menu/chisato.png"> -->
