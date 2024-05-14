@@ -1,24 +1,29 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const file_input_loc = document.querySelector("#item-img-input")
-    const image_loc = document.querySelector("#item-img")
+    $("#item-img-input").bind('change drop', function () {
+        change_img();
+    });
+    function change_img(){
+        const file_input_loc = document.querySelector("#item-img-input")
+		$('#item-img-input').removeClass('image-dropping')
 
-    file_input_loc.addEventListener('change', function () {
-        change_img()
-    })
-
-    function change_img() {
         if (file_input_loc.value === "") {
-            image_loc.src = ""
+            $('#item-img').attr('src', "");
             return
         }
         if (file_input_loc.files && file_input_loc.files[0]) {
             var reader = new FileReader();
-
+        
             reader.onload = function (e) {
-                image_loc.src = e.target.result;
+              $('#item-img').attr('src', e.target.result);
             };
-
+        
             reader.readAsDataURL(file_input_loc.files[0]);
-        }
+          }
     }
+    $('#item-img-input').bind('dragover', function () {
+		$('#item-img-input').addClass('image-dropping');
+	});
+    $('#item-img-input').bind('dragleave', function () {
+		$('#item-img-input').removeClass('image-dropping')})
 })
+

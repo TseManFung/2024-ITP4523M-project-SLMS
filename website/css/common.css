@@ -370,9 +370,12 @@ footer ul.sns li img {
 .item-wrap.cell .item-data {
     justify-content: space-around;
 }
-
-
-
+.image-dropping, #item-img-input:hover {
+    border: 4px dashed skyblue !important;
+}
+#item-img-input{
+    border: 4px dashed rgba(255, 255, 255, 0);
+}
 /*phone*/
 
 @media only screen and (max-width: 600px) {

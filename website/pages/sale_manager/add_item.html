@@ -16,6 +16,7 @@
   <!-- /css -->
 
   <!-- js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/add_item.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
@@ -126,7 +127,7 @@
             <div class="row">
               <div class="col">
 
-                <label for="item-img-input" class="form-label">select the image of this spare part</label>
+                <label for="item-img-input" class="form-label">select or drop the image of this spare part</label>
                 <input class="form-control" type="file" id="item-img-input">
 
               </div>
@@ -136,6 +137,14 @@
 
             </div>
             <br>
+            <div class="row">
+              <div class="col">
+                <button type="button" class="btn btn-primary">Confirm to add a new item</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+              </div>
+            </div>
+            <br>
+
           </div>
         </form>
       </div>
