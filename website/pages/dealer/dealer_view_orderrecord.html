@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-    <title>makeorderspage</title>
+    <title>page name</title>
 
     <!-- css -->
     <!-- icon -->
@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="../../css/reset.css">
     <link rel="stylesheet" href="../../css/common.css">
     <link rel="stylesheet" href="../../css/bs/bootstrap.css">
-    <link rel="stylesheet" href="../../css/productdetail.css">
     <!-- /css -->
     <!-- js -->
-    <script src="../js/bs/bootstrap.bundle.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/bs/bootstrap.bundle.js"></script>
     <!-- /js -->
 </head>
 
@@ -40,30 +40,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">About Us</a>
                         </li>
-                        <!--             <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                             aria-expanded="false">
-                            Dropdown
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                              <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                          </ul>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                        </li> -->
                     </ul>
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center"
                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Hi [username]<span class="cart-number-label">99+</span>
                         </a>
-                        <ul class="dropdown-menu" style="left:auto; right:0">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Your Information</a></li>
                             <li><a class="dropdown-item" href="#">Your Order</a></li>
                             <li>
@@ -73,56 +56,77 @@
                             </li>
 
                         </ul>
+
                     </div>
+
                 </div>
             </div>
         </nav>
         <!-- /navbar -->
     </div>
-    <br>
-    <hr style="border: rgb(103, 149, 255) 10px solid;" class="content">
 
-    <div class="detail-bg">
-        <div class="row">
-            <div class="col">
-                <img src="../../images/A-Sheet Metal/100001.jpg" class="float-left img-fluid img-thumbnail">
+    <!-- header -->
+    <div style="height: calc(0lvh + 56px);" id="header"></div>
+    <!-- /header -->
+    <!-- content -->
+    <div class="d-flex position-relative content-bg justify-content-center">
+        <div class="container content-wrap">
+            <br>
+            <!-- all thing add in there -->
+        </div>
+    </div>
+    <!-- <img src="../../images/menu/chisato.png"> -->
+    <!-- /content -->
+    <div class="d-flex position-relative content-bg justify-content-center">
+        <div class="container content-wrap">
+            <h1><i> Orders</i> </h1>
+            <div class="table-responsive ">
+                <table class="table table-striped ">
+                    <caption><button class="btn btn-primary profile-button"
+                    type="button">
+                    More..
+                    </button></caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Order ID</th>
+                            <th scope="col">Sales Manager ID</th>
+                            <th scope="col">Order Date & Time</th>
+                            <th scope="col">Order Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>27</td>
+                            <td>Iseri Nina</td>
+                            <td>27-27-2727</td>
+                            <td>TOGENASHI TOGEARI</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td>@twitter</td>
+                            <td>@mdo</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col">
-                <div class="row">
-                    <div class="col">
-                        <h1>The Name of Spare</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h2>Spare Part Number</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h2>Spare Price</h2>
-                    </div>
-                </div>
-                <hr />
-                <h2>About this Spare</h2>
-                    <p><small>sparePartDescription</small></p>
-                    <form class="row g-3">
-                        <p>Spare Weight (Single):</p>
-                        <div class="col-md-4">
-                            <label for="validationServer01" class="form-label">Quantity</label>
-                            <input type="text" class="form-control is-invalid" id="validationServer01" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Looks shit!
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary" type="submit"><h class="fa-solid fa-cart-shopping"></h>Add to Cart</button>
-                        </div>
-                    </form>
-</div>
         </div>
     </div>
     <footer>
@@ -131,16 +135,19 @@
 
         <ul class="sns">
             <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-                    <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
+              <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
         </ul>
 
         <!-- /link -->
         <p>© 2024 Smart & Luxury Motor Spares inc.</p>
     </footer>
+    <!-- return top -->
+
     <div id="page-top" style="">
         <a href="#header"><img src="../../images/common/returan-top.png"></a>
     </div>
 
+    <!-- /return top -->
 </body>
 
 </html>
