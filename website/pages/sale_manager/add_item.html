@@ -62,11 +62,13 @@
     <div class="container content-wrap">
       <br>
       <div>
-        <form action="" method="post">
+        <form name="add_item" method="post">
           <div class="row">
             <h1 class="center-LR" style="width: fit-content;">New Spare Part<h1>
           </div>
+
           <hr>
+
           <div class="g-10">
             <div class="row">
               <div class="col">
@@ -86,7 +88,9 @@
                   <label for="name">Name</label></div>
               </div>
             </div>
+
             <br>
+
             <div class="row">
               <div class="col">
                 <div class="form-floating">
@@ -112,7 +116,9 @@
                 </div>
               </div>
             </div>
+
             <br>
+
             <div class="row">
               <div class="col">
 
@@ -123,7 +129,9 @@
               </div>
 
             </div>
+
             <br>
+
             <div class="row">
               <div class="col">
 
@@ -136,13 +144,31 @@
               </div>
 
             </div>
+
             <br>
+
+            <!-- alert -->
             <div class="row">
-              <div class="col">
-                <button type="button" class="btn btn-primary">Confirm to add a new item</button>
-                <button type="reset" class="btn btn-secondary">Clear</button>
+              <div id="successful" class="alert alert-success d-none" role="alert">
+                successful to add a new spare part: [spare part name].<br>
+                The new spare part number is: [spare part number]
+                
+              </div>
+              <div id="fail" class="alert alert-danger d-none" role="alert">
+                fail to add a new spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
               </div>
             </div>
+            <!-- alert -->
+
+            <br>
+
+            <div class="row">
+              <div class="col">
+                <button type="button" class="btn btn-primary" onclick="Submit()">Confirm to add a new item</button>
+                <button type="button" class="btn btn-secondary" onclick="Clear()">Clear</button>
+              </div>
+            </div>
+
             <br>
 
           </div>

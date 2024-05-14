@@ -27,3 +27,18 @@ document.addEventListener('DOMContentLoaded', function () {
 		$('#item-img-input').removeClass('image-dropping')})
 })
 
+function Submit() {
+    // check if any is null or wrong: alert wornging
+    // https://getbootstrap.com/docs/5.3/forms/floating-labels/#input-groups
+
+    // document.add_item.submit(); is not ok
+    // use other way to submit
+    
+    $("#successful").removeClass("d-none");
+
+}
+
+function Clear(){
+    document.add_item.reset();
+    $(".alert").addClass("d-none");
+}
