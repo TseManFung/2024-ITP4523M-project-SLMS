@@ -257,7 +257,9 @@ footer ul.sns li img {
 .item-wrap.cell p.item-desc {
     display: none;
 }
-
+.item-wrap.list p.item-desc {
+    height: 7.4rem !important;
+}
 .item-wrap.cell .item-box {
     cursor: pointer;
 
