@@ -17,6 +17,7 @@
 
   <!-- js -->
   <script src="../../js/common.js"></script>
+  <script src="../../js/add_item.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <!-- /js -->
 </head>
@@ -69,7 +70,7 @@
             <div class="row">
               <div class="col">
                 <div class="form-floating">
-                  <select class="form-select" id="category" >
+                  <select class="form-select" id="category">
                     <option value="A">A - Sheet Metal</option>
                     <option value="B">B - Major Asssemblies</option>
                     <option value="C">C - Light Components</option>
@@ -110,6 +111,31 @@
                 </div>
               </div>
             </div>
+            <br>
+            <div class="row">
+              <div class="col">
+
+                <div class="form-floating">
+                  <textarea class="form-control" placeholder="Description" id="desc" style="height: 7.4rem"></textarea>
+                  <label for="desc">Description</label>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="row">
+              <div class="col">
+
+                <label for="item-img-input" class="form-label">select the image of this spare part</label>
+                <input class="form-control" type="file" id="item-img-input">
+
+              </div>
+              <div class="col">
+                <img id="item-img" class="item-img" src="">
+              </div>
+
+            </div>
+            <br>
           </div>
         </form>
       </div>
