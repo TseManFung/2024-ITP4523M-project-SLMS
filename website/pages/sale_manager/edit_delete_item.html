@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-  <title>page name</title>
+  <title>Manage Spare Part</title>
 
   <!-- css -->
   <!-- icon -->
@@ -72,8 +72,8 @@
           <div class="g-10">
             <div class="row">
               <div class="col">
-                <div class="form-floating">
-                  <select class="form-select" id="category">
+                <div class="form-floating ">
+                  <select class="form-select" id="category" disabled>
                     <option value="A">A - Sheet Metal</option>
                     <option value="B">B - Major Asssemblies</option>
                     <option value="C">C - Light Components</option>
@@ -84,7 +84,7 @@
               </div>
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="name" placeholder="Name">
+                  <input type="text" class="form-control" id="name" placeholder="Name" disabled>
                   <label for="name">Name</label></div>
               </div>
             </div>
@@ -109,7 +109,7 @@
               <div class="col">
                 <div class="input-group mb-3">
                   <div class="form-floating">
-                    <input type="number" class="form-control" id="weight" placeholder="Weight" min="0">
+                    <input type="number" class="form-control" id="weight" placeholder="Weight" min="0" disabled>
                     <label for="weight">Weight</label>
                   </div>
                   <span class="input-group-text">g</span>
@@ -165,7 +165,7 @@
                   <label for="delete-name">Spare Part Name</label></div><br><br>
                 <div class="position-absolute bottom-0 end-0 m-2">
                   <button type="button" class="btn btn-danger" onclick="Delete()">Confirm to Delete</button>
-                  <button type="button" class="btn btn-secondary" onclick="Cancel()">Cancel</button>
+                  <button type="button" class="btn btn-secondary" onclick="Cancel_delete()">Cancel</button>
                 </div>
                 
               </div>

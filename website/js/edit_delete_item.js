@@ -41,11 +41,20 @@ function Submit() {
 }
 
 function Cancel(){
-    // cancel the edit
+    // go back to the previous page
+    // window.history.back();
+}
+function Cancel_delete(){
     $(".alert").addClass("d-none");
 }
 
-function Delete(){}
+function Delete(){
+    $(".alert").addClass("d-none");
+    // try to set the state to D (delete) of this item
+    // if success, show the successful alert
+    $("#successful").removeClass("d-none");
+    // if fail, show the fail alert
+}
 
 function confirm_delete(){
     $("#confirm-delete").removeClass("d-none");
