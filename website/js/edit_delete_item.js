@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 function Submit() {
+    $(".alert").addClass("d-none");
+
     // check if any is null or wrong: alert wornging
     // https://getbootstrap.com/docs/5.3/forms/floating-labels/#input-groups
 
