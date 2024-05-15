@@ -5,11 +5,11 @@
     "\\website",
     "\\website\\css",
     "\\website\\images",
-    "\\website\\images\\A-Sheet Metal",
     "\\website\\js",
     "\\website\\pages",
-    "\\website\\pages\\dealer"
+    "\\website\\pages\\dealer",
+    "\\website\\pages\\sale_manager"
   ],
-  "SelectedNode": "\\website\\pages\\menu.html",
+  "SelectedNode": "\\website\\pages\\sale_manager\\add_item.html",
   "PreviewInSolutionExplorer": false
 }

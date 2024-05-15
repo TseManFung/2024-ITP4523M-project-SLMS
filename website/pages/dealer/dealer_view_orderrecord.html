@@ -13,10 +13,13 @@
     <link rel="stylesheet" href="../../css/reset.css">
     <link rel="stylesheet" href="../../css/common.css">
     <link rel="stylesheet" href="../../css/bs/bootstrap.css">
+    <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css">
     <!-- /css -->
     <!-- js -->
     <script src="../../js/common.js"></script>
     <script src="../../js/bs/bootstrap.bundle.js"></script>
+    <script src="../../js/add_itemm.js"></script>
+
     <!-- /js -->
 </head>
 
@@ -69,66 +72,153 @@
     <div style="height: calc(0lvh + 56px);" id="header"></div>
     <!-- /header -->
     <!-- content -->
-    <div class="d-flex position-relative content-bg justify-content-center">
-        <div class="container content-wrap">
-            <br>
-            <!-- all thing add in there -->
-        </div>
-    </div>
-    <!-- <img src="../../images/menu/chisato.png"> -->
-    <!-- /content -->
-    <div class="d-flex position-relative content-bg justify-content-center">
-        <div class="container content-wrap">
-            <h1><i> Orders</i> </h1>
-            <div class="table-responsive ">
-                <table class="table table-striped ">
-                    <caption><button class="btn btn-primary profile-button"
-                    type="button">
-                    More..
-                    </button></caption>
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Order ID</th>
-                            <th scope="col">Sales Manager ID</th>
-                            <th scope="col">Order Date & Time</th>
-                            <th scope="col">Order Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>27</td>
-                            <td>Iseri Nina</td>
-                            <td>27-27-2727</td>
-                            <td>TOGENASHI TOGEARI</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>@mdo</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="content-bg">
+        <div class="container">
+            <br />
+            <div class="row row--top-40">
+                <div class="col-md-6">
+                    <h2 class="row__title"><i>Order(4)</i></h2>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="dropdown ">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row row--top-20">
+                <div class="col-md-12">
+                    <div class="table-container">
+                        <table class="table">
+                            <thead class="table__thead">
+                                <tr>
+                                    <th class="table__th">No</th>
+                                    <th class="table__th">Order ID</th>
+                                    <th class="table__th">Order Date & Time</th>
+                                    <th class="table__th">Order Status</th>
+                                    <th class="table__th"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table__tbody">
+                                <tr class="table-row">
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">1</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">id</p>
+                                    </td>
+                                    <td data-column="Policy" class="table-row__td">
+                                        <div class="">
+                                            <p class="table-row__policy">20-5-2025</p>
+                                        </div>
+                                    </td>
+                                    <td data-column="Policy status" class="table-row__td">
+                                        <p class="table-row__p-status status--blue status">transport</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <button class="cta">
+                                            <span>View more</span>
+                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                                <path d="M1,5 L11,5"></path>
+                                                <polyline points="8 1 12 5 8 9"></polyline>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row table-row--ronald">
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">2</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">Ronals Koeman</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <div data-column="Policy" class="">
+                                            <p class="table-row__policy">$5,000</p>
+                                            <span class="table-row__small">Basic Policy</span>
+                                        </div>
+                                    </td>
+                                    <td data-column="Policy status" class="table-row__td">
+                                        <p class="table-row__p-status status--green status">TBC</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <button class="cta">
+                                            <span>View more</span>
+                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                                <path d="M1,5 L11,5"></path>
+                                                <polyline points="8 1 12 5 8 9"></polyline>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row table-row--red table-row--natalie ">
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">4</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">Natalie Quest</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <div class="">
+                                            <p class="table-row__policy">$30,000</p>
+                                            <span class="table-row__small">All Inclusive Policy</span>
+                                        </div>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <p class="table-row__p-status status--yellow status">packing</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <button class="cta">
+                                            <span>View more</span>
+                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                                <path d="M1,5 L11,5"></path>
+                                                <polyline points="8 1 12 5 8 9"></polyline>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="table-row table-row--thomas">
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">3</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <p class="table-row__name">Thomas Perez</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <div class="">
+                                            <p class="table-row__policy">$45,000</p>
+                                            <span class="table-row__small">All Inclusive Policy</span>
+                                        </div>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <p class="table-row__p-status status--green status">TBC</p>
+                                    </td>
+                                    <td class="table-row__td">
+                                        <button class="cta">
+                                            <span>View more</span>
+                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                                <path d="M1,5 L11,5"></path>
+                                                <polyline points="8 1 12 5 8 9"></polyline>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+
+        </div>
+
+    <!-- /content -->
     <footer>
 
         <!-- link -->
