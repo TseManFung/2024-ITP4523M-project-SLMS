@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
 
     <title>page name</title>
 
     <!-- css -->
     <!-- icon -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../css/reset.css">
-    <link rel="stylesheet" href="../../css/common.css">
-    <link rel="stylesheet" href="../../css/bs/bootstrap.css">
-    <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v6.5.2/css/all.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../css/reset.css" />
+    <link rel="stylesheet" href="../../css/common.css" />
+    <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
+    <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css" />
     <!-- /css -->
     <!-- js -->
     <script src="../../js/common.js"></script>
@@ -21,228 +27,261 @@
     <script src="../../js/add_itemm.js"></script>
 
     <!-- /js -->
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="fixed-top">
-        <!-- navbar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid justify-content-center">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse nav-wrap  " id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Our Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About Us</a>
-                        </li>
-                    </ul>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center"
-                           href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Hi [username]<span class="cart-number-label">99+</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Your Information</a></li>
-                            <li><a class="dropdown-item" href="#">Your Order</a></li>
-                            <li>
-                                <a class="dropdown-item position-relative d-flex flex-nowrap" href="#">
-                                    Cart<span class="cart-number-label">99+</span>
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </div>
-
-                </div>
+      <!-- navbar -->
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid justify-content-center">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse nav-wrap"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Our Product</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">About Us</a>
+              </li>
+            </ul>
+            <div class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Hi [username]<span class="cart-number-label">99+</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Your Information</a></li>
+                <li><a class="dropdown-item" href="#">Your Order</a></li>
+                <li>
+                  <a
+                    class="dropdown-item position-relative d-flex flex-nowrap"
+                    href="#"
+                  >
+                    Cart<span class="cart-number-label">99+</span>
+                  </a>
+                </li>
+              </ul>
             </div>
-        </nav>
-        <!-- /navbar -->
+          </div>
+        </div>
+      </nav>
+      <!-- /navbar -->
     </div>
 
     <!-- header -->
-    <div style="height: calc(0lvh + 56px);" id="header"></div>
+    <div style="height: calc(0lvh + 56px)" id="header"></div>
     <!-- /header -->
     <!-- content -->
     <div class="content-bg">
-        <div class="container">
-            <br />
-            <div class="row row--top-40">
-                <div class="col-md-6">
-                    <h2 class="row__title"><i>Order(4)</i></h2>
-                </div>
-                <div class="col-md-6 ">
-                    <div class="dropdown ">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </div>
-                </div>
+      <div class="container">
+        <br />
+        <div class="row row--top-40">
+          <div class="col-md-6">
+            <h2 class="row__title"><i>Order(4)</i></h2>
+          </div>
+          <div class="col-md-6">
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Sort
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
             </div>
-            <div class="row row--top-20">
-                <div class="col-md-12">
-                    <div class="table-container">
-                        <table class="table">
-                            <thead class="table__thead">
-                                <tr>
-                                    <th class="table__th">No</th>
-                                    <th class="table__th">Order ID</th>
-                                    <th class="table__th">Order Date & Time</th>
-                                    <th class="table__th">Order Status</th>
-                                    <th class="table__th"></th>
-                                </tr>
-                            </thead>
-                            <tbody class="table__tbody">
-                                <tr class="table-row">
-                                    <td class="table-row__td">
-                                        <div class="col-md-6">
-                                            <p class="table-row__name">1</p>
-                                            <div class="col-md-6">
-                                                <img src="../../images/item/100001.jpg"
-                                                     class="img-fluid" alt="100001">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">id</p>
-                                    </td>
-                                    <td data-column="Policy" class="table-row__td">
-                                        <div class="">
-                                            <p class="table-row__policy">20-5-2025</p>
-                                        </div>
-                                    </td>
-                                    <td data-column="Order status" class="table-row__td">
-                                        <p class="table-row__p-status status--blue status">transport</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <button class="cta">
-                                            <span>View more</span>
-                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                                <path d="M1,5 L11,5"></path>
-                                                <polyline points="8 1 12 5 8 9"></polyline>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="table-row table-row--ronald">
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">2</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">Ronals Koeman</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <div data-column="Policy" class="">
-                                            <p class="table-row__policy">$5,000</p>
-                                            <span class="table-row__small">Basic Policy</span>
-                                        </div>
-                                    </td>
-                                    <td data-column="Order status" class="table-row__td">
-                                        <p class="table-row__p-status status--blue status">transport</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <button class="cta">
-                                            <span>View more</span>
-                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                                <path d="M1,5 L11,5"></path>
-                                                <polyline points="8 1 12 5 8 9"></polyline>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="table-row table-row--thomas">
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">4</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">Natalie Quest</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <div class="">
-                                            <p class="table-row__policy">$30,000</p>
-                                            <span class="table-row__small">All Inclusive Policy</span>
-                                        </div>
-                                    </td>
-                                    <td data-column="Order status" class="table-row__td">
-                                        <p class="table-row__p-status status--blue status">transport</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <button class="cta">
-                                            <span>View more</span>
-                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                                <path d="M1,5 L11,5"></path>
-                                                <polyline points="8 1 12 5 8 9"></polyline>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="table-row table-row--thomas">
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">3</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <p class="table-row__name">Thomas Perez</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <div class="">
-                                            <p class="table-row__policy">$45,000</p>
-                                        </div>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <p class="table-row__p-status status--green status">TBC</p>
-                                    </td>
-                                    <td class="table-row__td">
-                                        <button class="cta">
-                                            <span>View more</span>
-                                            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                                <path d="M1,5 L11,5"></path>
-                                                <polyline points="8 1 12 5 8 9"></polyline>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="row row--top-20">
+          <div class="col-md-12">
+            <div class="table-container">
+              <table class="table">
+                <thead class="table__thead">
+                  <tr>
+                    <th class="table__th">No</th>
+                    <th class="table__th">Order ID</th>
+                    <th class="table__th">Order Date & Time</th>
+                    <th class="table__th">Order Status</th>
+                    <th class="table__th"></th>
+                  </tr>
+                </thead>
+                <tbody class="table__tbody">
+                  <tr class="table-row">
+                    <td class="table-row__td">
+                      <div class="col-md-6">
+                        <p class="table-row__name">1</p>
+                        <div class="col-md-6">
+                          <img
+                            src="../../images/item/100001.jpg"
+                            class="img-fluid"
+                            alt="100001"
+                          />
+                        </div>
+                      </div>
+                    </td>
+                    <td class="table-row__td">
+                      <p class="table-row__name">id</p>
+                    </td>
+                    <td data-column="Policy" class="table-row__td">
+                      <div class="">
+                        <p class="table-row__policy">20-5-2025</p>
+                      </div>
+                    </td>
+                    <td data-column="Order status" class="table-row__td">
+                      <p class="table-row__p-status status--blue status">
+                        transport
+                      </p>
+                    </td>
+                    <td class="table-row__td">
+                      <button class="cta">
+                        <span>View more</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                          <path d="M1,5 L11,5"></path>
+                          <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="table-row table-row--ronald">
+                    <td class="table-row__td">
+                      <p class="table-row__name">2</p>
+                    </td>
+                    <td class="table-row__td">
+                      <p class="table-row__name">Ronals Koeman</p>
+                    </td>
+                    <td class="table-row__td">
+                      <div data-column="Policy" class="">
+                        <p class="table-row__policy">$5,000</p>
+                        <span class="table-row__small">Basic Policy</span>
+                      </div>
+                    </td>
+                    <td data-column="Order status" class="table-row__td">
+                      <p class="table-row__p-status status--blue status">
+                        transport
+                      </p>
+                    </td>
+                    <td class="table-row__td">
+                      <button class="cta">
+                        <span>View more</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                          <path d="M1,5 L11,5"></path>
+                          <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="table-row table-row--thomas">
+                    <td class="table-row__td">
+                      <p class="table-row__name">4</p>
+                    </td>
+                    <td class="table-row__td">
+                      <p class="table-row__name">Natalie Quest</p>
+                    </td>
+                    <td class="table-row__td">
+                      <div class="">
+                        <p class="table-row__policy">$30,000</p>
+                        <span class="table-row__small"
+                          >All Inclusive Policy</span
+                        >
+                      </div>
+                    </td>
+                    <td data-column="Order status" class="table-row__td">
+                      <p class="table-row__p-status status--blue status">
+                        transport
+                      </p>
+                    </td>
+                    <td class="table-row__td">
+                      <button class="cta">
+                        <span>View more</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                          <path d="M1,5 L11,5"></path>
+                          <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="table-row table-row--thomas">
+                    <td class="table-row__td">
+                      <p class="table-row__name">3</p>
+                    </td>
+                    <td class="table-row__td">
+                      <p class="table-row__name">Thomas Perez</p>
+                    </td>
+                    <td class="table-row__td">
+                      <div class="">
+                        <p class="table-row__policy">$45,000</p>
+                      </div>
+                    </td>
+                    <td class="table-row__td">
+                      <p class="table-row__p-status status--green status">
+                        TBC
+                      </p>
+                    </td>
+                    <td class="table-row__td">
+                      <button class="cta">
+                        <span>View more</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                          <path d="M1,5 L11,5"></path>
+                          <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
-
-        </div>
+      </div>
+    </div>
 
     <!-- /content -->
     <footer>
+      <!-- link -->
 
-        <!-- link -->
-
-        <ul class="sns">
-            <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
+      <ul class="sns">
+        <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
               <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
-        </ul>
+      </ul>
 
-        <!-- /link -->
-        <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+      <!-- /link -->
+      <p>© 2024 Smart & Luxury Motor Spares inc.</p>
     </footer>
     <!-- return top -->
 
     <div id="page-top" style="">
-        <a href="#header"><img src="../../images/common/returan-top.png"></a>
+      <a href="#header"><img src="../../images/common/returan-top.png" /></a>
     </div>
 
     <!-- /return top -->
-</body>
-
+  </body>
 </html>
