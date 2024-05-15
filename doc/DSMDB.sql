@@ -26,7 +26,7 @@ CREATE TABLE `order` (
   `orderItemNumber` integer(10) NOT NULL,
   `TotalAmount` double NOT NULL,
   `shipCost` double NOT NULL,
-  `state` char NOT NULL
+  `state` char(1) NOT NULL
 );
 
 CREATE TABLE `spare` (
@@ -36,7 +36,8 @@ CREATE TABLE `spare` (
   `sparePartImage` varchar(100) NOT NULL,
   `sparePartDescription` text NOT NULL,
   `weight` double NOT NULL,
-  `price` double NOT NULL
+  `price` double NOT NULL,
+  `state` char(1) NOT NULL
 );
 
 CREATE TABLE `spareQty` (

@@ -30,3 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
 function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + "px";
 }
+
+// get parameter from URL
+function getParameterFromURL(parameterName) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(parameterName);
+}

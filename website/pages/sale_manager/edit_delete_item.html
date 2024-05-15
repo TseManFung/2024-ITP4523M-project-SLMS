@@ -18,7 +18,7 @@
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
-  <script src="../../js/add_item.js"></script>
+  <script src="../../js/edit_delete_item.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <!-- /js -->
 </head>
@@ -150,12 +150,23 @@
             <!-- alert -->
             <div class="row">
               <div id="successful" class="alert alert-success d-none" role="alert">
-                successful to add a new spare part: [spare part name].<br>
-                The new spare part number is: [spare part number]
-                
+                successful to edit or delete the spare part: [spare part name].
               </div>
+
               <div id="fail" class="alert alert-danger d-none" role="alert">
-                fail to add a new spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
+                fail to edit or delete the spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
+              </div>
+
+              <div id="confirm-delete" class="alert alert-secondary d-none position-relative" role="alert">
+                for delete spare part : [item number] <br>
+                Please enter the spare part name below: [spare part name] <br><br>
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="delete-name" placeholder="Spare Part Name">
+                  <label for="delete-name">Spare Part Name</label></div><br><br>
+                <div class="position-absolute bottom-0 end-0 m-2">
+                  <button type="button" class="btn btn-danger" onclick="Delete()">Confirm to Delete</button>
+                </div>
+                
               </div>
             </div>
             <!-- alert -->
@@ -164,8 +175,9 @@
 
             <div class="row">
               <div class="col">
-                <button type="button" class="btn btn-primary" onclick="Submit()">Confirm to add a new item</button>
-                <button type="button" class="btn btn-secondary" onclick="Clear()">Clear</button>
+                <button type="button" class="btn btn-primary" onclick="Submit()">Edit</button>
+                <button type="button" class="btn btn-danger" onclick="confirm_delete()">Delete</button>
+                <button type="button" class="btn btn-secondary" onclick="Cancel()">Cancel</button>
               </div>
             </div>
 
