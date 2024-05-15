@@ -42,10 +42,6 @@ function Submit() {
 
 }
 
-function Cancel(){
-    // go back to the previous page
-    // window.history.back();
-}
 function Cancel_delete(){
     $(".alert").addClass("d-none");
 }

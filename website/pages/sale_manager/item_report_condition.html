@@ -18,6 +18,7 @@
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
+  <script src="../../js/item_report_condition.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <!-- /js -->
 </head>
@@ -109,7 +110,31 @@
             </div>
 
             <br>
-
+            <div class="row">
+              <div class="col-4">
+                <div class="form-check form-switch">
+                  <input class="form-check-input cursor-pointer" type="checkbox" role="switch" id="hasDate">
+                  <label class="form-check-label cursor-pointer" for="hasDate">The report requires a specific date
+                    range</label>
+                </div>
+              </div>
+              <div class="col-8 d-none" id="dateRange">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-floating">
+                      <input type="date" class="form-control" id="startDate" placeholder="From">
+                      <label for="startDate">From</label></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="form-floating">
+                      <input type="date" class="form-control" id="untilDate" placeholder="To">
+                      <label for="untilDate">To</label></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <br>
 
             <!-- alert -->

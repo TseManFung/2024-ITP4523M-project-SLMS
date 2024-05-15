@@ -36,3 +36,8 @@ function getParameterFromURL(parameterName) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(parameterName);
 }
+
+// go back to previous page
+function goBack() {
+    window.history.back();
+}
