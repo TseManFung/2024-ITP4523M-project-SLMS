@@ -6,4 +6,10 @@ $(document).ready(function() {
             $("#dateRange").addClass("d-none");
         }
     });
+
+    if (getParameterFromURL("spnum") !== null) {
+        $("#spec_item_row").removeClass("d-none");
+        $("#all_item_row").addClass("d-none");
+        // init in here
+    }
 });
