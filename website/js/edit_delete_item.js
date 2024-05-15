@@ -59,5 +59,7 @@ function Delete(){
 }
 
 function confirm_delete(){
+    $(".alert").addClass("d-none");
+
     $("#confirm-delete").removeClass("d-none");
 }
