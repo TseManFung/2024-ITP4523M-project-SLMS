@@ -46,6 +46,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+.child-center-TB {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .center-LR,
 .page-nav,
@@ -54,6 +59,12 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.center-TB {
+  display: block;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .cursor-pointer {
@@ -251,34 +262,55 @@ footer ul.sns li img {
 
 .item-wrap.cell {
   flex-direction: row;
-}
 
-.item-wrap.cell .item-box .item-info p.item-desc {
-  display: none;
-}
+  & .item-box .item-info p.item-desc {
+    display: none;
+  }
+  & .item-box {
+    cursor: pointer;
 
-.item-wrap.list .item-box .item-info p.item-desc {
-  height: 7.4rem !important;
-}
+    flex-direction: column;
+    width: 225px;
+  }
+  & .item-btn {
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  & .item-box:hover {
+    & .item-btn {
+      z-index: 1;
+    }
+    & .item-btn button {
+      z-index: 2;
+    }
 
-.item-wrap.cell .item-box {
-  cursor: pointer;
+    & .item-btn .bg {
+      opacity: 0.5;
+      z-index: 1;
+    }
 
-  flex-direction: column;
-  width: 225px;
-}
+    & .item-img,
+    & .item-info {
+      filter: blur(3px);
+    }
+  }
 
-.item-wrap.list {
-  flex-direction: column;
-  width: 100%;
-}
+  & .item-box .item-btn .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+  }
 
-.item-wrap.list .item-box,
-.table-row {
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
+  & .item-data {
+    justify-content: space-around;
+  }
 }
 
 .item-wrap .item-box .img-m,
@@ -296,10 +328,6 @@ footer ul.sns li img {
   justify-content: space-around;
 }
 
-.item-wrap.list .item-box .item-info {
-  width: 100%;
-}
-
 .item-wrap .item-box .item-info p {
   text-align: left;
   width: 100%;
@@ -309,60 +337,38 @@ footer ul.sns li img {
   overflow: hidden;
 }
 
-.item-wrap.list .item-btn {
+.item-wrap.list .item-box,
+.table-row {
+  flex-direction: row;
   width: 100%;
-  max-width: 160px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.item-wrap.list .item-data {
+.item-wrap.list {
   flex-direction: column;
-  align-items: flex-start;
+  width: 100%;
+
+  & .item-box .item-info {
+    width: 100%;
+  }
+  & .item-btn {
+    width: 100%;
+    max-width: 160px;
+  }
+  & .item-data {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  & .item-box .item-info p.item-desc {
+    height: 7.4rem !important;
+  }
 }
 
 .item-box .item-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.item-wrap.cell .item-btn {
-  position: absolute;
-  z-index: -2;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.item-wrap.cell .item-box:hover .item-btn {
-  z-index: 1;
-}
-
-.item-wrap.cell .item-box:hover .item-btn button {
-  z-index: 2;
-}
-
-.item-wrap.cell .item-box:hover .item-btn .bg {
-  opacity: 0.5;
-  z-index: 1;
-}
-
-.item-wrap.cell .item-box:hover .item-img,
-.item-wrap.cell .item-box:hover .item-info {
-  filter: blur(3px);
-}
-
-.item-wrap.cell .item-box .item-btn .bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: gray;
-}
-
-.item-wrap.cell .item-data {
-  justify-content: space-around;
 }
 
 .image-dropping,
@@ -389,17 +395,26 @@ footer ul.sns li img {
   flex-grow: 0 !important;
   flex-basis: auto !important;
 }
-
-.order-img {
-  position: relative;
-  --bs-gutter-y: 5px;
-  height: 100%;
-  max-height: 64px;
-}
-.order-abs-img {
-  height: 100%;
-  max-height: 64px;
-  max-width: 64px;
+div {
+  &.order-img {
+    position: relative;
+    --bs-gutter-y: 5px;
+    height: 100%;
+    max-height: 64px;
+    & .order-abs-img {
+      height: 100%;
+      max-height: 64px;
+      max-width: 64px;
+    }
+  }
+  &.table-img-box{
+    position: relative;
+    --bs-gutter-y: 5px;
+    width: 100%;
+    max-width: 128px;
+    & .table-img {
+      width: 100%;
+  }}
 }
 
 .order-2many-item {
@@ -420,6 +435,17 @@ footer ul.sns li img {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
+}
+
+.table-header th {
+  background-color: cornflowerblue !important;
+  color: #fff !important;
+}
+
+th,
+td {
+  vertical-align: middle;
+
 }
 
 /*phone*/

@@ -62,3 +62,16 @@ ALTER TABLE `spareQty` ADD FOREIGN KEY (`sparePartNum`) REFERENCES `spare` (`spa
 ALTER TABLE `orderSpare` ADD FOREIGN KEY (`sparePartNum`) REFERENCES `spare` (`sparePartNum`);
 
 ALTER TABLE `orderSpare` ADD FOREIGN KEY (`orderID`) REFERENCES `order` (`orderID`);
+
+
+CREATE INDEX `idx_dealerID` ON `order` (`dealerID`);
+
+CREATE INDEX `idx_salesManagerID` ON `order` (`salesManagerID`);
+
+CREATE INDEX `idx_orderID` ON `order` (`orderID`);
+
+CREATE INDEX `idx_sparePartNum_spareQty` ON `spareQty` (`sparePartNum`);
+
+CREATE INDEX `idx_sparePartNum_orderSpare` ON `orderSpare` (`sparePartNum`);
+
+CREATE INDEX `idx_orderID_orderSpare` ON `orderSpare` (`orderID`);
