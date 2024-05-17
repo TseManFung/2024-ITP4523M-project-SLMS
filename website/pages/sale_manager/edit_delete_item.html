@@ -32,19 +32,23 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse nav-wrap  " id="navbarSupportedContent">
+        <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+
+            <li class="nav-item">f
+              <a class="nav-link" href="./view_item.html">Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Item</a>
+              <a class="nav-link" href="./view_order.html">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Order</a>
+              <a class="nav-link" href="./item_report_condition.html">Report</a>
             </li>
+
+          </ul>
+          <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Report</a>
+              <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
             </li>
           </ul>
         </div>
@@ -85,12 +89,14 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number" disabled>
-                  <label for="SpacePartNumber">Space Part Number</label></div>
+                  <label for="SpacePartNumber">Space Part Number</label>
+                </div>
               </div>
               <div class="col">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="name" placeholder="Name" disabled>
-                  <label for="name">Name</label></div>
+                  <label for="name">Name</label>
+                </div>
               </div>
             </div>
 
@@ -100,7 +106,8 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="number" class="form-control" id="qty" placeholder="Quantity" min="0">
-                  <label for="qty">Quantity</label></div>
+                  <label for="qty">Quantity</label>
+                </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
@@ -167,12 +174,13 @@
                 Please enter the spare part name below: [spare part name] <br><br>
                 <div class="form-floating">
                   <input type="text" class="form-control" id="delete-name" placeholder="Spare Part Name">
-                  <label for="delete-name">Spare Part Name</label></div><br><br>
+                  <label for="delete-name">Spare Part Name</label>
+                </div><br><br>
                 <div class="position-absolute bottom-0 end-0 m-2">
                   <button type="button" class="btn btn-danger" onclick="Delete()">Confirm to Delete</button>
                   <button type="button" class="btn btn-secondary" onclick="Cancel_delete()">Cancel</button>
                 </div>
-                
+
               </div>
             </div>
             <!-- alert -->

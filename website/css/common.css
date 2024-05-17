@@ -51,6 +51,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+.child-center-LR{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+}
 
 .center-LR,
 .page-nav,

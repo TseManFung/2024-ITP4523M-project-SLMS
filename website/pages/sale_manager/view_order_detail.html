@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <title>page name</title>
+  <title>Order detail</title>
 
   <!-- css -->
   <!-- icon -->
@@ -18,6 +18,7 @@
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
+  <script src="../../js/sale_manager/view_order_detail.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <!-- /js -->
 </head>
@@ -33,17 +34,21 @@
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link" href="./view_item.html">Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Item</a>
+              <a class="nav-link" href="./view_order.html">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Order</a>
+              <a class="nav-link" href="./item_report_condition.html">Report</a>
             </li>
+
+          </ul>
+          <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Report</a>
+              <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
             </li>
           </ul>
         </div>
@@ -76,12 +81,13 @@
                       <div class="col-6">
                         <div class="cell"><b>Your Name:</b> [ManagerContactName / null]</div>
                         <div class="cell"><b>Your Contact Number:</b> [ManagerContact / null]</div>
-
-                        
-                      </div>
-                      <div class="col-6">
                         <div class="cell"><b>Order Date & Time:</b> [2024-01-01 00:00:00]</div>
                         <div class="cell"><b>Delivery Date:</b> [2024-01-01 00:00:00 / null]</div>
+                      </div>
+                      <div class="col-6">
+                        <div class="cell"><b>Dealer ID:</b> [DealerID]</div>
+                        <div class="cell"><b>Dealer Name:</b> [DealerContactName]</div>
+                        <div class="cell"><b>Dealer Contact Number:</b> [DealerContact]</div>
 
                       </div>
                       <div class="cell"><b>Delivery Address:</b>
@@ -94,7 +100,26 @@
                         </address>
                       </div>
                     </div>
+                    <div class="row d-flex align-items-center">
+                      <div class="col-md-2">
+                        <h5 class="text-muted mb-0">Order Status</h5>
+                      </div>
+                      <div class="col-md-10">
+                        <div class="progress" style="height: 6px; border-radius: 16px;">
+                          <div class="progress-bar" role="progressbar"
+                               style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
+                        </div>
+                        <div class="d-flex justify-content-around mb-1">
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is finished</p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
                     <!-- table-->
+                    <p><b>Total Order Item Quantity:</b> 20</p>
                     <table id="item-report" class="table table-striped table-hover">
                       <!-- table header -->
                       <thead class="table-light table-header">
@@ -144,25 +169,7 @@
                     <!-- /table -->
                   </div>
                   <!-- /order detail -->
-
-                  <br />
-                  <div class="row d-flex align-items-center">
-                    <div class="col-md-2">
-                      <h5 class="text-muted mb-0">Order Status</h5>
-                    </div>
-                    <div class="col-md-10">
-                      <div class="progress" style="height: 6px; border-radius: 16px;">
-                        <div class="progress-bar" role="progressbar"
-                             style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
-                      </div>
-                      <div class="d-flex justify-content-around mb-1">
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is finished</p>
-                      </div>
-                    </div>
-                  </div>
+                  <hr>
 
                 </div>
                 <div class="card-footer border-0 px-4 py-5" style="background-color: #fff !important;">
@@ -177,13 +184,43 @@
 
                   </div>
                 </div>
+                <br>
 
+                <br>
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      <div class="row">
+        <div class="cell child-center-LR">
+          <button type="button" class="btn btn-primary m-2" onclick="show_edit_status()">Edit Spare Status</button>
+
+          <button type="button" class="btn btn-success m-2">Accept</button>
+
+          <button type="button" class="btn btn-danger  m-2">Reject</button>
+        </div>
+        <br>
+        <div class="alert alert-secondary position-relative" role="alert" id="edit_status">
+          <div class="form-floating">
+            <select class="form-select" id="status_selecter">
+              <option value="C" selected>[Current status (get by js)]</option>
+              <option value="T">In Transmit</option>
+              <option value="U">Unavailable</option>
+              <option value="F">Finished</option>
+            </select>
+            <label for="status_selecter">Status</label>
+          </div><br><br>
+            <div class="position-absolute bottom-0 end-0 m-2">
+              <button type="button" class="btn btn-primary" onclick="">Save</button>
+              <button type="button" class="btn btn-secondary" onclick="Cancel()">Cancel</button>
+            </div>
+
+        </div>
+      </div>
     </div>
-    </section>
+
   </div>
   </div>
   <!-- <img src="../../images/menu/chisato.png"> -->

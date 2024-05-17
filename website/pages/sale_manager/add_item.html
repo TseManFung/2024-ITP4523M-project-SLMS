@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-  <title>page name</title>
+  <title>New Spare</title>
 
   <!-- css -->
   <!-- icon -->
@@ -32,19 +32,23 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse nav-wrap  " id="navbarSupportedContent">
+        <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link" href="./view_item.html">Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Item</a>
+              <a class="nav-link" href="./view_order.html">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Order</a>
+              <a class="nav-link" href="./item_report_condition.html">Report</a>
             </li>
+
+          </ul>
+          <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Report</a>
+              <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
             </li>
           </ul>
         </div>
@@ -85,7 +89,8 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="name" placeholder="Name">
-                  <label for="name">Name</label></div>
+                  <label for="name">Name</label>
+                </div>
               </div>
             </div>
 
@@ -95,7 +100,8 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="number" class="form-control" id="qty" placeholder="Quantity" min="0">
-                  <label for="qty">Quantity</label></div>
+                  <label for="qty">Quantity</label>
+                </div>
               </div>
               <div class="col">
                 <div class="input-group mb-3">
@@ -153,7 +159,7 @@
                 successful to add a new spare part: [spare part name].<br>
                 The new spare part number is: [spare part number]
               </div>
-              
+
               <div id="fail" class="alert alert-danger d-none" role="alert">
                 fail to add a new spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
               </div>
