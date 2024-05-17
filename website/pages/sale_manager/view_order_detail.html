@@ -69,89 +69,79 @@
                     <p class="lead fw-normal mb-0">Order ID: [0123456789]</p>
                     <p class="small text-muted mb-0">Sales Manager ID: [0123456789 / null]</p>
                   </div>
-
-                  <div class="row mb-2">
-                    <div class="col-6">
-                      <div class="cell"><b>Your Name:</b> [ManagerContactName / null]</div>
-                      <div class="cell"><b>Your Contact Number:</b> [ManagerContact / null]</div>
-                      <div class="cell"><b>Order Date & Time:</b> [2024-01-01 00:00:00]</div>
-                    </div>
-                    <div class="col-6">
-                      <div class="cell"><b>Delivery Date:</b> [2024-01-01 00:00:00 / null]</div>
-                      <div class="cell"><b>Delivery Address:</b>
-                        <address>
-                          Susan Lai <br>
-                          12th floor, Flat G <br>
-                          Magnolia Building <br>
-                          212 Sycamore Street <br>
-                          WAN CHAI, HONG KONG
-                        </address>
+                  <!-- order detail -->
+                  <div>
+                    <div class="row mb-2">
+                      <h2>Order Detail</h2>
+                      <div class="col-6">
+                        <div class="cell"><b>Your Name:</b> [ManagerContactName / null]</div>
+                        <div class="cell"><b>Your Contact Number:</b> [ManagerContact / null]</div>
+                        <div class="cell"><b>Order Date & Time:</b> [2024-01-01 00:00:00]</div>
+                      </div>
+                      <div class="col-6">
+                        <div class="cell"><b>Delivery Date:</b> [2024-01-01 00:00:00 / null]</div>
+                        <div class="cell"><b>Delivery Address:</b>
+                          <address>
+                            Susan Lai <br>
+                            12th floor, Flat G <br>
+                            Magnolia Building <br>
+                            212 Sycamore Street <br>
+                            WAN CHAI, HONG KONG
+                          </address>
+                        </div>
                       </div>
                     </div>
+                    <!-- table-->
+                    <table id="item-report" class="table table-striped table-hover">
+                      <!-- table header -->
+                      <thead class="table-light table-header">
+                        <tr>
+                          <th scope="col" style="width: 10%;">ID</th>
+                          <th scope="col" style="width: 40%;">Name</th>
+                          <th scope="col" style="width: 20%;text-align:center;">photo</th>
+                          <th scope="col" style="width: 10%;">Price</th>
+                          <th scope="col" style="width: 10%;">Quantity</th>
+                          <th scope="col" style="width: 10%;">Amount</th>
+                        </tr>
+                      </thead>
+                      <!-- /table header -->
+                      <!-- table body -->
+                      <tbody>
+                        <!-- record -->
+                        <tr>
+                          <th scope="row">100001</th>
+                          <td>idk</td>
+                          <td>
+                            <div class="table-img-box center-LR center-TB">
+                              <img class="table-img" src="../../images/item/100001.jpg" />
+                            </div>
+                          </td>
+                          <td>120</td>
+                          <td>10</td>
+                          <td>$1200</td>
+                        </tr>
+                        <!-- /record -->
+                        <!-- record -->
+                        <tr>
+                          <th scope="row">200002</th>
+                          <td>Name</td>
+                          <td>
+                            <div class="table-img-box center-LR center-TB">
+                              <img class="table-img" src="../../images/item/200002.jpg" />
+                            </div>
+                          </td>
+                          <td>150</td>
+                          <td>10</td>
+                          <td>$1500</td>
+                        </tr>
+                        <!-- /record -->
+                      </tbody>
+                      <!-- table body -->
+                    </table>
+                    <!-- /table -->
                   </div>
-                  <!-- table-->
-                  <table id="item-report" class="table table-striped table-hover">
-                    <!-- table header -->
-                    <thead class="table-light table-header">
-                      <tr>
-                        <th scope="col" style="width: 10%;">ID</th>
-                        <th scope="col" style="width: 40%;">Name</th>
-                        <th scope="col" style="width: 20%;text-align:center;">photo</th>
-                        <th scope="col" style="width: 15%;">Total order number</th>
-                        <th scope="col" style="width: 15%;">Total sale amount</th>
-                      </tr>
-                    </thead>
-                    <!-- /table header -->
-                    <!-- table body -->
-                    <tbody>
-                      <!-- record -->
-                      <tr>
-                        <th scope="row">100001</th>
-                        <td>idk</td>
-                        <td>
-                          <div class="table-img-box center-LR center-TB">
-                            <img class="table-img" src="../../images/item/100001.jpg" />
-                          </div>
-                        </td>
-                        <td>12</td>
-                        <td>$123456</td>
-                      </tr>
-                      <!-- /record -->
-                      <!-- record -->
-                      <tr>
-                        <th scope="row">200002</th>
-                        <td>a long long long long long long long long long long long ng long long long long long long ng
-                          long long
-                          long long long long ng long long long long long long ng long long long long long long ng long
-                          long long
-                          long long long ng long long long long long long ng long long long long long long ng long long
-                          long long
-                          long long ng long long long long long long ng long long long long long long ng long long long
-                          long long
-                          long ng long long long long long long ng long long long long long long ng long long long long
-                          long long ng
-                          long long long long long long ng long long long long long long ng long long long long long
-                          long ng long
-                          long long long long long ng long long long long long long long long long long long long longg
-                          long long
-                          long long long long long long long long long long long lon long long long long long long long
-                          long long
-                          long long long long long long long long long long long long long long long long long long long
-                          long long
-                          name</td>
-                        <td>
-                          <div class="table-img-box center-LR center-TB">
-                            <img class="table-img" src="../../images/item/200002.jpg" />
-                          </div>
-                        </td>
-                        <td>150</td>
-                        <td>$123456</td>
-                      </tr>
-                      <!-- /record -->
-                    </tbody>
-                    <!-- table body -->
-                  </table>
-                  <!-- /table -->
+                  <!-- /order detail -->
+
                   <br />
                   <div class="row d-flex align-items-center">
                     <div class="col-md-2">
@@ -173,16 +163,24 @@
 
                 </div>
                 <div class="card-footer border-0 px-4 py-5">
-                  <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
-                    Total Order Amount: <span class="h2 mb-0 ms-2">$1500</span>
-                  </h5>
+                  <div class="row mb-2 text-white">
+                    <h2>Payment Details</h2>
+                    <div class="col">
+                      <div class="cell"><b>Subtotal: </b> [item total price]</div>
+                      <div class="cell"><b>Delivery Fee: </b> [Delivery Fee]</div>
+                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line">$2700</span></div>
+                    </div>
+
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
         </div>
-      </section>
     </div>
+    </section>
+  </div>
   </div>
   <!-- <img src="../../images/menu/chisato.png"> -->
   <!-- /content -->

@@ -452,20 +452,23 @@ td {
   vertical-align: middle;
 }
 
-.card-header{
+.card-header {
   background-color: aliceblue !important;
-
 }
 
 .progress-bar {
   border-radius: 16px !important;
-
 }
 
 .card-footer {
   background-color: cornflowerblue !important;
   border-bottom-left-radius: 10px !important;
   border-bottom-right-radius: 10px !important;
+}
+
+.double-bottom-line {
+  padding-bottom: 0.1em;
+  border-bottom: 5px double white;
 }
 
 /*phone*/
