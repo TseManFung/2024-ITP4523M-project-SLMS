@@ -389,12 +389,11 @@ footer ul.sns li img {
 }
 .table-header {
   height: fit-content !important;
-  padding-top:10px ;
+  padding-top: 10px;
 }
-.item-box hr{
+.item-box hr {
   margin-top: 8px;
   margin-bottom: 8px;
-
 }
 .table-content-data > .col {
   flex-grow: 0 !important;
@@ -412,14 +411,15 @@ div {
       max-width: 64px;
     }
   }
-  &.table-img-box{
+  &.table-img-box {
     position: relative;
     --bs-gutter-y: 5px;
     width: 100%;
     max-width: 128px;
     & .table-img {
       width: 100%;
-  }}
+    }
+  }
 }
 
 .order-2many-item {
@@ -450,7 +450,22 @@ div {
 th,
 td {
   vertical-align: middle;
+}
 
+.card-header{
+  background-color: aliceblue !important;
+
+}
+
+.progress-bar {
+  border-radius: 16px !important;
+
+}
+
+.card-footer {
+  background-color: cornflowerblue !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
 }
 
 /*phone*/
