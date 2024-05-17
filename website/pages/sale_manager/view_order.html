@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <title>Order Record</title>
+  <title>page name</title>
 
   <!-- css -->
   <!-- icon -->
@@ -13,15 +13,13 @@
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/common.css" />
   <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
-  <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css" />
   <!-- /css -->
+
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
   <script src="../../js/common.js"></script>
+  <script src="../../js/view_order.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/view_order_record.js"></script>
-
   <!-- /js -->
 </head>
 
@@ -40,34 +38,21 @@
               <a class="nav-link active" aria-current="page" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Our Product</a>
+              <a class="nav-link" href="#">Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About Us</a>
+              <a class="nav-link" href="#">Order</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Report</a>
             </li>
           </ul>
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" href="#" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              Hi [username]<span class="cart-number-label">99+</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Your Information</a></li>
-              <li><a class="dropdown-item" href="#">Your Order</a></li>
-              <li>
-                <a class="dropdown-item position-relative d-flex flex-nowrap" href="#">
-                  Cart<span class="cart-number-label">99+</span>
-                </a>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </nav>
     <!-- /navbar -->
   </div>
 
-  <!-- header -->
   <!-- search-bar -->
   <div style="height: calc(20lvh + 74px)" id="header"
        class="d-flex position-relative justify-content-center align-items-center">
@@ -81,7 +66,7 @@
     </div>
   </div>
   <!-- /search-bar -->
-  <!-- /header -->
+
   <!-- content -->
   <div class="d-flex position-relative content-bg justify-content-center">
     <div class="container content-wrap">
@@ -116,25 +101,39 @@
           </nav>
         </div>
         <div class="col-md-4 position-relative">
-          <div class="form-floating position-absolute bottom-0 end-0" style="padding-right: 12px">
-            <select class="form-select" id="sort">
-              <option value="NA">Newest Arrivals</option>
-              <option value="PLH">Price: Low to High</option>
-              <option value="PHL">Price: High to Low</option>
-            </select>
-            <label for="sort">Sort</label>
+          <div class="position-absolute bottom-0 end-0 d-flex">
+            <div class="form-floating" style="padding-right: 12px">
+
+              <select class="form-select" id="show-order">
+                <option value="N" selected>Not Assigned</option>
+                <option value="A">Accepted</option>
+                <option value="R">Rejected</option>
+              </select>
+              <label for="show-order">Show</label>
+            </div>
+
+            <div class="form-floating" style="padding-right: 12px">
+
+              <select class="form-select" id="sort">
+                <option value="NA" selected>Newest Arrivals</option>
+                <option value="PLH">Price: Low to High</option>
+                <option value="PHL">Price: High to Low</option>
+              </select>
+              <label for="sort">Sort</label>
+            </div>
           </div>
         </div>
       </div>
       <br />
       <div class="row">
-        <div id="order" class="col item-wrap list d-flex" style="background-color:#fff">
+        <div id="order" class="col item-wrap list d-flex">
           <!-- table header -->
           <div class="row item-box table-header">
-            <div class="col-2">Order ID</div>
-            <div class="col-3">Order Date & Time</div>
-            <div class="col-2">Order Status</div>
-            <div class="col-3">Total Amount</div>
+            <div class="col-1">Order ID</div>
+            <div class="col-2">Order Date & Time</div>
+            <div class="col-5">Delivery Address</div>
+            <div class="col-1">Order Status</div>
+            <div class="col-1">Total Amount</div>
             <div class="col-2"></div>
             <hr class="z-1" />
           </div>
@@ -144,10 +143,17 @@
           <div class="row item-box table-content">
             <div class="col-10">
               <div class="row table-content-data">
-                <div class="col" style="width: 20%">0123456789</div>
-                <div class="col" style="width: 30%">16/05/2024 | 16:00</div>
-                <div class="col" style="width: 20%">Create</div>
-                <div class="col" style="width: 30%">$12345</div>
+                <div class="col" style="width: 10%">0123456789</div>
+                <div class="col" style="width: 20%">16/05/2024 | 16:00</div>
+                <address class="col" style="width: 50%">
+                  Susan Lai <br>
+                  12th floor, Flat G <br>
+                  Magnolia Building <br>
+                  212 Sycamore Street <br>
+                  WAN CHAI, HONG KONG
+                </address>
+                <div class="col" style="width: 10%">Create</div>
+                <div class="col" style="width: 10%">$12345</div>
 
               </div>
               <div class="d-flex">
@@ -175,13 +181,16 @@
               </div>
             </div>
             <div class="col-2">
-              <button class="cta">
-                <span>View more</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                  <path d="M1,5 L11,5"></path>
-                  <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-              </button>
+              <div class="item-btn">
+                <div class="bg"></div>
+                <button type="button" class="btn btn-primary">
+                  Order Detail
+                </button>
+                <br />
+                <button type="button" class="btn btn-success">Accept</button>
+                <br>
+                <button type="button" class="btn btn-danger">Reject</button>
+              </div>
             </div>
             <hr class="z-1" />
           </div>
@@ -191,10 +200,17 @@
           <div class="row item-box table-content">
             <div class="col-10">
               <div class="row table-content-data">
-                <div class="col" style="width: 20%">0123456789</div>
-                <div class="col" style="width: 30%">16/05/2024 | 16:00</div>
-                <div class="col" style="width: 20%">Create</div>
-                <div class="col" style="width: 30%">$12345</div>
+                <div class="col" style="width: 10%">0123456789</div>
+                <div class="col" style="width: 20%">16/05/2024 | 16:00</div>
+                <address class="col" style="width: 50%">
+                  Susan Lai, 
+                  12th floor, Flat G, 
+                  Magnolia Building, 
+                  212 Sycamore Street, 
+                  WAN CHAI, HONG KONG
+                </address>
+                <div class="col" style="width: 10%">Create</div>
+                <div class="col" style="width: 10%">$12345</div>
 
               </div>
               <div class="d-flex">
@@ -213,13 +229,16 @@
               </div>
             </div>
             <div class="col-2">
-              <button class="cta">
-                <span>View more</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                  <path d="M1,5 L11,5"></path>
-                  <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-              </button>
+              <div class="item-btn">
+                <div class="bg"></div>
+                <button type="button" class="btn btn-primary">
+                  Order Detail
+                </button>
+                <br />
+                <button type="button" class="btn btn-success">Accept</button>
+                <br>
+                <button type="button" class="btn btn-danger">Reject</button>
+              </div>
             </div>
             <hr class="z-1" />
           </div>
@@ -227,6 +246,7 @@
         </div>
       </div>
 
+      <br />
       <div class="row">
         <div class="col d-flex justify-content-center align-items-end">
           <nav aria-label="Page navigation">
@@ -257,14 +277,15 @@
       <br>
     </div>
   </div>
-
+  <!-- <img src="../../images/menu/chisato.png"> -->
   <!-- /content -->
+
   <footer>
     <!-- link -->
 
     <ul class="sns">
       <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-              <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
+        <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
 
     <!-- /link -->

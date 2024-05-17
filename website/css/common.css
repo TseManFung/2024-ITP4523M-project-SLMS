@@ -382,15 +382,20 @@ footer ul.sns li img {
 
 .table-header,
 .table-content {
-  padding: 20px;
+  padding: 0px 20px;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
   height: fit-content !important;
 }
 .table-header {
-  height: 1rem !important;
+  height: fit-content !important;
+  padding-top:10px ;
 }
+.item-box hr{
+  margin-top: 8px;
+  margin-bottom: 8px;
 
+}
 .table-content-data > .col {
   flex-grow: 0 !important;
   flex-basis: auto !important;
