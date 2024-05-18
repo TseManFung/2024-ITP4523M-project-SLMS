@@ -17,8 +17,10 @@
   <!-- /css -->
 
   <!-- js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/search_item.js"></script>
+  <script src="../../js/sale_manager/view_item.js"></script>
   <script src="../../js/common.js"></script>
   <!-- /js -->
 </head>
@@ -79,9 +81,10 @@
           <h2>All item</h2>
         </div>
         <div class="col-3 position-relative">
-          <button type="submit" class="btn btn-primary position-absolute bottom-0 end-0">
-            Add New Spare
-          </button>
+          <a href="./add_item.html">
+            <button class="btn btn-primary position-absolute bottom-0 end-0">
+              Add New Spare
+            </button></a>
         </div>
       </div>
       <hr />
@@ -175,9 +178,11 @@
               <div class="form-floating">
                 <select class="form-select" id="sort">
                   <option value="R" selected>Recommend</option>
-                  <option value="NA">Newest Arrivals</option>
+                  <option value="N">Newest</option>
                   <option value="PLH">Price: Low to High</option>
                   <option value="PHL">Price: High to Low</option>
+                  <option value="SLH">Stock: Low to High</option>
+                  <option value="SHL">Stock: High to Low</option>
                 </select>
                 <label for="sort">Sort</label>
               </div>

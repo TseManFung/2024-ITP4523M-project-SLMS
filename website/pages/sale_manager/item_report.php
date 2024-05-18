@@ -74,9 +74,11 @@
         <div class="col-md-4 position-relative">
           <div class="form-floating position-absolute bottom-0 end-0" style="padding-right: 12px">
             <select class="form-select" id="sort">
-              <option value="NA">Newest Arrivals</option>
-              <option value="PLH">Price: Low to High</option>
-              <option value="PHL">Price: High to Low</option>
+              <option value="ID">ID</option>
+              <option value="OLH">Order Number: Low to High</option>
+              <option value="OHL">Order Number: High to Low</option>
+              <option value="ALH">Sale Amount: Low to High</option>
+              <option value="AHL">Sale Amount: High to Low</option>
             </select>
             <label for="sort">Sort</label>
           </div>

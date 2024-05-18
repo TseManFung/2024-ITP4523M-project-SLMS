@@ -12,4 +12,5 @@ $(document).ready(function() {
         $("#all_item_row").addClass("d-none");
         // init in here
     }
+    
 });
