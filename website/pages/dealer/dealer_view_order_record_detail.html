@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../../css/common.css">
     <link rel="stylesheet" href="../../css/bs/bootstrap.css">
     <link rel="stylesheet" href="../../css/dealer_view_orderrecord_token.css">
+     <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css" />
 
     <!-- /css -->
     <!-- js -->
@@ -21,7 +22,7 @@
     <script src="../../js/bs/bootstrap.bundle.js"></script>
     <script src="../../js/add_itemm.js"></script>
     <script src="../../js/dealer_view_orderrecord_token.js"></script>
-
+    <script src="../../js/view_order_record.js"></script>
     <!-- /js -->
 </head>
 
@@ -82,36 +83,68 @@
                         <div class="col-lg-10 col-xl-8">
                             <div class="card" style="border-radius: 10px;">
                                 <div class="card-header px-4 py-5">
-                                    <h5 class="text-muted mb-0">Thanks for your Order, <a>(dealername)</a>!</h5>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5 class="text-muted mb-0">Thanks for your Order, <a>(dealername)</a>!</h5>
+                                            <br />
+                                            <div class="col">
+                                                <button class="cta">
+                                                    <span>Delete this Order</span>
+                                                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                                        <path d="M1,5 L11,5"></path>
+                                                        <polyline points="8 1 12 5 8 9"></polyline>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="d-flex justify-content-between align-items-center mb-4">
-                                        <p class="lead fw-normal mb-0">Order ID</p>
-                                        <p class="small text-muted mb-0">Sales Manager ID: name</p>
+                                        <p class="lead fw-normal mb-0">(Order ID)</p>
+                                        <p class="small text-muted mb-0">Sales Manager ID: (ID)</p>
                                     </div>
                                     <div class="card shadow-0 border mb-4">
                                         <div class="card-body">
                                             <div class="row">
+                                                <div class="col-md-2 text-center child-center-flex">
+                                                    <p class="text-muted mb-0">Item picture</p>
+                                                </div>
+                                                <div class="col-md-2 text-center child-center-flex">
+                                                    <p class="text-muted mb-0">Spare name</p>
+                                                </div>
+                                                <div class="col-md-2 text-center child-center-flex">
+                                                    <p class="text-muted mb-0 small">Categories</p>
+                                                </div>
+                                                <div class="col-md-2 text-center child-center-flex">
+                                                    <p class="text-muted mb-0 small">Qantity</p>
+                                                </div>
+                                                <div class="col-md-2 text-center child-center-flex">
+                                                    <p class="text-muted mb-0 small">Price</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="card-body">
+                                            <div class="row">
                                                 <div class="col-md-2">
                                                     <img src="../../images/item/100002.jpg" class="img-fluid"
-                                                         alt="Phone">
+                                                         alt="1000002">
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
-                                                    <p class="text-muted mb-0">item name</p>
+                                                    <p class="text-muted mb-0">(item name)</p>
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
-                                                    <p class="text-muted mb-0 small">categories: ABCD</p>
+                                                    <p class="text-muted mb-0 small">(ABCD)</p>
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
-                                                    <p class="text-muted mb-0 small">Qty: 10</p>
+                                                    <p class="text-muted mb-0 small">10</p>
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
                                                     <p class="text-muted mb-0 small">$1000</p>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card shadow-0 border mb-4">
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-2">
@@ -119,13 +152,13 @@
                                                          alt="100001">
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
-                                                    <p class="text-muted mb-0">item name</p>
+                                                    <p class="text-muted mb-0">(item name)</p>
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
-                                                    <p class="text-muted mb-0 small">categories: ABCD</p>
+                                                    <p class="text-muted mb-0 small">(ABCD)</p>
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
-                                                    <p class="text-muted mb-0 small">Qty: 5</p>
+                                                    <p class="text-muted mb-0 small"> 5</p>
                                                 </div>
                                                 <div class="col-md-2 text-center child-center-flex">
                                                     <p class="text-muted mb-0 small">$500</p>
@@ -215,8 +248,7 @@
 
                                 </div>
                                 <div class="card-footer border-0 px-4 py-5">
-                                    <h5
-                                        class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
+                                    <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
                                         Total Order Amount: <span class="h2 mb-0 ms-2">$1500</span>
                                     </h5>
                                 </div>

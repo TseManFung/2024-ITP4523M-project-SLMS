@@ -21,8 +21,8 @@
     <!-- js -->
     <script src="../../js/common.js"></script>
     <script src="../../js/bs/bootstrap.bundle.js"></script>
-    <script src="../../js/css/checkout.js"></script>
-    <script src="../../js/dealer_template_resetpasswd.js"></script>
+    <script src="../../js/checkout.js"></script>
+    <script src="../../js/dealer_delete_order.js"></script>
     <!-- /js -->
 </head>
 
@@ -124,15 +124,6 @@
                             </div>
                             <span class="text-muted">$200</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <div class="d-grid gap-2 d-md-block">
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
-                                    <div class="d-flex justify-content-between">
-                                        <span>View your cart</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </li>
                     </ul>
                 </div>
                 <div class="col-md-8 order-md-1">
@@ -141,57 +132,80 @@
                         <div class="row">
                             <div class="mb-3">
                                 <label for="address"> Your order ID:</label>
-                                <input type="text" class="form-control" id="address" value="12132120220512" disabled>
-                                <div class="invalid-feedback"> Please enter your shipping address. </div>
+                                <input type="text" class="form-control" id="Order-ID" value="12132120220512" disabled>
                             </div>
                             <div class="mb-3">
                                 <label for="address"> Order Date & Time:</label>
                                 <input type="text" class="form-control" id="address" value="2022/01/01" disabled>
-                                <div class="invalid-feedback"> Please enter your shipping address. </div>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="address"> Order Quantity:</label>
                             <input type="text" class="form-control" id="address" value="12" disabled>
-                            <div class="invalid-feedback"> Please enter your shipping address. </div>
                         </div>
                         <div class="mb-3">
                             <label for="address">Order Price:</label>
                             <input type="text" class="form-control" id="address" value="$1234" disabled>
-                            <div class="invalid-feedback"> Please enter your shipping address. </div>
                         </div>
                         <div class="mb-3">
                             <label for="address">Total Order Amount:</label>
                             <input type="text" class="form-control" id="address" value="$1234" disabled>
-                            <div class="invalid-feedback"> Please enter your shipping address. </div>
                         </div>
                         <div class="mb-3">
                             <label for="address">Delivery Fee:</label>
                             <input type="text" class="form-control" id="address" value="$10000" disabled>
-                            <div class="invalid-feedback"> Please enter your shipping address. </div>
                         </div>
 
                         <div class="row">
                             <div class=" mb-3">
                                 <label for="zip">Total Order Amount:</label>
                                 <input type="text" class="form-control" value="$11234" id="price" placeholder="" disabled>
-                                <div class="invalid-feedback"> Zip code required. </div>
                             </div>
                         </div>
-                        <h4 class="mb-3">Please enter information to create an order</h4>
                         <div class="mb-3">
                             <label for="address">Delivery Address </label>
-                            <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
-                            <div class="invalid-feedback"> Please enter your shipping address. </div>
+                            <input type="text" class="form-control" id="address" value="Delivery Address" required="" disabled>
                         </div>
                         <div class="mb-3">
-                            <label for="address2">Please choose a Delivery Date <span class="text-muted"></span></label>
-                            <section class="container">
-                                <input type="date" id="start" name="trip-start" value="2018-07-22" min="2018-01-01" max="2018-12-31" />
-                            </section>
+                            <label for="address2">Delivery Date of this order<span class="text-muted"></span></label>
+                            <input type="text" class="form-control" id="address" value="2024-12-24" required="" disabled>
                         </div>
                         <hr class="mb-4">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                        <h4 class="mb-3">Enter your password to delete the order:</h4>
+                        <div class="mb-3">
+                            <div class="col-md-12">
+                                <label class="labels">Password </label><input type="password" id="Password_delete"
+                                                                              class="form-control" value=""required>
+                                <input type="checkbox" onclick="SPassword_delete()">Show Password
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="col-md-12">
+                                <label class="labels">Confirm the Password </label><input type="password" id="CPassword_delete"
+                                                                                          class="form-control" value=""required>
+                                <input type="checkbox" onclick="SCPassword_delete()">Show Password
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Delete the order
+                        </button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Do you confrim?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ...
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
+                                        <button type="button" class="btn btn-primary">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
