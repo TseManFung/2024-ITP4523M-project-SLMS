@@ -77,6 +77,11 @@ body {
   cursor: pointer;
 }
 
+a.dropdown-toggle.show .note-label{
+  display: none;
+}
+
+.note-label,
 .cart-number-label {
   left: 25px;
   top: 5px;

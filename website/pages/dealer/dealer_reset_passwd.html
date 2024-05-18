@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,9 +13,14 @@
   <link rel="stylesheet" href="../../css/reset.css">
   <link rel="stylesheet" href="../../css/common.css">
   <link rel="stylesheet" href="../../css/bs/bootstrap.css">
+  <link rel="stylesheet" href="../../css/dealer_template_resetpasswd.css">
   <!-- /css -->
   <!-- js -->
   <script src="../../js/bs/bootstrap.bundle.js"></script>
+  <script src="../../js/dealer_template_resetpasswd.js"></script>
+
+  <!-- /css -->
+  <!-- js -->
   <!-- /js -->
 </head>
 
@@ -59,6 +64,7 @@
   </div>
   <br>
   <hr style="border: rgb(103, 149, 255) 10px solid;" class="content">
+
   <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
       <div class="col-md-3 border-right">
@@ -72,32 +78,30 @@
       <div class="col-md-5 border-right">
         <div class="p-3 py-5">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="text-right">Your Imformation</h4>
+            <h4 class="text-right">Reset Password</h4>
           </div>
-          <div class="row mt-2">
-            <div class="col-md-12">
-              <label class="labels">Name</label><input type="text" class="form-control" placeholder="Delaer name"
-                     value="" disabled>
-            </div>
+          <div class="col-md-12">
+            <label class="labels">Current Password: </label><input type="password" id="myInput1" class="form-control"
+                   value="">
+            <input type="checkbox" onclick="myFunction1()">Show Password
           </div>
           <div class="row mt-3">
             <div class="col-md-12">
-              <label class="labels">Contact Name</label><input type="text" class="form-control" value="?" disabled>
+              <label class="labels">New Password: </label><input type="password" id="myInput2" class="form-control"
+                     value="">
+              <input type="checkbox" onclick="myFunction2()">Show Password
             </div>
-            <div class="col-md-12">
-              <label class="labels">Contant Number</label><input type="text" oninput="value=value. replace(/[^\d]/g,'')"
-                     class="form-control" value="">
-            </div>
-            <div class="col-md-12">
-              <label class="labels">Fax Number</label><input type="text" class="form-control" value="">
-            </div>
-            <div class="col-md-12">
-              <label class="labels">Delivery Address</label><input type="text" class="form-control" value="">
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <label class="labels">Confirm Password: </label><input type="password" id="myInput3"
+                       class="form-control" value="">
+                <input type="checkbox" onclick="myFunction3()">Show Password
+              </div>
             </div>
             <div class="row mt-3">
               <div class="col-md-6 ">
                 <button class="btn btn-primary profile-button" type="button">
-                  Confrim Your Edition
+                  Return
                 </button>
               </div>
               <div class="col-md-6 ">

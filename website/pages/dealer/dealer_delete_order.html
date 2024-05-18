@@ -1,240 +1,220 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-    <title>page name</title>
+  <title>page name</title>
 
-    <!-- css -->
-    <!-- icon -->
-    <link rel="stylesheet"
-          href="https://use.fontawesome.com/releases/v6.5.2/css/all.css"
-          crossorigin="anonymous" />
-    <link rel="stylesheet" href="../../css/reset.css" />
-    <link rel="stylesheet" href="../../css/common.css" />
-    <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
-    <link rel="stylesheet" href="../../css/checkout.css" />
+  <!-- css -->
+  <!-- icon -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../../css/reset.css" />
+  <link rel="stylesheet" href="../../css/common.css" />
+  <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
+  <link rel="stylesheet" href="../../css/checkout.css" />
 
-    <!-- /css -->
-    <!-- js -->
-    <script src="../../js/common.js"></script>
-    <script src="../../js/bs/bootstrap.bundle.js"></script>
-    <script src="../../js/checkout.js"></script>
-    <script src="../../js/dealer_delete_order.js"></script>
-    <!-- /js -->
+  <!-- /css -->
+  <!-- js -->
+  <script src="../../js/common.js"></script>
+  <script src="../../js/bs/bootstrap.bundle.js"></script>
+  <script src="../../js/checkout.js"></script>
+  <script src="../../js/dealer_delete_order.js"></script>
+  <!-- /js -->
 </head>
 
-  <body>
-    <div class="fixed-top">
-      <!-- navbar -->
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid justify-content-center">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="collapse navbar-collapse nav-wrap"
-            id="navbarSupportedContent"
-          >
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+<body>
+  <div class="fixed-top">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid justify-content-center">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./search_item.html">Our Product</a>
+            </li>
+          </ul>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              Hi [username]<span class="note-label">99+</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="./dealer_information.html">Your Information</a></li>
+              <li><a class="dropdown-item" href="./view_order_record.html">Your Order</a></li>
+              <li>
+                <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.html">
+                  Cart<span class="cart-number-label">99+</span>
+                </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Our Product</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About Us</a>
+              <li class="dropdown-item">
+                <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
               </li>
             </ul>
-            <div class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Hi [username]<span class="cart-number-label">99+</span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Your Information</a></li>
-                <li><a class="dropdown-item" href="#">Your Order</a></li>
-                <li>
-                  <a
-                    class="dropdown-item position-relative d-flex flex-nowrap"
-                    href="#"
-                    >Cart<span class="cart-number-label">99+</span></a
-                  >
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
-      </nav>
-      <!-- /navbar -->
-    </div>
+      </div>
+    </nav>
+    <!-- /navbar -->
+  </div>
 
-    <!-- header -->
-    <div style="height: calc(0lvh + 56px)" id="header"></div>
-    <!-- /header -->
+  <!-- header -->
+  <div style="height: calc(0lvh + 56px)" id="header"></div>
+  <!-- /header -->
 
-    <!-- content -->
-    <div class="d-flex position-relative content-bg justify-content-center">
-      <div class="container content-wrap">
-        <br />
-        <div class="container">
-            <div class="py-5 text-center">
-                <h2>Checkout</h2>
-            </div>
-            <div class="row">
-                <div class="col-md-4 order-md-2 mb-4">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Your cart</span>
-                        <span class="badge badge-secondary badge-pill">3</span>
-                    </h4>
-                    <ul class="list-group mb-3 sticky-top">
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div class="order-img">
-                                <img class="order-abs-img" src="../../images/item/100001.jpg" />
-                            </div>
-                            <div>
-                                <h6 class="my-0">Spare name</h6>
-                                <small class="text-muted">Quantity:10</small>
-                            </div>
-                            <span class="text-muted">$1000</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div class="order-img">
-                                <img class="order-abs-img" src="../../images/item/100002.jpg" />
-                            </div>
-                            <div>
-                                <h6 class="my-0">Spare name</h6>
-                                <small class="text-muted">Quantity:2</small>
-                            </div>
-                            <span class="text-muted">$200</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-8 order-md-1">
-                    <h4 class="mb-3">Your order information:</h4>
-                    <form class="needs-validation" novalidate="">
-                        <div class="row">
-                            <div class="mb-3">
-                                <label for="address"> Your order ID:</label>
-                                <input type="text" class="form-control" id="Order-ID" value="12132120220512" disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="address"> Order Date & Time:</label>
-                                <input type="text" class="form-control" id="address" value="2022/01/01" disabled>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address"> Order Quantity:</label>
-                            <input type="text" class="form-control" id="address" value="12" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address">Order Price:</label>
-                            <input type="text" class="form-control" id="address" value="$1234" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address">Total Order Amount:</label>
-                            <input type="text" class="form-control" id="address" value="$1234" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address">Delivery Fee:</label>
-                            <input type="text" class="form-control" id="address" value="$10000" disabled>
-                        </div>
-
-                        <div class="row">
-                            <div class=" mb-3">
-                                <label for="zip">Total Order Amount:</label>
-                                <input type="text" class="form-control" value="$11234" id="price" placeholder="" disabled>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address">Delivery Address </label>
-                            <input type="text" class="form-control" id="address" value="Delivery Address" required="" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address2">Delivery Date of this order<span class="text-muted"></span></label>
-                            <input type="text" class="form-control" id="address" value="2024-12-24" required="" disabled>
-                        </div>
-                        <hr class="mb-4">
-                        <h4 class="mb-3">Enter your password to delete the order:</h4>
-                        <div class="mb-3">
-                            <div class="col-md-12">
-                                <label class="labels">Password </label><input type="password" id="Password_delete"
-                                                                              class="form-control" value=""required>
-                                <input type="checkbox" onclick="SPassword_delete()">Show Password
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="col-md-12">
-                                <label class="labels">Confirm the Password </label><input type="password" id="CPassword_delete"
-                                                                                          class="form-control" value=""required>
-                                <input type="checkbox" onclick="SCPassword_delete()">Show Password
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Delete the order
-                        </button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Do you confrim?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        ...
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
-                                        <button type="button" class="btn btn-primary">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-                <ul class="list-inline">
-                </ul>
+  <!-- content -->
+  <div class="d-flex position-relative content-bg justify-content-center">
+    <div class="container content-wrap">
+      <br />
+      <div class="container">
+        <div class="py-5 text-center">
+          <h2>Checkout</h2>
         </div>
+        <div class="row">
+          <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted">Your cart</span>
+              <span class="badge badge-secondary badge-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3 sticky-top">
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div class="order-img">
+                  <img class="order-abs-img" src="../../images/item/100001.jpg" />
+                </div>
+                <div>
+                  <h6 class="my-0">Spare name</h6>
+                  <small class="text-muted">Quantity:10</small>
+                </div>
+                <span class="text-muted">$1000</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div class="order-img">
+                  <img class="order-abs-img" src="../../images/item/100002.jpg" />
+                </div>
+                <div>
+                  <h6 class="my-0">Spare name</h6>
+                  <small class="text-muted">Quantity:2</small>
+                </div>
+                <span class="text-muted">$200</span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Your order information:</h4>
+            <form class="needs-validation" novalidate="">
+              <div class="row">
+                <div class="mb-3">
+                  <label for="address"> Your order ID:</label>
+                  <input type="text" class="form-control" id="Order-ID" value="12132120220512" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="address"> Order Date & Time:</label>
+                  <input type="text" class="form-control" id="address" value="2022/01/01" disabled>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="address"> Order Quantity:</label>
+                <input type="text" class="form-control" id="address" value="12" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address">Order Price:</label>
+                <input type="text" class="form-control" id="address" value="$1234" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address">Total Order Amount:</label>
+                <input type="text" class="form-control" id="address" value="$1234" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address">Delivery Fee:</label>
+                <input type="text" class="form-control" id="address" value="$10000" disabled>
+              </div>
+
+              <div class="row">
+                <div class=" mb-3">
+                  <label for="zip">Total Order Amount:</label>
+                  <input type="text" class="form-control" value="$11234" id="price" placeholder="" disabled>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="address">Delivery Address </label>
+                <input type="text" class="form-control" id="address" value="Delivery Address" required="" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address2">Delivery Date of this order<span class="text-muted"></span></label>
+                <input type="text" class="form-control" id="address" value="2024-12-24" required="" disabled>
+              </div>
+              <hr class="mb-4">
+              <h4 class="mb-3">Enter your password to delete the order:</h4>
+              <div class="mb-3">
+                <div class="col-md-12">
+                  <label class="labels">Password </label><input type="password" id="Password_delete"
+                         class="form-control" value="" required>
+                  <input type="checkbox" onclick="SPassword_delete()">Show Password
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="col-md-12">
+                  <label class="labels">Confirm the Password </label><input type="password" id="CPassword_delete"
+                         class="form-control" value="" required>
+                  <input type="checkbox" onclick="SCPassword_delete()">Show Password
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Delete the order
+              </button>
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                   aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Do you confrim?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      ...
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Return</button>
+                      <button type="button" class="btn btn-primary">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <ul class="list-inline">
+        </ul>
       </div>
     </div>
-    <!-- <img src="../../images/menu/chisato.png"> -->
-    <!-- /content -->
+  </div>
+  <!-- <img src="../../images/menu/chisato.png"> -->
+  <!-- /content -->
 
-    <footer>
-      <!-- link -->
+  <footer>
+    <!-- link -->
 
-      <ul class="sns">
-        <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
+    <ul class="sns">
+      <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
         <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
-      </ul>
+    </ul>
 
-      <!-- /link -->
-      <p>© 2024 Smart & Luxury Motor Spares inc.</p>
-    </footer>
+    <!-- /link -->
+    <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+  </footer>
 
-    <!-- return top -->
+  <!-- return top -->
 
-    <div id="page-top" style="">
-      <a href="#header"><img src="../../images/common/returan-top.png" /></a>
-    </div>
+  <div id="page-top" style="">
+    <a href="#header"><img src="../../images/common/returan-top.png" /></a>
+  </div>
 
-    <!-- /return top -->
-  </body>
+  <!-- /return top -->
+</body>
+
 </html>
