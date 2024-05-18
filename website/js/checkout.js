@@ -18,3 +18,6 @@
     })
   }, false)
 }())
+$(function () {
+    $('#datepicker').datepicker();
+});

@@ -1,6 +1,7 @@
 {
   "ExpandedNodes": [
     "",
+    "\\doc",
     "\\website",
     "\\website\\css",
     "\\website\\images",
@@ -9,5 +10,6 @@
     "\\website\\pages\\dealer",
     "\\website\\pages\\sale_manager"
   ],
+  "SelectedNode": "\\website\\pages\\dealer\\dealer_template_resetpasswd.html",
   "PreviewInSolutionExplorer": false
 }
