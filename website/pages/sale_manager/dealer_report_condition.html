@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-  <title>Generate Item Report</title>
+  <title>Generate Dealer Report</title>
 
   <!-- css -->
   <!-- icon -->
@@ -18,7 +18,7 @@
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
-  <script src="../../js/item_report_condition.js"></script>
+  <script src="../../js/dealer_report_condition.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <!-- /js -->
 </head>
@@ -66,76 +66,26 @@
     <div class="container content-wrap">
       <br>
       <div>
-        <form name="item_report" method="get">
+        <form name="item_report" method="get" action="./dealer_report.php">
           <div class="row">
-            <h1 class="center-LR" style="width: fit-content;">Generate Item Report<h1>
+            <h1 class="center-LR" style="width: fit-content;">Generate Dealer Report<h1>
           </div>
 
           <hr>
 
           <div class="g-10">
-            <div class="row d-none" id="spec_item_row">
+            <div class="row" id="spec_item_row">
               <div class="col">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating ">
-                      <select class="form-select" id="category" disabled>
-                        <option value="A">A - Sheet Metal</option>
-                        <option value="B">B - Major Asssemblies</option>
-                        <option value="C">C - Light Components</option>
-                        <option value="D">D - Accessories</option>
-                      </select>
-                      <label for="category">Category</label>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col">
-
+                  <div class="cell">
                     <div class="form-floating">
-                      <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number"
-                             disabled>
-                      <label for="SpacePartNumber">Space Part Number</label>
+                      <input type="text" class="form-control" id="DID" placeholder="Dealer ID" disabled>
+                      <label for="DID">Dealer ID</label>
                     </div>
                   </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="name" placeholder="Name" disabled>
-                      <label for="name">Name</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div class="col child-center-flex">
-                <img id="item-img" class="item-img" src="../../images/item/100001.jpg">
               </div>
             </div>
-            <div class="row" id="all_item_row">
-              <div class="col">
-                <h4>Category</h4>
-                <div class="form-check">
-                  <input id="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked>
-                  <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
-                </div>
-                <div class="form-check">
-                  <input id="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked>
-                  <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
-                </div>
-                <div class="form-check">
-                  <input id="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked>
-                  <label for="C" class="cursor-pointer form-check-label">Light Components</label>
-                </div>
-                <div class="form-check">
-                  <input id="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked>
-                  <label for="D" class="cursor-pointer form-check-label">Accessories</label>
-                </div>
-              </div>
-            </div>
+
             <br>
             <div class="row">
               <div class="col-4">
@@ -164,34 +114,6 @@
                 </div>
               </div>
             </div>
-            <br>
-
-            <!-- alert -->
-            <div class="row">
-              <div id="successful" class="alert alert-success d-none" role="alert">
-                successful to edit or delete the spare part: [spare part name].
-              </div>
-
-              <div id="fail" class="alert alert-danger d-none" role="alert">
-                fail to edit or delete the spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
-              </div>
-
-              <div id="confirm-delete" class="alert alert-secondary d-none position-relative" role="alert">
-                For delete spare part : [item number] <br>
-                Please enter the spare part name below: [spare part name] <br><br>
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="delete-name" placeholder="Spare Part Name">
-                  <label for="delete-name">Spare Part Name</label>
-                </div><br><br>
-                <div class="position-absolute bottom-0 end-0 m-2">
-                  <button type="button" class="btn btn-danger" onclick="Delete()">Confirm to Delete</button>
-                  <button type="button" class="btn btn-secondary" onclick="Cancel_delete()">Cancel</button>
-                </div>
-
-              </div>
-            </div>
-            <!-- alert -->
-
             <br>
 
             <div class="row">
