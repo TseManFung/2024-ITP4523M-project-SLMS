@@ -5,7 +5,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <title>page name</title>
+  <title>Check Out</title>
 
   <!-- css -->
   <!-- icon -->
@@ -117,62 +117,54 @@
           <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Your order information:</h4>
             <form class="needs-validation" novalidate="">
-              <div class="row">
-                <div class="mb-3">
-                  <label for="address"> Your order ID:</label>
-                  <input type="text" class="form-control" id="address" value="12132120220512" disabled>
-                  <div class="invalid-feedback"> Please enter your shipping address. </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="address"> Your order ID:</label>
+                        <input type="text" class="form-control" id="Order-ID" value="12132120220512" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address"> Order Date & Time:</label>
+                        <input type="text" class="form-control" id="Order-D-T" value="2022/01/01" disabled>
+                    </div>
                 </div>
                 <div class="mb-3">
-                  <label for="address"> Order Date & Time:</label>
-                  <input type="text" class="form-control" id="address" value="2022/01/01" disabled>
-                  <div class="invalid-feedback"> Please enter your shipping address. </div>
+                    <label for="address"> Order Quantity:</label>
+                    <input type="text" class="form-control" id="Order-Quantity" value="12" disabled>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="address"> Order Quantity:</label>
-                <input type="text" class="form-control" id="address" value="12" disabled>
-                <div class="invalid-feedback"> Please enter your shipping address. </div>
-              </div>
-              <div class="mb-3">
-                <label for="address">Order Price:</label>
-                <input type="text" class="form-control" id="address" value="$1234" disabled>
-                <div class="invalid-feedback"> Please enter your shipping address. </div>
-              </div>
-              <div class="mb-3">
-                <label for="address">Total Order Amount:</label>
-                <input type="text" class="form-control" id="address" value="$1234" disabled>
-                <div class="invalid-feedback"> Please enter your shipping address. </div>
-              </div>
-              <div class="mb-3">
-                <label for="address">Delivery Fee:</label>
-                <input type="text" class="form-control" id="address" value="$10000" disabled>
-                <div class="invalid-feedback"> Please enter your shipping address. </div>
-              </div>
-
-              <div class="row">
-                <div class=" mb-3">
-                  <label for="zip">Total Order Amount:</label>
-                  <input type="text" class="form-control" value="$11234" id="price" placeholder="" disabled>
-                  <div class="invalid-feedback"> Zip code required. </div>
+                <div class="mb-3">
+                    <label for="address">Order Price:</label>
+                    <input type="text" class="form-control" id="Order-Price" value="$1234" disabled>
                 </div>
-              </div>
-              <h4 class="mb-3">Please enter information to create an order</h4>
-              <div class="mb-3">
-                <label for="address">Delivery Address </label>
-                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
-                <div class="invalid-feedback"> Please enter your shipping address. </div>
-              </div>
-              <div class="mb-3">
-                <label for="address2">Please choose a Delivery Date <span class="text-muted"></span></label>
-                <section class="container">
-                  <!-- use js to make min and max date -->
-                  <input type="date" id="start" name="trip-start" value="2024-07-22" min="2024-01-01"
-                         max="2024-12-31" />
-                </section>
-              </div>
-              <hr class="mb-4">
-              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                <div class="mb-3">
+                    <label for="address">Order Amount:</label>
+                    <input type="text" class="form-control" id="Order-Amount" value="$1234" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="address">Delivery Fee:</label>
+                    <input type="text" class="form-control" id="Delivery-Fee" value="$10000" disabled>
+                </div>
+                <div class="row">
+                    <div class=" mb-3">
+                        <label for="zip">Total Order Amount:</label>
+                        <input type="text" class="form-control" value="$11234" id="Total-Order-Amount" placeholder="" disabled>
+                    </div>
+                </div>
+                <h4 class="mb-3">Please enter information to create an order</h4>
+                <div class="mb-3">
+                    <label for="address">Delivery Address </label>
+                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                    <div class="invalid-feedback"> Please enter your shipping address. </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address2">Please choose a Delivery Date <span class="text-muted"></span></label>
+                    <section class="container">
+                        <!-- use js to make min and max date -->
+                        <input type="date" id="start" name="trip-start" value="2024-07-22" min="2024-01-01"
+                               max="2024-12-31" />
+                    </section>
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
             </form>
           </div>
         </div>
