@@ -63,12 +63,9 @@
     <div class="container content-wrap">
       <br />
       <div class="row row--top-40">
-        <div class="col-md-4">
+        <div class="col-md-8">
           <h2 class="row__title">Spare Part Report (2)</h2>
           # this report genarate at [2024-01-01 00:00:00]
-        </div>
-
-        <div class="col">
         </div>
         <div class="col-md-4 position-relative">
           <div class="form-floating position-absolute bottom-0 end-0" style="padding-right: 12px">
@@ -76,6 +73,8 @@
               <option value="ID">ID</option>
               <option value="OLH">Order Number: Low to High</option>
               <option value="OHL">Order Number: High to Low</option>
+              <option value="QLH">Sale Quantity: Low to High</option>
+              <option value="QHL">Sale Quantity: High to Low</option>
               <option value="ALH">Sale Amount: Low to High</option>
               <option value="AHL">Sale Amount: High to Low</option>
             </select>
@@ -93,8 +92,9 @@
             <th scope="col" style="width: 10%;">ID</th>
             <th scope="col" style="width: 40%;">Name</th>
             <th scope="col" style="width: 20%;text-align:center;">photo</th>
-            <th scope="col" style="width: 15%;">Total order number</th>
-            <th scope="col" style="width: 15%;">Total sale amount</th>
+            <th scope="col" style="width: 10%;">Total order number</th>
+            <th scope="col" style="width: 10%;">Total sale quantity</th>
+            <th scope="col" style="width: 10%;">Total sale amount</th>
           </tr>
         </thead>
         <!-- /table header -->
@@ -110,6 +110,7 @@
               </div>
             </td>
             <td>12</td>
+            <td>1200</td>
             <td>$123456</td>
           </tr>
           <!-- /record -->
@@ -131,6 +132,7 @@
                 <img class="table-img" src="../../images/item/200002.jpg" />
               </div>
             </td>
+            <td>150</td>
             <td>150</td>
             <td>$123456</td>
           </tr>

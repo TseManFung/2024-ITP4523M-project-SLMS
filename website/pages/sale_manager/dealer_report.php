@@ -63,17 +63,15 @@
     <div class="container content-wrap">
       <br />
       <div class="row row--top-40">
-        <div class="col-md-4">
+        <div class="col-md-8">
           <h2 class="row__title">[dealer ID | dealer name]'s Report (2)</h2>
           # this report genarate at [2024-01-01 00:00:00]
-        </div>
-        <div class="col">
         </div>
         <div class="col-md-4 position-relative">
           <div class="form-floating position-absolute bottom-0 end-0" style="padding-right: 12px">
             <select class="form-select" id="sort">
               <option value="N">Newest</option>
-              <option value="O">Oldst</option>
+              <option value="O">Oldest</option>
               <option value="QLH">Quantity: Low to High</option>
               <option value="QHL">Quantity: High to Low</option>
               <option value="WLH">Weight: Low to High</option>
@@ -96,6 +94,7 @@
             <th scope="col">Total Item Quantity</th>
             <th scope="col">Total Item Weight</th>
             <th scope="col">Total Order Amount</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <!-- /table header -->
@@ -108,6 +107,7 @@
             <td>12</td>
             <td>1.23kg</td>
             <td>$123456</td>
+            <td>Create</td>
           </tr>
           <!-- /record -->
           <!-- record -->
@@ -117,6 +117,7 @@
             <td>12</td>
             <td>1.23kg</td>
             <td>$123456</td>
+            <td>Finish</td>
           </tr>
           <!-- /record -->
         </tbody>
