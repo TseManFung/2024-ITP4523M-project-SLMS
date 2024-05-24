@@ -6,12 +6,5 @@ function SPassword_delete() {
         x.type = "password";
     }
 }
-function SCPassword_delete() {
-    var x = document.getElementById("CPassword_delete");
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
-}
+
 
