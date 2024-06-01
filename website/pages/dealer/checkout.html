@@ -19,7 +19,7 @@
   <!-- js -->
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/css/checkout.js"></script>
+  <script src="../../js/checkout.js"></script>
   <script src="../../js/dealer_template_resetpasswd.js"></script>
   <!-- /js -->
 </head>
@@ -103,20 +103,22 @@
                 <span class="text-muted">$200</span>
               </li>
               <li class="list-group-item d-flex justify-content-between">
-                <div class="d-grid gap-2 d-md-block">
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init
-                          class="btn btn-primary btn-block btn-lg">
-                    <div class="d-flex justify-content-between">
-                      <span>View your cart</span>
-                    </div>
-                  </button>
-                </div>
+                  <div class="d-grid gap-2 d-md-block">
+                      <a href="./dealer_cart.html">
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init
+                              class="btn btn-primary btn-block btn-lg">
+                          <div class="d-flex justify-content-between">
+                              <span>View your cart</span>
+                          </div>
+                      </button>
+                      </a>
+                  </div>
               </li>
             </ul>
           </div>
           <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Your order information:</h4>
-            <form class="needs-validation" novalidate="">
+            <form class="needs-validation" novalidate="" action="./dealer_view_order_record_detail.html" method="get">
                 <div class="row">
                     <div class="mb-3">
                         <label for="address"> Your order ID:</label>
@@ -152,7 +154,7 @@
                 <h4 class="mb-3">Please enter information to create an order</h4>
                 <div class="mb-3">
                     <label for="address">Delivery Address </label>
-                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                    <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="Delivery Address get from database" required>
                     <div class="invalid-feedback"> Please enter your shipping address. </div>
                 </div>
                 <div class="mb-3">
