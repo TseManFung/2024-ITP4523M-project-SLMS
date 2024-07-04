@@ -71,7 +71,7 @@ ALTER TABLE `user` ADD FOREIGN KEY (`dealerID`) REFERENCES `dealer` (`dealerID`)
 
 ALTER TABLE `cart` ADD FOREIGN KEY (`userID`) REFERENCES `user` (`userID`);
 
-ALTER TABLE `cart` ADD FOREIGN KEY (`sparePartNum`) REFERENCES `spare` (`sparePartName`);
+ALTER TABLE `cart` ADD FOREIGN KEY (`sparePartNum`) REFERENCES `spare` (`sparePartNum`);
 
 ALTER TABLE `order` ADD FOREIGN KEY (`salesManagerID`) REFERENCES `saleManager` (`salesManagerID`);
 
