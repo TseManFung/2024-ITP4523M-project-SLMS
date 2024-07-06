@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   `orderItemNumber` int NOT NULL,
   `TotalAmount` double NOT NULL,
   `shipCost` double NOT NULL,
-  `state` char(1) NOT NULL,
+  `state` char(1) NOT NULL DEFAULT 'C',
   PRIMARY KEY (`orderID`),
   KEY `idx_dealerID` (`dealerID`),
   KEY `idx_salesManagerID` (`salesManagerID`),
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `spare` (
   `sparePartDescription` text NOT NULL,
   `weight` double NOT NULL,
   `price` double NOT NULL,
-  `state` char(1) NOT NULL,
+  `state` char(1) NOT NULL DEFAULT "N",
   PRIMARY KEY (`sparePartNum`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 

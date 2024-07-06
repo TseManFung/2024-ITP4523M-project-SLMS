@@ -62,7 +62,7 @@ CREATE TABLE
     `orderItemNumber` integer (10) NOT NULL,
     `TotalAmount` double NOT NULL,
     `shipCost` double NOT NULL,
-    `state` char(1) NOT NULL
+    `state` char(1) NOT NULL DEFAULT 'C'
   )ENGINE = InnoDB;
 
 CREATE TABLE `spare` (
@@ -73,7 +73,7 @@ CREATE TABLE `spare` (
   `sparePartDescription` text NOT NULL,
   `weight` double NOT NULL,
   `price` double NOT NULL,
-  `state` char(1) NOT NULL
+  `state` char(1) NOT NULL DEFAULT 'N'
 )ENGINE = InnoDB;
 
 CREATE TABLE
