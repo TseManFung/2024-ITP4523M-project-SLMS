@@ -13,7 +13,7 @@ if(accountInput.value === 'D'){
 }
 });
 }) */
-if ($row['resultNum'] == 1) {
+if ($row['resultNum'] == 1 && $row['LoginName'] == $_POST['LoginName']) {
     session_start();
     $_SESSION['start'] = time();
     $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
