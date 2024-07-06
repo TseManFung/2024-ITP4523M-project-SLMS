@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE
   `user` (
     `userID` integer (10) PRIMARY KEY AUTO_INCREMENT,
-    `password` varchar(50) NOT NULL,
+    `password` char(65) NOT NULL,
     `salesManagerID` integer (10),
     `dealerID` integer (10)
   )ENGINE = InnoDB;

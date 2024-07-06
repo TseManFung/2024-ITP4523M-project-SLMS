@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `spareqty` (
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `userID` int NOT NULL AUTO_INCREMENT,
-  `password` varchar(50) NOT NULL,
+  `password` char(65) NOT NULL,
   `salesManagerID` int DEFAULT NULL,
   `dealerID` int DEFAULT NULL,
   PRIMARY KEY (`userID`),
