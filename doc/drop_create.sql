@@ -1,5 +1,8 @@
 use projectDB;
-SET FOREIGN_KEY_CHECKS = 0;
+
+SET
+  FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS orderSpare;
 
 DROP TABLE IF EXISTS spareQty;
@@ -15,15 +18,18 @@ DROP TABLE IF EXISTS saleManager;
 DROP TABLE IF EXISTS dealer;
 
 DROP TABLE IF EXISTS spare;
-SET FOREIGN_KEY_CHECKS = 1;
+
+SET
+  FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE
   `user` (
     `userID` integer (10) PRIMARY KEY AUTO_INCREMENT,
+    `LoginName` varchar(100) UNIQUE NOT NULL,
     `password` char(65) NOT NULL,
     `salesManagerID` integer (10),
     `dealerID` integer (10)
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
 CREATE TABLE
   `dealer` (
@@ -33,7 +39,7 @@ CREATE TABLE
     `contactNumber` integer (30) NOT NULL,
     `faxNumber` integer (30) NOT NULL,
     `deliveryAddress` varchar(255) NOT NULL
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
 CREATE TABLE
   `cart` (
@@ -41,7 +47,7 @@ CREATE TABLE
     `sparePartNum` integer (10),
     `qty` integer (10),
     PRIMARY KEY (`userID`, `sparePartNum`)
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
 CREATE TABLE
   `saleManager` (
@@ -49,7 +55,7 @@ CREATE TABLE
     `managerName` varchar(100) UNIQUE NOT NULL,
     `contactName` varchar(100) NOT NULL,
     `contactNumber` integer (30) NOT NULL
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
 CREATE TABLE
   `order` (
@@ -63,24 +69,25 @@ CREATE TABLE
     `TotalAmount` double NOT NULL,
     `shipCost` double NOT NULL,
     `state` char(1) NOT NULL DEFAULT 'C'
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
-CREATE TABLE `spare` (
-  `sparePartNum` integer(10) PRIMARY KEY AUTO_INCREMENT,
-  `category` ENUM ('A', 'B', 'C', 'D') NOT NULL,
-  `sparePartName` varchar(255) NOT NULL,
-  `sparePartImage` varchar(100) NOT NULL,
-  `sparePartDescription` text NOT NULL,
-  `weight` double NOT NULL,
-  `price` double NOT NULL,
-  `state` char(1) NOT NULL DEFAULT 'N'
-)ENGINE = InnoDB;
+CREATE TABLE
+  `spare` (
+    `sparePartNum` integer (10) PRIMARY KEY AUTO_INCREMENT,
+    `category` ENUM ('A', 'B', 'C', 'D') NOT NULL,
+    `sparePartName` varchar(255) NOT NULL,
+    `sparePartImage` varchar(100) NOT NULL,
+    `sparePartDescription` text NOT NULL,
+    `weight` double NOT NULL,
+    `price` double NOT NULL,
+    `state` char(1) NOT NULL DEFAULT 'N'
+  ) ENGINE = InnoDB;
 
 CREATE TABLE
   `spareQty` (
     `sparePartNum` integer (10) PRIMARY KEY,
     `stockItemQty` integer (10) NOT NULL
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
 CREATE TABLE
   `orderSpare` (
@@ -89,7 +96,7 @@ CREATE TABLE
     `orderQty` integer (10) NOT NULL,
     `sparePartOrderPrice` double NOT NULL,
     PRIMARY KEY (`sparePartNum`, `orderID`)
-  )ENGINE = InnoDB;
+  ) ENGINE = InnoDB;
 
 ALTER TABLE `user` ADD FOREIGN KEY (`salesManagerID`) REFERENCES `saleManager` (`salesManagerID`);
 
