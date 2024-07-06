@@ -20,17 +20,20 @@
 </head>
 
 <body>
+  
   <div class="container">
+    <form action="./pages/menu.php" method="post" id = "LoginForm">
     <h1>Login</h1>
     <div class="ipt-box">
-      <input type="text" id="account" placeholder="account" autocomplete="off">
+      <input type="text" id="account" name = "LoginName" placeholder="account" autocomplete="off">
     </div>
     <div class="ipt-box">
-      <input type="password" id="password" placeholder="password" autocomplete="off">
+      <input type="password" id="password" name = "Password" placeholder="password" autocomplete="off">
       <i class="fa-regular fa-eye-slash" style></i>
       <div class="beam"></div>
     </div>
     <button class="btn-login">login</button>
+  </form>
   </div>
 </body>
 

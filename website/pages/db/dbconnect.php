@@ -8,7 +8,7 @@ $password = "";
 $conn = mysqli_connect(
     $hostname,
     $username,
-    $pwd,
-    $db
+    $password,
+    $database
 )
     or die(mysqli_connect_error());
