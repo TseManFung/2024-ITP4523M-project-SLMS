@@ -1,15 +1,29 @@
+INSERT INTO `dealer` (`dealerID`, `dealerName`, `contactName`, `contactNumber`, `faxNumber`, `deliveryAddress`) VALUES
+(1, 'FY Ltd.', '陳美惠', 13912345678, 1234567890, '北京市朝陽區建國路100號1樓'),
+(2, 'Happy Ltd.', '朱家弘', 15898765432, 1234567891, '北京市海淀區西三旗街道1號'),
+(3, 'IT Ltd.', '吳如香', 13678901234, 1234567892, '北京市昌平區回龍觀東大街2號'),
+(4, 'SDP Ltd.', '李家銘', 15056789012, 1234567893, '北京市西城區西單北大街3號'),
+(5, 'OOT Ltd.', '李怡君', 13123456789, 1234567894, '香港中環皇后大道中1號');
+
+INSERT INTO `salemanager` (`salesManagerID`, `managerName`, `contactName`, `contactNumber`) VALUES
+(1, '陳依海', '陳培倫', 13123456759),
+(2, '劉怡萱', '林家豪', 23020831),
+(3, '王雅文', '葉真凌', 90747203),
+(4, '曾明珠', '鄭婉君', 69400737),
+(5, '林郁婷', '余其宸', 31376030);
+
 -- Insert data into the `user` table
-INSERT INTO `user` (`userID`, `password`, `salesManagerID`, `dealerID`) VALUES
-(1, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, NULL),
-(2, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae4', 2, NULL),
-(3, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae5', 3, NULL),
-(4, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae6', 4, NULL),
-(5, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae7', 5, NULL),
-(6, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae8', NULL, 1),
-(7, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae9', NULL, 2),
-(8, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae10', NULL, 3),
-(9, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae11', NULL, 4),
-(10, '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae11', NULL, 5);
+INSERT INTO `user` (`userID`, `LoginName`, `password`, `salesManagerID`, `dealerID`) VALUES
+(1, 'D1', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, NULL),
+(2, 'D2', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae4', 2, NULL),
+(3, 'D3', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae5', 3, NULL),
+(4, 'D4', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae6', 4, NULL),
+(5, 'D5', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae7', 5, NULL),
+(6, 'SM1', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae8', NULL, 1),
+(7, 'SM2', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae9', NULL, 2),
+(8, 'SM3', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae10', NULL, 3),
+(9, 'SM4', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae11', NULL, 4),
+(10, 'SM5', '0a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae11', NULL, 5);
 
 -- Insert data into the `spare` table
 INSERT INTO `spare` (
@@ -35,3 +49,40 @@ INSERT INTO `spare` (
 ('B', 'Air Suspension Compressor SKP SKAS007', '../../images/item/200005.jpg', 'WARNING: This product may contain chemicals known to the State of California to cause cancer and birth defects or other reproductive harm.', 157.6, 150, 'N'),
 ('C', 'Model 3 X S Car Headlight New Model Accessories Original', '../../images/item/300005.jpg', 'Color: Warm White', 163, 160, 'N'),
 ('D', 'Adjustable Dash Car Mount', '../../images/item/400005.jpg', 'Our strongest and most ergonomic MagSafe car mount for iPhone 12, 13, and 14.', 168.4, 170, 'N');
+
+INSERT INTO `spareqty` (`sparePartNum`, `stockItemQty`) VALUES
+(1, 990),
+(2, 995),
+(3, 980),
+(4, 970),
+(5, 960),
+(6, 950),
+(7, 1000),
+(8, 1000),
+(9, 1000),
+(10, 1000),
+(11, 1000),
+(12, 1000),
+(13, 1000),
+(14, 1000),
+(15, 1000),
+(16, 1000),
+(17, 1000),
+(18, 1000),
+(19, 1000),
+(20, 1000);
+
+INSERT INTO `order` (`orderID`, `orderDateTime`, `deliveryAddress`, `deliveryDate`, `salesManagerID`, `dealerID`, `orderItemNumber`, `TotalAmount`, `shipCost`, `state`) VALUES
+(1, '2024-06-23 00:00:00', '北京市朝陽區建國路100號1樓', '2024-06-23', 1, 1, 15, 400, 25, 'C'),
+(2, '2024-06-24 00:00:00', '北京市海淀區西三旗街道1號', '2024-06-24', 1, 2, 20, 1000, 50, 'A'),
+(3, '2024-06-25 00:00:00', '北京市昌平區回龍觀東大街2號', '2024-06-25', 1, 3, 30, 1800, 75, 'R'),
+(4, '2024-06-26 00:00:00', '北京市西城區西單北大街3號', '2024-06-26', 1, 4, 40, 2800, 100, 'T'),
+(5, '2024-06-27 00:00:00', '香港中環皇后大道中1號', '2024-06-29', 1, 5, 50, 4000, 125, 'F');
+
+INSERT INTO `orderspare` (`sparePartNum`, `orderID`, `orderQty`, `sparePartOrderPrice`) VALUES
+(1, 1, 10, 40),
+(2, 1, 5, 48),
+(3, 2, 20, 60),
+(4, 3, 30, 70),
+(5, 4, 40, 80),
+(6, 5, 50, 30);
