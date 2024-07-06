@@ -13,8 +13,8 @@ INSERT INTO `user` (`userID`, `password`, `salesManagerID`, `dealerID`) VALUES
 
 -- Insert data into the `spare` table
 INSERT INTO `spare` (`sparePartNum`, `category`, `sparePartName`, `sparePartImage`, `sparePartDescription`, `weight`, `price`, `state`) VALUES
-(1, 'A', 'WTF Aluminium alloy sheet', '100001/暫定', 'Aluminium Hot Plate Automotive Die Casting, For Industrial', 65.8, 40, 'N'),
-(2, 'B', 'Hole engine', '200001/暫定', 'From starters and alternators to radiators and air conditioning components, our products are designed with precision and durability in mind.', 71.2, 50, 'N'),
-(3, 'C', 'Shiift Tail Light Assembly', '300001/暫定', 'MAXALIGHT INDUSTRIES Manufacturing company by Tractor Headlight and fog light and LED Fog lamp MINI Big Boss Black Body premium Quality H4 P-43t Bulb Fitment', 76.6, 60, 'N'),
-(4, 'D', 'Tis Vehicle Car Recorder', '400001/暫定', 'Solar Power TPMS with Internal Sensor', 82, 70, 'N'),
-(5, 'A', 'fire Stainless Steel Sheet', '100002/暫定', 'Car body kits Auto Parts Chinese Factory Supply car front Rear door car back rear doors for H6S 2021 wholesale', 87.4, 80, 'N');
+(1, 'A', 'WTF Aluminium alloy sheet', '../../images/item/100001.jpg', 'Aluminium Hot Plate Automotive Die Casting, For Industrial', 65.8, 40, 'N'),
+(2, 'B', 'Hole engine', '../../images/item/200001.jpg', 'From starters and alternators to radiators and air conditioning components, our products are designed with precision and durability in mind.', 71.2, 50, 'N'),
+(3, 'C', 'Shiift Tail Light Assembly', '../../images/item/300001.jpg', 'MAXALIGHT INDUSTRIES Manufacturing company by Tractor Headlight and fog light and LED Fog lamp MINI Big Boss Black Body premium Quality H4 P-43t Bulb Fitment', 76.6, 60, 'N'),
+(4, 'D', 'Tis Vehicle Car Recorder', '../../images/item/400001.jpg', 'Solar Power TPMS with Internal Sensor', 82, 70, 'N'),
+(5, 'A', 'fire Stainless Steel Sheet', '../../images/item/100002.jpg', 'Car body kits Auto Parts Chinese Factory Supply car front Rear door car back rear doors for H6S 2021 wholesale', 87.4, 80, 'N');
