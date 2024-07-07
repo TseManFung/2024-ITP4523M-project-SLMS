@@ -50,27 +50,28 @@ INSERT INTO `spare` (
 (300005, 'C', 'Model 3 X S Car Headlight New Model Accessories Original', '../../images/item/300005.jpg', 'Color: Warm White', 163, 160, 'N'),
 (400005, 'D', 'Adjustable Dash Car Mount', '../../images/item/400005.jpg', 'Our strongest and most ergonomic MagSafe car mount for iPhone 12, 13, and 14.', 168.4, 170, 'N');
 
+-- Insert data into the `spareqty` table with correct `sparePartNum` values
 INSERT INTO `spareqty` (`sparePartNum`, `stockItemQty`) VALUES
-(1, 990),
-(2, 995),
-(3, 980),
-(4, 970),
-(5, 960),
-(6, 950),
-(7, 1000),
-(8, 1000),
-(9, 1000),
-(10, 1000),
-(11, 1000),
-(12, 1000),
-(13, 1000),
-(14, 1000),
-(15, 1000),
-(16, 1000),
-(17, 1000),
-(18, 1000),
-(19, 1000),
-(20, 1000);
+(100001, 990),
+(200001, 995),
+(300001, 980),
+(400001, 970),
+(100002, 960),
+(200002, 950),
+(300002, 1000),
+(400002, 1000),
+(100003, 1000),
+(200003, 1000),
+(300003, 1000),
+(400003, 1000),
+(100004, 1000),
+(200004, 1000),
+(300004, 1000),
+(400004, 1000),
+(100005, 1000),
+(200005, 1000),
+(300005, 1000),
+(400005, 1000);
 
 INSERT INTO `order` (`orderID`, `orderDateTime`, `deliveryAddress`, `deliveryDate`, `salesManagerID`, `dealerID`, `orderItemNumber`, `TotalAmount`, `shipCost`, `state`) VALUES
 (1, '2024-06-23 00:00:00', '北京市朝陽區建國路100號1樓', '2024-06-23', 1, 1, 15, 400, 25, 'C'),
