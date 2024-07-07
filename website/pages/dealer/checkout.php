@@ -8,7 +8,7 @@ if(isset($_SESSION['expire'])){
     header('Location: ../../index.php');
   }else{
     $_SESSION['expire'] = time() + (30 * 60);
-    require_once 'db/dbconnect.php';
+    require_once '../db/dbconnect.php';
   }
 }else{
   session_destroy();
