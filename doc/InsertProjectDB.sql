@@ -80,9 +80,9 @@ INSERT INTO `order` (`orderID`, `orderDateTime`, `deliveryAddress`, `deliveryDat
 (5, '2024-06-27 00:00:00', '香港中環皇后大道中1號', '2024-06-29', 1, 5, 50, 4000, 125, 'F');
 
 INSERT INTO `orderspare` (`sparePartNum`, `orderID`, `orderQty`, `sparePartOrderPrice`) VALUES
-(1, 1, 10, 40),
-(2, 1, 5, 48),
-(3, 2, 20, 60),
-(4, 3, 30, 70),
-(5, 4, 40, 80),
-(6, 5, 50, 30);
+(100001, 1, 10, 40),
+(200001, 1, 5, 48),
+(300001, 2, 20, 60),
+(400001, 3, 30, 70),
+(100002, 4, 40, 80),
+(200002, 5, 50, 30);
