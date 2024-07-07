@@ -20,9 +20,9 @@
 </head>
 
 <body>
-  
+<form action="./pages/menu.php" method="post" id = "LoginForm">
   <div class="container">
-    <form action="./pages/menu.php" method="post" id = "LoginForm">
+    
     <h1>Login</h1>
     <div class="ipt-box">
       <input type="text" id="account" name = "LoginName" placeholder="account" autocomplete="off">
@@ -33,8 +33,8 @@
       <div class="beam"></div>
     </div>
     <button class="btn-login">login</button>
-  </form>
-  </div>
+  
+  </div></form>
 </body>
 
 </html>

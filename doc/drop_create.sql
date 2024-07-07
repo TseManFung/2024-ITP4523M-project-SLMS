@@ -36,8 +36,8 @@ CREATE TABLE
     `dealerID` integer (10) PRIMARY KEY AUTO_INCREMENT,
     `dealerName` varchar(100) UNIQUE NOT NULL,
     `contactName` varchar(100) NOT NULL,
-    `contactNumber` integer (30) NOT NULL,
-    `faxNumber` integer (30) NOT NULL,
+    `contactNumber` varchar(30) NOT NULL,
+    `faxNumber` varchar(30) NOT NULL,
     `deliveryAddress` varchar(255) NOT NULL
   ) ENGINE = InnoDB;
 
@@ -54,7 +54,7 @@ CREATE TABLE
     `salesManagerID` integer (10) PRIMARY KEY AUTO_INCREMENT,
     `managerName` varchar(100) UNIQUE NOT NULL,
     `contactName` varchar(100) NOT NULL,
-    `contactNumber` integer (30) NOT NULL
+    `contactNumber` varchar(30) NOT NULL
   ) ENGINE = InnoDB;
 
 CREATE TABLE
