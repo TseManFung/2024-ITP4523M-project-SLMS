@@ -104,10 +104,28 @@ if (isset($_SESSION['expire'])) {
   <?php
   $condition = "";
   if (isset($_GET["search"])) {
-    $condition = " and sparePartName like '%" . $_GET["search"] . "%'";
+    $condition = "$condition and (sparePartName like '%" . $_GET["search"] . "%') or (sparePartDescription like '%" . $_GET["search"] . "%') or (s.sparePartNum like '%" . $_GET["search"] . "%') ";
+  }
+  if (isset($_GET["A"])){
+    $condition = "$condition and category != 'A' ";
+  }
+  if (isset($_GET["B"])){
+    $condition = "$condition and category != 'B' ";
+  }
+  if (isset($_GET["C"])){
+    $condition = "$condition and category != 'C' ";
+  }
+  if (isset($_GET["D"])){
+    $condition = "$condition and category != 'D' ";
+  }
+  if (isset($_GET["minPrice"])){
+    $condition = "$condition and price >= " . $_GET["minPrice"] . " ";
+  }
+  if (isset($_GET["maxPrice"])){
+    $condition = "$condition and price <= " . $_GET["maxPrice"] . " ";
   }
 
-  $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare where state = 'N';";
+  $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 ".$condition.";";
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_array($result);
   $spareCount = $row['spareCount'];
@@ -265,7 +283,7 @@ if (isset($_SESSION['expire'])) {
           <div class="row">
             <div id="item" class="item-wrap cell">
               <?php
-              $sql = "SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state ='N' limit 0,12;";
+              $sql = "SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 ".$condition." limit 0,12;";
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_array($result)) {
 
