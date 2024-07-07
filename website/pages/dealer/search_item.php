@@ -2,15 +2,15 @@
 <html>
 <?php
 session_start();
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -46,8 +46,7 @@ if(isset($_SESSION['expire'])){
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
@@ -57,8 +56,7 @@ if(isset($_SESSION['expire'])){
             </li>
           </ul>
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Hi [username]<span class="note-label">99+</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -80,8 +78,7 @@ if(isset($_SESSION['expire'])){
     <!-- /navbar -->
   </div>
   <!-- search-bar -->
-  <div style="height: calc(20lvh + 74px)" id="header"
-       class="d-flex position-relative justify-content-center align-items-center">
+  <div style="height: calc(20lvh + 74px)" id="header" class="d-flex position-relative justify-content-center align-items-center">
     <div class="position-relative start-0 end-0 d-flex justify-content-center" style="margin-top: 10px">
       <form class="position-relative d-flex search-bar" role="search">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
@@ -143,21 +140,18 @@ if(isset($_SESSION['expire'])){
         <div class="col-9">
           <div class="row">
             <div class="col position-relative">
-              <ul class="d-flex flex-wrap p-0 m-0 position-absolute bottom-0 start-0 flex-set"
-                  style="list-style: none; gap: 2px">
+              <ul class="d-flex flex-wrap p-0 m-0 position-absolute bottom-0 start-0 flex-set" style="list-style: none; gap: 2px">
                 <li name="Display_mode" class="cursor-pointer">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                          d="M448 96V224H288V96H448zm0 192V416H288V288H448zM224 224H64V96H224V224zM64 288H224V416H64V288zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z" />
+                    <path d="M448 96V224H288V96H448zm0 192V416H288V288H448zM224 224H64V96H224V224zM64 288H224V416H64V288zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z" />
                   </svg>
                 </li>
                 <li style="width: 5px"></li>
                 <li name="Display_mode" class="cursor-pointer">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                          d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zm64 0v64h64V96H64zm384 0H192v64H448V96zM64 224v64h64V224H64zm384 0H192v64H448V224zM64 352v64h64V352H64zm384 0H192v64H448V352z" />
+                    <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zm64 0v64h64V96H64zm384 0H192v64H448V96zM64 224v64h64V224H64zm384 0H192v64H448V224zM64 352v64h64V352H64zm384 0H192v64H448V352z" />
                   </svg>
                 </li>
               </ul>
@@ -202,24 +196,23 @@ if(isset($_SESSION['expire'])){
           <hr />
           <div class="row">
             <div id="item" class="item-wrap cell">
-              <div class="item-box">
+              <?php
+              $sql = "SELECT sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare inner join spareqty on spare.sparePartNum = spareqty.sparePartNum where state ='N' limit 0,12;";
+              $result = mysqli_query($conn, $sql);
+              while ($row = mysqli_fetch_array($result)) {
+
+                printf('              <div class="item-box">
                 <!-- onclick go to item detail -->
                 <div class="item-img">
-                  <img class="img-m" src="../../images/item/100001.jpg" />
+                  <img class="img-m" src="%s" />
                 </div>
                 <div class="item-info">
-                  <p class="item-name">Item Name</p>
+                  <p class="item-name">%s</p>
                   <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
+                    Item Description : %s
                   </p>
                   <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
+                    <span>Price: $%.2f</span> <span>Stock: %d</span>
                   </div>
                 </div>
                 <div class="item-btn">
@@ -232,217 +225,10 @@ if(isset($_SESSION['expire'])){
                     Show more detail
                   </button>
                 </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100001.jpg" />
-                </div>
-                <div class="item-info">
-                  <p class="p-1">Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100002.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100003.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100005.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100004.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100001.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100001.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Add to cart
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Show more detail
-                  </button>
-                </div>
-              </div>
+              </div>', $row['sparePartImage'], $row['sparePartName'], $row['sparePartDescription'], $row['price'], $row['stockItemQty']);
+              }
+              ?>
+
             </div>
           </div>
           <hr />

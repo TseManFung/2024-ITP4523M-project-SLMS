@@ -285,6 +285,7 @@ footer ul.sns li img {
     & .item-name{
       padding-left: 1rem;
       padding-right: 1rem;
+      font-size: 0.9rem !important;
     }
   }
   & .item-btn {
