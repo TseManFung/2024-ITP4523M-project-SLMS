@@ -227,7 +227,7 @@ if (isset($_SESSION['expire'])) {
                 </div>
                 <div class="item-btn">
                   <div class="bg"></div>
-                  <button type="button" class="btn btn-primary" onclick="addToCart(%s)">
+                  <button type="button" class="btn btn-primary" onclick="addToCart1(%s)">
                     Add to cart
                   </button>
                   <br />
