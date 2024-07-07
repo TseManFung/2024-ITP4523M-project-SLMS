@@ -1,5 +1,20 @@
 <!DOCTYPE html>
 <html>
+<?php
+
+if(isset($_SESSION['expire'])){
+  if($_SESSION['expire'] < time()){
+    session_destroy();
+    header('Location: ../../index.php');
+  }else{
+    $_SESSION['expire'] = time() + (30 * 60);
+    require_once 'db/dbconnect.php';
+  }
+}else{
+  session_destroy();
+  header('Location: ../../index.php');
+}
+?>
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -39,7 +54,7 @@
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="./search_item.html">Our Product</a>
+              <a class="nav-link" href="./search_item.php">Our Product</a>
             </li>
           </ul>
           <div class="nav-item dropdown">
@@ -48,15 +63,15 @@
               Hi [username]<span class="note-label">99+</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="./dealer_information.html">Your Information</a></li>
-              <li><a class="dropdown-item" href="./view_order_record.html">Your Order</a></li>
+              <li><a class="dropdown-item" href="./dealer_information.php">Your Information</a></li>
+              <li><a class="dropdown-item" href="./view_order_record.php">Your Order</a></li>
               <li>
-                <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.html">
+                <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.php">
                   Cart<span class="cart-number-label">99+</span>
                 </a>
               </li>
               <li class="dropdown-item">
-                <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
+                <a class="nav-link" aria-current="page" href="../../index.php" style="color: red;">Logout</a>
               </li>
             </ul>
           </div>
@@ -189,7 +204,7 @@
                     <p class="mb-2">$1013.50</p>
                   </div>
                   <div class="d-grid gap-2 d-md-block">
-                      <a href="./checkout.html">
+                      <a href="./checkout.php">
                           <button type="button" data-mdb-button-init data-mdb-ripple-init
                                   class="btn btn-primary btn-block btn-lg">
                               <div class="d-flex justify-content-between">
@@ -198,7 +213,7 @@
                               </div>
                           </button>
                       </a>
-                      <a href="./search_item.html">
+                      <a href="./search_item.php">
                           <button type="button" data-mdb-button-init data-mdb-ripple-init
                                   class="btn btn-primary btn-block btn-lg">
                               <div class="d-flex justify-content-between">

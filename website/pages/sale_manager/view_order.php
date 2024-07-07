@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html>
-
+<?php
+if(isset($_SESSION['expire'])){
+  if($_SESSION['expire'] < time()){
+    session_destroy();
+    header('Location: ../../index.php');
+  }else{
+    $_SESSION['expire'] = time() + (30 * 60);
+    require_once 'db/dbconnect.php';
+  }
+}else{
+  session_destroy();
+  header('Location: ../../index.php');
+}
+?>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -36,19 +49,19 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
             <li class="nav-item">
-              <a class="nav-link" href="./view_item.html">Item</a>
+              <a class="nav-link" href="./view_item.php">Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./view_order.html">Order</a>
+              <a class="nav-link" href="./view_order.php">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./item_report_condition.html">Report</a>
+              <a class="nav-link" href="./item_report_condition.php">Report</a>
             </li>
 
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
+              <a class="nav-link" aria-current="page" href="../../index.php" style="color: red;">Logout</a>
             </li>
           </ul>
         </div>

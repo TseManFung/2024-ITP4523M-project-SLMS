@@ -1,5 +1,20 @@
 <!DOCTYPE html>
 <html>
+<?php
+
+if(isset($_SESSION['expire'])){
+  if($_SESSION['expire'] < time()){
+    session_destroy();
+    header('Location: ../../index.php');
+  }else{
+    $_SESSION['expire'] = time() + (30 * 60);
+    require_once 'db/dbconnect.php';
+  }
+}else{
+  session_destroy();
+  header('Location: ../../index.php');
+}
+?>
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -36,7 +51,7 @@
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="./search_item.html">Our Product</a>
+              <a class="nav-link" href="./search_item.php">Our Product</a>
             </li>
           </ul>
           <div class="nav-item dropdown">
@@ -45,15 +60,15 @@
               Hi [username]<span class="note-label">99+</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="./dealer_information.html">Your Information</a></li>
-              <li><a class="dropdown-item" href="./view_order_record.html">Your Order</a></li>
+              <li><a class="dropdown-item" href="./dealer_information.php">Your Information</a></li>
+              <li><a class="dropdown-item" href="./view_order_record.php">Your Order</a></li>
               <li>
-                <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.html">
+                <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.php">
                   Cart<span class="cart-number-label">99+</span>
                 </a>
               </li>
               <li class="dropdown-item">
-                <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
+                <a class="nav-link" aria-current="page" href="../../index.php" style="color: red;">Logout</a>
               </li>
             </ul>
           </div>
@@ -104,7 +119,7 @@
               </li>
               <li class="list-group-item d-flex justify-content-between">
                   <div class="d-grid gap-2 d-md-block">
-                      <a href="./dealer_cart.html">
+                      <a href="./dealer_cart.php">
                       <button type="button" data-mdb-button-init data-mdb-ripple-init
                               class="btn btn-primary btn-block btn-lg">
                           <div class="d-flex justify-content-between">
@@ -118,7 +133,7 @@
           </div>
           <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Your order information:</h4>
-            <form class="needs-validation" novalidate="" action="./dealer_view_order_record_detail.html" method="get">
+            <form class="needs-validation" novalidate="" action="./dealer_view_order_record_detail.php" method="get">
                 <div class="row">
                     <div class="mb-3">
                         <label for="address"> Your order ID:</label>

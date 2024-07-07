@@ -1,5 +1,20 @@
 <!DOCTYPE html>
 <html>
+<?php
+
+if(isset($_SESSION['expire'])){
+  if($_SESSION['expire'] < time()){
+    session_destroy();
+    header('Location: ../../index.php');
+  }else{
+    $_SESSION['expire'] = time() + (30 * 60);
+    require_once 'db/dbconnect.php';
+  }
+}else{
+  session_destroy();
+  header('Location: ../../index.php');
+}
+?>
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -36,19 +51,19 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
             <li class="nav-item">
-              <a class="nav-link" href="./view_item.html">Item</a>
+              <a class="nav-link" href="./view_item.php">Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./view_order.html">Order</a>
+              <a class="nav-link" href="./view_order.php">Order</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="./item_report_condition.html">Report</a>
+              <a class="nav-link" href="./item_report_condition.php">Report</a>
             </li>
 
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="../../index.html" style="color: red;">Logout</a>
+              <a class="nav-link" aria-current="page" href="../../index.php" style="color: red;">Logout</a>
             </li>
           </ul>
         </div>
@@ -85,7 +100,7 @@
                         <div class="cell"><b>Delivery Date:</b> [2024-01-01 00:00:00 / null]</div>
                       </div>
                       <div class="col-6">
-                        <div class="cell"><a href="./dealer_information.html?DID=123"><button type="button"
+                        <div class="cell"><a href="./dealer_information.php?DID=123"><button type="button"
                                     class="btn btn-link p-0"><b>Dealer ID:</b>
                               [DealerID]</button></a></div>
                         <div class="cell"><b>Dealer Name:</b> [DealerContactName]</div>

@@ -1,5 +1,20 @@
 <!DOCTYPE html>
 <html>
+<?php
+
+if(isset($_SESSION['expire'])){
+  if($_SESSION['expire'] < time()){
+    session_destroy();
+    header('Location: ../../index.php');
+  }else{
+    $_SESSION['expire'] = time() + (30 * 60);
+    require_once 'db/dbconnect.php';
+  }
+}else{
+  session_destroy();
+  header('Location: ../../index.php');
+}
+?>
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
