@@ -208,7 +208,7 @@ if(isset($_SESSION['expire'])){
                   <img class="img-m" src="../../images/item/100001.jpg" />
                 </div>
                 <div class="item-info">
-                  <p>Item Name</p>
+                  <p class="item-name">Item Name</p>
                   <p class="item-desc">
                     Item Description :[We use a large block of connected links
                     for our pagination, making links hard to miss and easily

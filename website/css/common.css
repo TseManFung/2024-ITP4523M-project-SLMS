@@ -282,6 +282,10 @@ footer ul.sns li img {
 
     flex-direction: column;
     width: 225px;
+    & .item-name{
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
   & .item-btn {
     position: absolute;
@@ -291,6 +295,7 @@ footer ul.sns li img {
     width: 100%;
     height: 100%;
   }
+
   & .item-box:hover {
     & .item-btn {
       z-index: 1;
@@ -308,6 +313,7 @@ footer ul.sns li img {
     & .item-info {
       filter: blur(3px);
     }
+
   }
 
   & .item-box .item-btn .bg {
