@@ -91,7 +91,9 @@ if (isset($_SESSION['expire'])) {
   <div style="height: calc(20lvh + 74px)" id="header" class="d-flex position-relative justify-content-center align-items-center">
     <div class="position-relative start-0 end-0 d-flex justify-content-center" style="margin-top: 10px">
       <form class="position-relative d-flex search-bar" role="search">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search" id ="search-input"/>
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search-input" value="<?php if (isset($_GET["search"])) {
+                                                                                                                      echo $_GET["search"];
+                                                                                                                    } ?>" />
         <div class="search-box" id="search-box">
           <i class="fa-solid fa-magnifying-glass fa-xl"></i>
         </div>
@@ -99,6 +101,26 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <!-- /search-bar -->
+  <?php
+  $condition = "";
+  if (isset($_GET["search"])) {
+    $condition = " and sparePartName like '%" . $_GET["search"] . "%'";
+  }
+
+  $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare where state = 'N';";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_array($result);
+  $spareCount = $row['spareCount'];
+  $spareMaxPrice = $row['SpareMaxPrice'];
+  $spareMinPrice = $row['SpareMinPrice'];
+  if (isset($_GET['pages']) && $_GET['pages'] > 0) {
+    $currentPage = $_GET['pages'];
+  } else {
+    $currentPage = 1;
+  }
+  $totalPage = ceil($spareCount / 12);
+  ?>
+
 
   <!-- content -->
   <div class="d-flex position-relative content-bg justify-content-center">
@@ -110,22 +132,30 @@ if (isset($_SESSION['expire'])) {
       <hr />
       <div class="row category-item">
         <div class="col-3">
-          <form class="position-relative d-flex flex-column">
+          <form class="position-relative d-flex flex-column" name="filter">
             <h4>Category</h4>
             <div class="form-check">
-              <input id="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked />
+              <input id="A" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="A" <?php if (!isset($_GET["A"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
             </div>
             <div class="form-check">
-              <input id="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked />
+              <input id="B" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="B" <?php if (!isset($_GET["B"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
             </div>
             <div class="form-check">
-              <input id="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked />
+              <input id="C" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="C" <?php if (!isset($_GET["C"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="C" class="cursor-pointer form-check-label">Light Components</label>
             </div>
             <div class="form-check">
-              <input id="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked />
+              <input id="D" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="D" <?php if (!isset($_GET["D"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="D" class="cursor-pointer form-check-label">Accessories</label>
             </div>
             <br />
@@ -133,15 +163,19 @@ if (isset($_SESSION['expire'])) {
             <div class="row">
               <div class="col-4">
                 <!-- use js to set placeholder and min and max and value of minPrice and maxPrice -->
-                <input id="minPrice" class="form-control" type="number" min="0" placeholder="0" value="" />
+                <input id="minPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo $spareMinPrice; ?>" value="<?php if (isset($_GET["minPrice"])) {
+                                                                                                                                                                                                                        echo $_GET["minPrice"];
+                                                                                                                                                                                                                      } ?>" />
               </div>
               <div class="col-1 text-center">-</div>
               <div class="col-4">
-                <input id="maxPrice" class="form-control" type="number" max="1000" placeholder="1000" value="" />
+                <input id="maxPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo $spareMaxPrice; ?>" value="<?php if (isset($_GET["maxPrice"])) {
+                                                                                                                                                                                                                        echo $_GET["maxPrice"];
+                                                                                                                                                                                                                      } ?>" />
               </div>
             </div>
             <br />
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" onclick="Submitfilter()" class="btn btn-primary">Submit</button>
           </form>
           <br />
           <br />
@@ -167,28 +201,18 @@ if (isset($_SESSION['expire'])) {
               </ul>
             </div>
             <div class="col d-flex justify-content-center align-items-end">
-              <?php
-              $sql  = "SELECT count(*) as spareCount FROM spare where state = 'N';";
-              $result = mysqli_query($conn, $sql);
-              $row = mysqli_fetch_array($result);
-              $spareCount = $row['spareCount'];
-              if (isset($_GET['pages']) && $_GET['pages'] > 0) {
-                $currentPage = $_GET['pages'];
-              } else {
-                $currentPage = 1;
-              }
-              $totalPage = ceil($spareCount / 12);
-              ?>
+
               <nav aria-label="Page navigation">
                 <ul class="pagination page-nav" style="margin-bottom: 0">
                   <li class="page-item <?php if ($currentPage <= 1) {
-                                          echo "disabled"; }
+                                          echo "disabled";
+                                        }
                                         ?>">
                     <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                      echo "1";
-                                                    } else {
-                                                      echo $currentPage - 1;
-                                                    }; ?>" aria-label="Previous">
+                                                        echo "1";
+                                                      } else {
+                                                        echo $currentPage - 1;
+                                                      }; ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -202,13 +226,14 @@ if (isset($_SESSION['expire'])) {
                     </li>
                   <?php } ?>
                   <li class="page-item <?php if ($currentPage >= $totalPage) {
-                                          echo "disabled";}
+                                          echo "disabled";
+                                        }
                                         ?>">
                     <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                      echo $totalPage;
-                                                    } else {
-                                                      echo $currentPage + 1;
-                                                    }; ?>" aria-label="Next">
+                                                        echo $totalPage;
+                                                      } else {
+                                                        echo $currentPage + 1;
+                                                      }; ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -218,11 +243,19 @@ if (isset($_SESSION['expire'])) {
             <div class="col">
               <div class="form-floating">
                 <select class="form-select" id="sort">
-                
-                  <option value="R" <?php if(!isset($_GET["sort"]) || $_GET["sort"]=="R"){echo "selected";}else ?>>Recommend</option>
-                  <option value="NA" <?php if(isset($_GET["sort"]) && $_GET["sort"]=="NA"){echo "selected";}else  ?>>Newest Arrivals</option>
-                  <option value="PLH" <?php if(isset($_GET["sort"]) &&$_GET["sort"]=="PLH"){echo "selected";}else  ?>>Price: Low to High</option>
-                  <option value="PHL" <?php if(isset($_GET["sort"]) &&$_GET["sort"]=="PHL"){echo "selected";}else  ?>>Price: High to Low</option>
+
+                  <option value="R" <?php if (!isset($_GET["sort"]) || $_GET["sort"] == "R") {
+                                      echo "selected";
+                                    } else ?>>Recommend</option>
+                  <option value="NA" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "NA") {
+                                        echo "selected";
+                                      } else  ?>>Newest Arrivals</option>
+                  <option value="PLH" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "PLH") {
+                                        echo "selected";
+                                      } else  ?>>Price: Low to High</option>
+                  <option value="PHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "PHL") {
+                                        echo "selected";
+                                      } else  ?>>Price: High to Low</option>
                 </select>
                 <label for="sort">Sort</label>
               </div>
@@ -232,7 +265,7 @@ if (isset($_SESSION['expire'])) {
           <div class="row">
             <div id="item" class="item-wrap cell">
               <?php
-              $sql = "SELECT spare.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare inner join spareqty on spare.sparePartNum = spareqty.sparePartNum where state ='N' limit 0,12;";
+              $sql = "SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state ='N' limit 0,12;";
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_array($result)) {
 
@@ -269,16 +302,17 @@ if (isset($_SESSION['expire'])) {
           <hr />
           <div class="row">
             <div class="col d-flex justify-content-center align-items-end">
-            <nav aria-label="Page navigation">
+              <nav aria-label="Page navigation">
                 <ul class="pagination page-nav" style="margin-bottom: 0">
                   <li class="page-item <?php if ($currentPage <= 1) {
-                                          echo "disabled"; }
+                                          echo "disabled";
+                                        }
                                         ?>">
                     <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                      echo "1";
-                                                    } else {
-                                                      echo $currentPage - 1;
-                                                    }; ?>" aria-label="Previous">
+                                                        echo "1";
+                                                      } else {
+                                                        echo $currentPage - 1;
+                                                      }; ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -292,13 +326,14 @@ if (isset($_SESSION['expire'])) {
                     </li>
                   <?php } ?>
                   <li class="page-item <?php if ($currentPage >= $totalPage) {
-                                          echo "disabled";}
+                                          echo "disabled";
+                                        }
                                         ?>">
                     <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                      echo $totalPage;
-                                                    } else {
-                                                      echo $currentPage + 1;
-                                                    }; ?>" aria-label="Next">
+                                                        echo $totalPage;
+                                                      } else {
+                                                        echo $currentPage + 1;
+                                                      }; ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>

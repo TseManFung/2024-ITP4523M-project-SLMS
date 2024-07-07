@@ -44,7 +44,7 @@ CREATE TABLE
 CREATE TABLE
   `cart` (
     `userID` integer (10),
-    `sparePartNum` integer (10),
+    `sparePartNum` char(6),
     `qty` integer (10),
     PRIMARY KEY (`userID`, `sparePartNum`)
   ) ENGINE = InnoDB;
@@ -73,7 +73,7 @@ CREATE TABLE
 
 CREATE TABLE
   `spare` (
-    `sparePartNum` integer (10) PRIMARY KEY AUTO_INCREMENT,
+    `sparePartNum` char(6) PRIMARY KEY,
     `category` ENUM ('A', 'B', 'C', 'D') NOT NULL,
     `sparePartName` varchar(255) NOT NULL,
     `sparePartImage` varchar(100) NOT NULL,
@@ -85,13 +85,13 @@ CREATE TABLE
 
 CREATE TABLE
   `spareQty` (
-    `sparePartNum` integer (10) PRIMARY KEY,
+    `sparePartNum` char(6) PRIMARY KEY,
     `stockItemQty` integer (10) NOT NULL
   ) ENGINE = InnoDB;
 
 CREATE TABLE
   `orderSpare` (
-    `sparePartNum` integer (10),
+    `sparePartNum` char(6),
     `orderID` integer (10),
     `orderQty` integer (10) NOT NULL,
     `sparePartOrderPrice` double NOT NULL,
