@@ -90,14 +90,14 @@ if (isset($_SESSION['expire'])) {
   <!-- search-bar -->
   <div style="height: calc(20lvh + 74px)" id="header" class="d-flex position-relative justify-content-center align-items-center">
     <div class="position-relative start-0 end-0 d-flex justify-content-center" style="margin-top: 10px">
-      <form class="position-relative d-flex search-bar" role="search">
+      <div class="position-relative d-flex search-bar" role="search">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search-input" value="<?php if (isset($_GET["search"])) {
                                                                                                                       echo $_GET["search"];
                                                                                                                     } ?>" />
         <div class="search-box" id="search-box">
           <i class="fa-solid fa-magnifying-glass fa-xl"></i>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <!-- /search-bar -->
@@ -106,35 +106,35 @@ if (isset($_SESSION['expire'])) {
   if (isset($_GET["search"])) {
     $condition = "$condition and (sparePartName like '%" . $_GET["search"] . "%') or (sparePartDescription like '%" . $_GET["search"] . "%') or (s.sparePartNum like '%" . $_GET["search"] . "%') ";
   }
-  if (isset($_GET["A"])){
+  if (isset($_GET["A"])) {
     $condition = "$condition and category != 'A' ";
   }
-  if (isset($_GET["B"])){
+  if (isset($_GET["B"])) {
     $condition = "$condition and category != 'B' ";
   }
-  if (isset($_GET["C"])){
+  if (isset($_GET["C"])) {
     $condition = "$condition and category != 'C' ";
   }
-  if (isset($_GET["D"])){
+  if (isset($_GET["D"])) {
     $condition = "$condition and category != 'D' ";
   }
-  if (isset($_GET["minPrice"])){
+  if (isset($_GET["minPrice"])) {
     $condition = "$condition and price >= " . $_GET["minPrice"] . " ";
   }
-  if (isset($_GET["maxPrice"])){
+  if (isset($_GET["maxPrice"])) {
     $condition = "$condition and price <= " . $_GET["maxPrice"] . " ";
   }
-  if (isset($_GET["sort"])){
-    if ($_GET["sort"] == "NA"){
+  if (isset($_GET["sort"])) {
+    if ($_GET["sort"] == "NA") {
       $condition = "$condition order by s.sparePartNum desc ";
-    }else if ($_GET["sort"] == "PLH"){
+    } else if ($_GET["sort"] == "PLH") {
       $condition = "$condition order by price ";
-    }else if ($_GET["sort"] == "PHL"){
+    } else if ($_GET["sort"] == "PHL") {
       $condition = "$condition order by price desc ";
     }
   }
 
-  $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 ".$condition.";";
+  $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 " . $condition . ";";
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_array($result);
   $spareCount = $row['spareCount'];
@@ -159,7 +159,7 @@ if (isset($_SESSION['expire'])) {
       <hr />
       <div class="row category-item">
         <div class="col-3">
-          <form class="position-relative d-flex flex-column" name="filter">
+          <div class="position-relative d-flex flex-column" name="filter">
             <h4>Category</h4>
             <div class="form-check">
               <input id="A" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="A" <?php if (!isset($_GET["A"])) {
@@ -203,7 +203,7 @@ if (isset($_SESSION['expire'])) {
             </div>
             <br />
             <button type="button" onclick="Submitfilter()" class="btn btn-primary">Submit</button>
-          </form>
+          </div>
           <br />
           <br />
           <br />
@@ -292,7 +292,7 @@ if (isset($_SESSION['expire'])) {
           <div class="row">
             <div id="item" class="item-wrap cell">
               <?php
-              $sql = "SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 ".$condition." limit 0,12;";
+              $sql = "SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 " . $condition . " limit 0,12;";
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_array($result)) {
 
