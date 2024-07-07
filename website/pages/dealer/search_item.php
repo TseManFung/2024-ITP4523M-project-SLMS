@@ -207,7 +207,7 @@ if (isset($_SESSION['expire'])) {
           <div class="row">
             <div id="item" class="item-wrap cell">
               <?php
-              $sql = "SELECT sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare inner join spareqty on spare.sparePartNum = spareqty.sparePartNum where state ='N' limit 0,12;";
+              $sql = "SELECT spare.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty FROM spare inner join spareqty on spare.sparePartNum = spareqty.sparePartNum where state ='N' limit 0,12;";
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_array($result)) {
 
@@ -227,15 +227,15 @@ if (isset($_SESSION['expire'])) {
                 </div>
                 <div class="item-btn">
                   <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn btn-primary" onclick="addToCart(%s)">
                     Add to cart
                   </button>
                   <br />
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn btn-primary" onclick="productDetail(%s)">
                     Show more detail
                   </button>
                 </div>
-              </div>', $row['sparePartImage'], $row['sparePartName'], $row['sparePartDescription'], $row['price'], $row['stockItemQty']);
+              </div>', $row['sparePartImage'], $row['sparePartName'], $row['sparePartDescription'], $row['price'], $row['stockItemQty'], $row['spnum'], $row['spnum']);
               }
               ?>
 

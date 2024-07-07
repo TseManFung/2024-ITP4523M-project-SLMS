@@ -3,8 +3,22 @@ $(document).ready(function () {
     console.log(e);
     console.log("add to cart clicked");
   });
-  itemID = 123; // for test
-  $('button:contains("Show more detail")').bind("click", function (e) {
-    window.location.href = `./product_detail.html?spnum=${itemID}`;
-  });
+
+
 });
+function productDetail(itemID) {
+  window.location.href = `./product_detail.php?spnum=${itemID}`;
+}
+function addToCart(itemID) {
+  $.ajax({
+    type: "POST",
+    url: "./addToCart.php",
+    data: {
+      sparePartNum: itemID,
+      quantity: 1
+    },
+    success: function (data) {
+      //console.log(data);
+    }
+  });
+}
