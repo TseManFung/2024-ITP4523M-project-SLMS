@@ -1,28 +1,25 @@
 $(document).ready(function () {
   $("#sort").on("change", function () {
-    if (window.location.href.includes("sort=")) {
-      window.location.href = window.location.href.replace(/([\?&]sort=)[^\&]+/, `$1${this.value}`);
-    } else if(window.location.href.includes("?")) {
-      window.location.href = `${window.location.href}&sort=${this.value}`;
-    }else{
-      window.location.href = `${window.location.href}?sort=${this.value}`;}
+    const sortValue = this.value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort', sortValue);
+    window.location.href = url.toString();
   });
 
   $("#search-box").on("click", function () {
 
-    v = $("#search-input").val();
-    if(v == ""){
-      if (window.location.href.includes("search=")) {
-        window.location.href = window.location.href.replace(/([\?&]search=)[^\&]+/, '');
-      }
+    const searchInput = $("#search-input").val();
+    const searchParam = "search";
+    const currentUrl = new URL(window.location.href);
 
-    }else{
-      if (window.location.href.includes("search=")) {
-        window.location.href = window.location.href.replace(/([\?&]search=)[^\&]+/, `$1${v}`);
-      } else if(window.location.href.includes("?")) {
-        window.location.href = `${window.location.href}&search=${v}`;
-      }else{
-        window.location.href = `${window.location.href}?search=${v}`;}
+    if (searchInput === "") {
+      if (currentUrl.searchParams.has(searchParam)) {
+      currentUrl.searchParams.delete(searchParam);
+      window.location.href = currentUrl.toString();
+      }
+    } else {
+      currentUrl.searchParams.set(searchParam, searchInput);
+      window.location.href = currentUrl.toString();
     }
   });
 });
