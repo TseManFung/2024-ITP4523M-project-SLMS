@@ -13,8 +13,10 @@ if(accountInput.value === 'D'){
 }
 });
 }) */
+session_start();
+
 if ($row['resultNum'] == 1 && $row['LoginName'] == $_POST['LoginName']) {
-    session_start();
+    
     $_SESSION['start'] = time();
     $_SESSION['expire'] = $_SESSION['start'] + (30 * 60);
 
@@ -24,9 +26,14 @@ if ($row['resultNum'] == 1 && $row['LoginName'] == $_POST['LoginName']) {
         header('Location: sale_manager/view_order.php');
     } else {
         $_SESSION['dealerID'] = $row['dealerID'];
+        $sql = sprintf("SELECT dealerName FROM dealer where dealerID = %d;", $row['dealerID']);
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['dealerName'] = $row['dealerName'];
         header('Location: dealer/search_item.php');
     }
     
 } else {
+    $_SESSION["Loginfail"] = "Invalid Login Name or Password";
     header('Location: ../');
 }

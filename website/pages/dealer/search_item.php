@@ -55,16 +55,25 @@ if (isset($_SESSION['expire'])) {
               <a class="nav-link" href="./search_item.php">Our Product</a>
             </li>
           </ul>
+          <?php
+          $sql = "SELECT count(*) as cn FROM cart where userID = " . $_SESSION['userID'] . ";";
+          $result = mysqli_query($conn, $sql);
+          $row = mysqli_fetch_array($result);
+          $cartNum = $row['cn'];
+          if ($cartNum > 99) {
+            $cartNum = "99+";
+          }
+          ?>
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Hi [username]<span class="note-label">99+</span>
+              Hi <?php echo $_SESSION["dealerName"]?><span class="note-label"><?php echo $cartNum?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="./dealer_information.php">Your Information</a></li>
               <li><a class="dropdown-item" href="./view_order_record.php">Your Order</a></li>
               <li>
                 <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.php">
-                  Cart<span class="cart-number-label">99+</span>
+                  Cart<span class="cart-number-label"><?php echo $cartNum?></span>
                 </a>
               </li>
               <li class="dropdown-item">
@@ -72,6 +81,7 @@ if (isset($_SESSION['expire'])) {
               </li>
             </ul>
           </div>
+          
         </div>
       </div>
     </nav>

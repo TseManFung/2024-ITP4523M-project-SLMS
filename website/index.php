@@ -4,6 +4,7 @@
 <head>
   <?php
   // log out
+  session_start();
   if(isset($_SESSION['userID'])){
     session_destroy();
   }
@@ -38,6 +39,12 @@
       <i class="fa-regular fa-eye-slash" style></i>
       <div class="beam"></div>
     </div>
+    <?php
+    if(isset($_SESSION["Loginfail"])){
+      echo '<p style="color:red;">'.$_SESSION["Loginfail"]."</p>";
+      unset($_SESSION["Loginfail"]);
+    }
+    ?>
     <button class="btn-login">login</button>
   
   </div></form>
