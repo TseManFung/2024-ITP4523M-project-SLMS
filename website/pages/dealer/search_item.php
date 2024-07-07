@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <?php
-
+session_start();
 if(isset($_SESSION['expire'])){
   if($_SESSION['expire'] < time()){
     session_destroy();
     header('Location: ../../index.php');
   }else{
     $_SESSION['expire'] = time() + (30 * 60);
-    require_once 'db/dbconnect.php';
+    require_once '../db/dbconnect.php';
   }
 }else{
   session_destroy();
@@ -238,7 +238,7 @@ if(isset($_SESSION['expire'])){
                   <img class="img-m" src="../../images/item/100001.jpg" />
                 </div>
                 <div class="item-info">
-                  <p>Item Name</p>
+                  <p class="p-1">Item Name</p>
                   <p class="item-desc">
                     Item Description :[We use a large block of connected links
                     for our pagination, making links hard to miss and easily

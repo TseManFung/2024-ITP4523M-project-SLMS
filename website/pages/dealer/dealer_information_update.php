@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <?php
+session_start();
 
 if(isset($_SESSION['expire'])){
   if($_SESSION['expire'] < time()){
@@ -131,6 +132,13 @@ if(isset($_SESSION['expire'])){
   <footer>
     <p>© 2024 Smart & Luxury Motor Spares inc.</p>
   </footer>
+    <!-- return top -->
+
+    <div id="page-top" style="">
+    <a href="#header"><img src="../../images/common/returan-top.png" /></a>
+  </div>
+
+  <!-- /return top -->
 </body>
 
 </html>
