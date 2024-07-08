@@ -244,7 +244,7 @@ if (isset($_SESSION['expire'])) {
                     </a>
                   </li>
                   <?php
-                  for ($i = 1; $i <= $totalPage; $i++) {
+                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
                   ?>
                     <li class="page-item <?php if ($i == $currentPage) {
                                             echo "active";
@@ -347,7 +347,7 @@ if (isset($_SESSION['expire'])) {
                     </a>
                   </li>
                   <?php
-                  for ($i = 1; $i <= $totalPage; $i++) {
+                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
                   ?>
                     <li class="page-item <?php if ($i == $currentPage) {
                                             echo "active";
