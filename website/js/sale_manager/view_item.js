@@ -1,5 +1,5 @@
 function editItem(itemID) {
-
+  GoToPage_POST("./edit_delete_item.php", {"spnum": itemID});
 }
 
 function itemReport(itemID) {

@@ -107,7 +107,7 @@ function goBack() {
     for (key in Object.keys(kvPair)) {
       var input = document.createElement('input');
       input.name = key;
-      input.value = payload[key];
+      input.value = kvPair[key];
       form.appendChild(input); // add key/value pair to form
     }
     document.body.appendChild(form); // forms cannot be submitted outside of body
