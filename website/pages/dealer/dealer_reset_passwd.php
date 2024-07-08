@@ -32,8 +32,9 @@ if(isset($_SESSION['expire'])){
   <link rel="stylesheet" href="../../css/dealer_template_resetpasswd.css">
   <!-- /css -->
   <!-- js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/dealer_template_resetpasswd.js"></script>
+  <script src="../../js/dealer/dealer_template_resetpasswd.js"></script>
 
   <!-- /css -->
   <!-- js -->
@@ -45,8 +46,7 @@ if(isset($_SESSION['expire'])){
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
@@ -55,17 +55,25 @@ if(isset($_SESSION['expire'])){
               <a class="nav-link" href="./search_item.php">Our Product</a>
             </li>
           </ul>
+          <?php
+          $sql = "SELECT count(*) as cn FROM cart where userID = " . $_SESSION['userID'] . ";";
+          $result = mysqli_query($conn, $sql);
+          $row = mysqli_fetch_array($result);
+          $cartNum = $row['cn'];
+          if ($cartNum > 99) {
+            $cartNum = "99+";
+          }
+          ?>
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              Hi [username]<span class="note-label">99+</span>
+            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Hi <?php echo $_SESSION["dealerName"] ?><span class="note-label"><?php echo $cartNum ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="./dealer_information.php">Your Information</a></li>
               <li><a class="dropdown-item" href="./view_order_record.php">Your Order</a></li>
               <li>
                 <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.php">
-                  Cart<span class="cart-number-label">99+</span>
+                  Cart<span class="cart-number-label"><?php echo $cartNum ?></span>
                 </a>
               </li>
               <li class="dropdown-item">
@@ -99,19 +107,19 @@ if(isset($_SESSION['expire'])){
           <div class="col-md-12">
             <label class="labels">Current Password: </label><input type="password" id="myInput1" class="form-control"
                    value="">
-            <input type="checkbox" onclick="myFunction1()">Show Password
+            <input type="checkbox" onclick="ShowCurrentPassword()">Show Password
           </div>
           <div class="row mt-3">
             <div class="col-md-12">
               <label class="labels">New Password: </label><input type="password" id="myInput2" class="form-control"
                      value="">
-              <input type="checkbox" onclick="myFunction2()">Show Password
+              <input type="checkbox" onclick="ShowNewPassword()">Show Password
             </div>
             <div class="row mt-3">
               <div class="col-md-12">
                 <label class="labels">Confirm Password: </label><input type="password" id="myInput3"
                        class="form-control" value="">
-                <input type="checkbox" onclick="myFunction3()">Show Password
+                <input type="checkbox" onclick="ShowConfirmPassword()">Show Password
               </div>
             </div>
             <div class="row mt-3">
@@ -123,7 +131,7 @@ if(isset($_SESSION['expire'])){
                   </a>
               </div>
               <div class="col-md-6 ">
-                <button class="btn btn-primary profile-button" type="button">
+                <button class="btn btn-primary profile-button" type="button" onclick="">
                   Reset Password
                 </button>
               </div>
