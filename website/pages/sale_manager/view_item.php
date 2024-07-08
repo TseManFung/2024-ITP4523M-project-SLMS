@@ -75,26 +75,72 @@ if(isset($_SESSION['expire'])){
     <!-- /navbar -->
   </div>
   <!-- search-bar -->
-  <div style="height: calc(20lvh + 74px)" id="header"
-       class="d-flex position-relative justify-content-center align-items-center">
+  <div style="height: calc(20lvh + 74px)" id="header" class="d-flex position-relative justify-content-center align-items-center">
     <div class="position-relative start-0 end-0 d-flex justify-content-center" style="margin-top: 10px">
-      <form class="position-relative d-flex search-bar" role="search">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
-        <div class="search-box">
+      <div class="position-relative d-flex search-bar" role="search">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search-input" value="<?php if (isset($_GET["search"])) {
+                                                                                                                      echo $_GET["search"];
+                                                                                                                    } ?>" />
+        <div class="search-box" id="search-box">
           <i class="fa-solid fa-magnifying-glass fa-xl"></i>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <!-- /search-bar -->
+  <?php
+  $condition = "";
+  if (isset($_GET["search"])) {
+    $condition = "$condition and (sparePartName like '%" . $_GET["search"] . "%') or (sparePartDescription like '%" . $_GET["search"] . "%') or (s.sparePartNum like '%" . $_GET["search"] . "%') ";
+  }
+  if (isset($_GET["A"])) {
+    $condition = "$condition and category != 'A' ";
+  }
+  if (isset($_GET["B"])) {
+    $condition = "$condition and category != 'B' ";
+  }
+  if (isset($_GET["C"])) {
+    $condition = "$condition and category != 'C' ";
+  }
+  if (isset($_GET["D"])) {
+    $condition = "$condition and category != 'D' ";
+  }
+  if (isset($_GET["minPrice"])) {
+    $condition = "$condition and price >= " . $_GET["minPrice"] . " ";
+  }
+  if (isset($_GET["maxPrice"])) {
+    $condition = "$condition and price <= " . $_GET["maxPrice"] . " ";
+  }
+  if (isset($_GET["sort"])) {
+    if ($_GET["sort"] == "NA") {
+      $condition = "$condition order by s.sparePartNum desc ";
+    } else if ($_GET["sort"] == "PLH") {
+      $condition = "$condition order by price ";
+    } else if ($_GET["sort"] == "PHL") {
+      $condition = "$condition order by price desc ";
+    }
+  }
 
+  $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' " . $condition . ";";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_array($result);
+  $spareCount = $row['spareCount'];
+  $spareMaxPrice = $row['SpareMaxPrice'];
+  $spareMinPrice = $row['SpareMinPrice'];
+  if (isset($_GET['pages']) && $_GET['pages'] > 0) {
+    $currentPage = $_GET['pages'];
+  } else {
+    $currentPage = 1;
+  }
+  $totalPage = ceil($spareCount / 12);
+  ?>
   <!-- content -->
   <div class="d-flex position-relative content-bg justify-content-center">
     <div class="container content-wrap">
       <br />
       <div class="row">
         <div class="col">
-          <h2>All item</h2>
+          <h2><?php if(isset($_GET["search"])){echo "search for: ".$_GET["search"];}else{echo "All item";}?></h2>
         </div>
         <div class="col-3 position-relative">
           <a href="./add_item.php">
@@ -106,22 +152,30 @@ if(isset($_SESSION['expire'])){
       <hr />
       <div class="row category-item">
         <div class="col-3">
-          <form class="position-relative d-flex flex-column">
+        <div class="position-relative d-flex flex-column" name="filter">
             <h4>Category</h4>
             <div class="form-check">
-              <input id="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked />
+              <input id="A" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="A" <?php if (!isset($_GET["A"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
             </div>
             <div class="form-check">
-              <input id="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked />
+              <input id="B" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="B" <?php if (!isset($_GET["B"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
             </div>
             <div class="form-check">
-              <input id="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked />
+              <input id="C" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="C" <?php if (!isset($_GET["C"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="C" class="cursor-pointer form-check-label">Light Components</label>
             </div>
             <div class="form-check">
-              <input id="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked />
+              <input id="D" name="Category" class="form-check-input cursor-pointer" type="checkbox" value="D" <?php if (!isset($_GET["D"])) {
+                                                                                                                echo "checked";
+                                                                                                              } ?> />
               <label for="D" class="cursor-pointer form-check-label">Accessories</label>
             </div>
             <br />
@@ -129,16 +183,20 @@ if(isset($_SESSION['expire'])){
             <div class="row">
               <div class="col-4">
                 <!-- use js to set placeholder and min and max and value of minPrice and maxPrice -->
-                <input id="minPrice" class="form-control" type="number" min="0" placeholder="0" value="" />
+                <input id="minPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo $spareMinPrice; ?>" value="<?php if (isset($_GET["minPrice"])) {
+                                                                                                                                                                                                                        echo $_GET["minPrice"];
+                                                                                                                                                                                                                      } ?>" />
               </div>
               <div class="col-1 text-center">-</div>
               <div class="col-4">
-                <input id="maxPrice" class="form-control" type="number" max="1000" placeholder="1000" value="" />
+                <input id="maxPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo $spareMaxPrice; ?>" value="<?php if (isset($_GET["maxPrice"])) {
+                                                                                                                                                                                                                        echo $_GET["maxPrice"];
+                                                                                                                                                                                                                      } ?>" />
               </div>
             </div>
             <br />
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+            <button type="button" onclick="Submitfilter()" class="btn btn-primary">Submit</button>
+          </div>
           <br />
           <br />
           <br />
@@ -166,24 +224,38 @@ if(isset($_SESSION['expire'])){
               </ul>
             </div>
             <div class="col d-flex justify-content-center align-items-end">
-              <nav aria-label="Page navigation">
+            <nav aria-label="Page navigation">
                 <ul class="pagination page-nav" style="margin-bottom: 0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
+                  <li class="page-item <?php if ($currentPage <= 1) {
+                                          echo "disabled";
+                                        }
+                                        ?>">
+                    <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
+                                                        echo "1";
+                                                      } else {
+                                                        echo $currentPage - 1;
+                                                      }; ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                  <?php
+                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
+                  ?>
+                    <li class="page-item <?php if ($i == $currentPage) {
+                                            echo "active";
+                                          } ?>">
+                      <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                  <?php } ?>
+                  <li class="page-item <?php if ($currentPage >= $totalPage) {
+                                          echo "disabled";
+                                        }
+                                        ?>">
+                    <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
+                                                        echo $totalPage;
+                                                      } else {
+                                                        echo $currentPage + 1;
+                                                      }; ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -191,14 +263,21 @@ if(isset($_SESSION['expire'])){
               </nav>
             </div>
             <div class="col">
-              <div class="form-floating">
+            <div class="form-floating">
                 <select class="form-select" id="sort">
-                  <option value="R" selected>Recommend</option>
-                  <option value="N">Newest</option>
-                  <option value="PLH">Price: Low to High</option>
-                  <option value="PHL">Price: High to Low</option>
-                  <option value="SLH">Stock: Low to High</option>
-                  <option value="SHL">Stock: High to Low</option>
+
+                  <option value="R" <?php if (!isset($_GET["sort"]) || $_GET["sort"] == "R") {
+                                      echo "selected";
+                                    } else ?>>Recommend</option>
+                  <option value="NA" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "NA") {
+                                        echo "selected";
+                                      } else  ?>>Newest Arrivals</option>
+                  <option value="PLH" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "PLH") {
+                                        echo "selected";
+                                      } else  ?>>Price: Low to High</option>
+                  <option value="PHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "PHL") {
+                                        echo "selected";
+                                      } else  ?>>Price: High to Low</option>
                 </select>
                 <label for="sort">Sort</label>
               </div>
@@ -207,270 +286,80 @@ if(isset($_SESSION['expire'])){
           <hr />
           <div class="row">
             <div id="item" class="item-wrap cell">
-              <div class="item-box">
+            <?php
+              $sql = sprintf("SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty
+               FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum 
+               where state = 'N' and stockItemQty > 0 %s 
+               limit %d,12;",$condition, ($currentPage - 1) * 12);
+              $result = mysqli_query($conn, $sql);
+              while ($row = mysqli_fetch_array($result)) {
+
+                printf('              <div class="item-box">
                 <!-- onclick go to item detail -->
                 <div class="item-img">
-                  <img class="img-m" src="../../images/item/100001.jpg" />
+                  <img class="img-m" src="%s" />
                 </div>
                 <div class="item-info">
-                  <p>Item ID | Item Name</p>
+                  <p class="item-name">%s | %s</p>
                   <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
+                  Item Description : %s
                   </p>
                   <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
+                  <span>Price: $%.2f</span> <span>Stock: %d</span>
                   </div>
                 </div>
                 <div class="item-btn">
                   <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn btn-primary" onclick="editItem(\'%s\')">
                     Manage this item
                   </button>
                   <br />
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn btn-primary" onclick="itemReport(\'%s\')">
                     Report of this spare
                   </button>
                 </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100002.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100003.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100004.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/100005.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/200001.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/200002.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
-              <div class="item-box">
-                <div class="item-img">
-                  <img class="img-m" src="../../images/item/200003.jpg" />
-                </div>
-                <div class="item-info">
-                  <p>Item ID | Item Name</p>
-                  <p class="item-desc">
-                    Item Description :[We use a large block of connected links
-                    for our pagination, making links hard to miss and easily
-                    scalable—all while providing large hit areas. Pagination
-                    is built with list HTML elements so screen readers can
-                    announce the number of available links. Use a wrapping
-                    element to identify it as a navigation section to screen
-                    readers and other assistive technologies.]
-                  </p>
-                  <div class="d-flex item-data">
-                    <span>Price: $100</span> <span>Stock: 10</span>
-                  </div>
-                </div>
-                <div class="item-btn">
-                  <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
-                    Manage this item
-                  </button>
-                  <br />
-                  <button type="button" class="btn btn-primary">
-                    Report of this spare
-                  </button>
-                </div>
-              </div>
+              </div>', $row['sparePartImage'],$row['spnum'], $row['sparePartName'], $row['sparePartDescription'], $row['price'], $row['stockItemQty'], $row['spnum'], $row['spnum']);
+              }
+              ?>
+              
+              
             </div>
           </div>
           <hr />
           <div class="row">
             <div class="col d-flex justify-content-center align-items-end">
-              <nav aria-label="Page navigation">
+            <nav aria-label="Page navigation">
                 <ul class="pagination page-nav" style="margin-bottom: 0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
+                  <li class="page-item <?php if ($currentPage <= 1) {
+                                          echo "disabled";
+                                        }
+                                        ?>">
+                    <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
+                                                        echo "1";
+                                                      } else {
+                                                        echo $currentPage - 1;
+                                                      }; ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                  <?php
+                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
+                  ?>
+                    <li class="page-item <?php if ($i == $currentPage) {
+                                            echo "active";
+                                          } ?>">
+                      <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                  <?php } ?>
+                  <li class="page-item <?php if ($currentPage >= $totalPage) {
+                                          echo "disabled";
+                                        }
+                                        ?>">
+                    <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
+                                                        echo $totalPage;
+                                                      } else {
+                                                        echo $currentPage + 1;
+                                                      }; ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>

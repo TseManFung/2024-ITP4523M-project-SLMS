@@ -154,7 +154,7 @@ if (isset($_SESSION['expire'])) {
     <div class="container content-wrap">
       <br />
       <div class="row">
-        <h2>All item</h2>
+        <h2><?php if(isset($_GET["search"])){echo "search for: ".$_GET["search"];}else{echo "All item";}?></h2>
       </div>
       <hr />
       <div class="row category-item">
