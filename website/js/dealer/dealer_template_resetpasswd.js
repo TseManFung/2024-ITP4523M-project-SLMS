@@ -1,4 +1,4 @@
-function myFunction1() {
+function ShowCurrentPassword() {
     var x = document.getElementById("myInput1");
     if (x.type === "password") {
         x.type = "text";
@@ -6,7 +6,7 @@ function myFunction1() {
         x.type = "password";
     }
 }
-function myFunction2() {
+function ShowNewPassword() {
     var x = document.getElementById("myInput2");
     if (x.type === "password") {
         x.type = "text";
@@ -14,7 +14,7 @@ function myFunction2() {
         x.type = "password";
     }
 }
-function myFunction3() {
+function ShowConfirmPassword() {
     var x = document.getElementById("myInput3");
     if (x.type === "password") {
         x.type = "text";

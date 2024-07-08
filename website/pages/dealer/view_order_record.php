@@ -25,6 +25,7 @@ if(isset($_SESSION['expire'])){
 
   <!-- css -->
   <!-- icon -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/common.css" />

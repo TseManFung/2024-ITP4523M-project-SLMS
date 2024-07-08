@@ -11,7 +11,6 @@ require_once '../db/dbconnect.php';
     $sql = sprintf("INSERT INTO cart (userID, sparePartNum, qty)
             VALUES (%d, '%s', 1)
             ON DUPLICATE KEY UPDATE qty = qty + 1", $_SESSION['userID'], $_POST['sparePartNum'], $_POST['qty']);
-
  mysqli_query($conn, $sql);
 
 ?>

@@ -33,7 +33,6 @@ if (isset($_SESSION['expire'])) {
 
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/search_item.js"></script>
   <script src="../../js/dealer/view_item.js"></script>
