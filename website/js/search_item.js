@@ -22,7 +22,7 @@ $(document).ready(function () {
         const searchInput = $("#search-input").val();
         const searchParam = "search";
         const currentUrl = new URL(window.location.href);
-    
+        currentUrl.searchParams.delete("pages");
         if (searchInput === "") {
           if (currentUrl.searchParams.has(searchParam)) {
             currentUrl.searchParams.delete(searchParam);
@@ -34,3 +34,30 @@ $(document).ready(function () {
         }
       });
 });
+
+function Submitfilter() {
+    // get name="Category"
+    Checkboxes = document.getElementsByName("Category");
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete("pages");
+    for (const ele of Checkboxes) {
+      if (ele.checked) {
+        currentUrl.searchParams.delete(ele.value);
+      } else {
+        currentUrl.searchParams.set(ele.value, ele.value);
+      }
+    }
+    // get  id="minPrice" id="maxPrice"
+    if ($("#minPrice").val()) {
+      currentUrl.searchParams.set("minPrice", $("#minPrice").val());
+    } else {
+      currentUrl.searchParams.delete("minPrice");
+    }
+    if ($("#maxPrice").val()) {
+      currentUrl.searchParams.set("maxPrice", $("#maxPrice").val());
+    } else {
+      currentUrl.searchParams.delete("maxPrice");
+    }
+  
+    window.location.href = currentUrl.toString();
+  }

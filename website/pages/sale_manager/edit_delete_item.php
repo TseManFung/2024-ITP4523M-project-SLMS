@@ -39,6 +39,13 @@ if(isset($_SESSION['expire'])){
   <!-- /js -->
 </head>
 
+<?php
+$sql = sprintf("SELECT * FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum WHERE s.sparePartNum = '%s'", $_POST["spnum"]);
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+// * = s.sparePartNum, category, sparePartName, sparePartImage, sparePartDescription, weight, price, state, q.sparePartNum, stockItemQty
+?>
+
 <body>
   <div class="fixed-top">
     <!-- navbar -->
@@ -51,7 +58,7 @@ if(isset($_SESSION['expire'])){
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            <li class="nav-item">f
+            <li class="nav-item">
               <a class="nav-link" href="./view_item.php">Item</a>
             </li>
             <li class="nav-item">
@@ -94,23 +101,23 @@ if(isset($_SESSION['expire'])){
               <div class="col">
                 <div class="form-floating ">
                   <select class="form-select" id="category" disabled>
-                    <option value="A">A - Sheet Metal</option>
-                    <option value="B">B - Major Asssemblies</option>
-                    <option value="C">C - Light Components</option>
-                    <option value="D">D - Accessories</option>
+                    <option value="A" <?php if($row["category"]=="A"){echo "selected";} ?> >A - Sheet Metal</option>
+                    <option value="B" <?php if($row["category"]=="B"){echo "selected";} ?> >B - Major Asssemblies</option>
+                    <option value="C" <?php if($row["category"]=="C"){echo "selected";} ?> >C - Light Components</option>
+                    <option value="D" <?php if($row["category"]=="D"){echo "selected";} ?> >D - Accessories</option>
                   </select>
                   <label for="category">Category</label>
                 </div>
               </div>
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number" disabled>
+                  <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number" disabled value="<?php echo $_POST["spnum"]?>">
                   <label for="SpacePartNumber">Space Part Number</label>
                 </div>
               </div>
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="name" placeholder="Name" disabled>
+                  <input type="text" class="form-control" id="name" placeholder="Name" disabled value="<?php echo $row["sparePartName"]?>">
                   <label for="name">Name</label>
                 </div>
               </div>
@@ -121,7 +128,7 @@ if(isset($_SESSION['expire'])){
             <div class="row">
               <div class="col">
                 <div class="form-floating">
-                  <input type="number" class="form-control" id="qty" placeholder="Quantity" min="0">
+                  <input type="number" class="form-control" id="qty" placeholder="Quantity" min="0" value="<?php echo $row["stockItemQty"]?>">
                   <label for="qty">Quantity</label>
                 </div>
               </div>
@@ -129,7 +136,7 @@ if(isset($_SESSION['expire'])){
                 <div class="input-group mb-3">
                   <span class="input-group-text">$</span>
                   <div class="form-floating">
-                    <input type="number" class="form-control" id="price" placeholder="Price" min="0">
+                    <input type="number" class="form-control" id="price" placeholder="Price" min="0" value="<?php echo $row["price"]?>">
                     <label for="price">Price</label>
                   </div>
                 </div>
@@ -137,10 +144,10 @@ if(isset($_SESSION['expire'])){
               <div class="col">
                 <div class="input-group mb-3">
                   <div class="form-floating">
-                    <input type="number" class="form-control" id="weight" placeholder="Weight" min="0" disabled>
+                    <input type="number" class="form-control" id="weight" placeholder="Weight" min="0" value="<?php echo $row["weight"]?>" disabled>
                     <label for="weight">Weight</label>
                   </div>
-                  <span class="input-group-text">g</span>
+                  <span class="input-group-text">kg</span>
                 </div>
               </div>
             </div>
@@ -151,7 +158,7 @@ if(isset($_SESSION['expire'])){
               <div class="col">
 
                 <div class="form-floating">
-                  <textarea class="form-control" placeholder="Description" id="desc" style="height: 7.4rem"></textarea>
+                  <textarea class="form-control" placeholder="Description" id="desc" style="height: 7.4rem"><?php echo $row["sparePartDescription"]; ?></textarea>
                   <label for="desc">Description</label>
                 </div>
               </div>
@@ -164,11 +171,11 @@ if(isset($_SESSION['expire'])){
               <div class="col">
 
                 <label for="item-img-input" class="form-label">select or drop the image of this spare part</label>
-                <input class="form-control" type="file" id="item-img-input">
+                <input class="form-control" type="file" id="item-img-input" >
 
               </div>
               <div class="col">
-                <img id="item-img" class="item-img" src="">
+                <img id="item-img" class="item-img" src="<?php echo $row["sparePartImage"]?>">
               </div>
 
             </div>

@@ -73,41 +73,18 @@ function goBack() {
     
   }
 
-  function Submitfilter() {
-    // get name="Category"
-    Checkboxes = document.getElementsByName("Category");
-    const currentUrl = new URL(window.location.href);
-    for (const ele of Checkboxes) {
-      if (ele.checked) {
-        currentUrl.searchParams.delete(ele.value);
-      } else {
-        currentUrl.searchParams.set(ele.value, ele.value);
-      }
-    }
-    // get  id="minPrice" id="maxPrice"
-    if ($("#minPrice").val()) {
-      currentUrl.searchParams.set("minPrice", $("#minPrice").val());
-    } else {
-      currentUrl.searchParams.delete("minPrice");
-    }
-    if ($("#maxPrice").val()) {
-      currentUrl.searchParams.set("maxPrice", $("#maxPrice").val());
-    } else {
-      currentUrl.searchParams.delete("maxPrice");
-    }
-  
-    window.location.href = currentUrl.toString();
-  }
 
-  function GoToPage_POST(action,kvPair) {
+
+  function GoToPage_POST(action, kvPair) {
     var form = document.createElement('form');
     form.style.visibility = 'hidden'; // no user interaction is necessary
     form.method = 'POST'; // forms by default use GET query strings
     form.action = action;
-    for (key in Object.keys(kvPair)) {
+    obj = Object.keys(kvPair);
+    for (key in obj) {
       var input = document.createElement('input');
-      input.name = key;
-      input.value = kvPair[key];
+      input.name = obj[key];
+      input.value = kvPair[obj[key]];
       form.appendChild(input); // add key/value pair to form
     }
     document.body.appendChild(form); // forms cannot be submitted outside of body

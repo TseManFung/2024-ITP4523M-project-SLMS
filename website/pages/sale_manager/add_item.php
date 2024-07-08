@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -44,8 +44,7 @@ if(isset($_SESSION['expire'])){
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
@@ -82,7 +81,7 @@ if(isset($_SESSION['expire'])){
     <div class="container content-wrap">
       <br>
       <div>
-        <form name="add_item" method="post">
+        <form id="uploadForm" name="uploadForm" enctype="multipart/form-data">
           <div class="row">
             <h1 class="center-LR" style="width: fit-content;">New Spare Part<h1>
           </div>
@@ -93,7 +92,7 @@ if(isset($_SESSION['expire'])){
             <div class="row">
               <div class="col">
                 <div class="form-floating">
-                  <select class="form-select" id="category">
+                  <select class="form-select" id="category" name="category">
                     <option value="A">A - Sheet Metal</option>
                     <option value="B">B - Major Asssemblies</option>
                     <option value="C">C - Light Components</option>
@@ -104,7 +103,7 @@ if(isset($_SESSION['expire'])){
               </div>
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="name" placeholder="Name">
+                  <input type="text" class="form-control" id="name" placeholder="Name" name="sparePartName">
                   <label for="name">Name</label>
                 </div>
               </div>
@@ -115,7 +114,7 @@ if(isset($_SESSION['expire'])){
             <div class="row">
               <div class="col">
                 <div class="form-floating">
-                  <input type="number" class="form-control" id="qty" placeholder="Quantity" min="0">
+                  <input type="number" class="form-control" id="qty" name="Quantity"  placeholder="Quantity" min="0">
                   <label for="qty">Quantity</label>
                 </div>
               </div>
@@ -123,7 +122,7 @@ if(isset($_SESSION['expire'])){
                 <div class="input-group mb-3">
                   <span class="input-group-text">$</span>
                   <div class="form-floating">
-                    <input type="number" class="form-control" id="price" placeholder="Price" min="0">
+                    <input type="number" class="form-control" name="price" id="price" placeholder="Price" min="0">
                     <label for="price">Price</label>
                   </div>
                 </div>
@@ -131,10 +130,10 @@ if(isset($_SESSION['expire'])){
               <div class="col">
                 <div class="input-group mb-3">
                   <div class="form-floating">
-                    <input type="number" class="form-control" id="weight" placeholder="Weight" min="0">
+                    <input type="number" class="form-control" id="weight" name="weight"  placeholder="Weight" min="0">
                     <label for="weight">Weight</label>
                   </div>
-                  <span class="input-group-text">g</span>
+                  <span class="input-group-text">kg</span>
                 </div>
               </div>
             </div>
@@ -145,7 +144,7 @@ if(isset($_SESSION['expire'])){
               <div class="col">
 
                 <div class="form-floating">
-                  <textarea class="form-control" placeholder="Description" id="desc" style="height: 7.4rem"></textarea>
+                  <textarea name="sparePartDescription" class="form-control" placeholder="Description" id="desc" style="height: 7.4rem"></textarea>
                   <label for="desc">Description</label>
                 </div>
               </div>
@@ -158,7 +157,7 @@ if(isset($_SESSION['expire'])){
               <div class="col">
 
                 <label for="item-img-input" class="form-label">select or drop the image of this spare part</label>
-                <input class="form-control" type="file" id="item-img-input">
+                <input class="form-control" type="file" name="fileToUpload" id="item-img-input">
 
               </div>
               <div class="col">
@@ -169,24 +168,12 @@ if(isset($_SESSION['expire'])){
 
             <br>
 
-            <!-- alert -->
-            <div class="row">
-              <div id="successful" class="alert alert-success d-none" role="alert">
-                successful to add a new spare part: [spare part name].<br>
-                The new spare part number is: [spare part number]
-              </div>
-
-              <div id="fail" class="alert alert-danger d-none" role="alert">
-                fail to add a new spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
-              </div>
-            </div>
-            <!-- alert -->
 
             <br>
 
             <div class="row">
               <div class="col">
-                <button type="button" class="btn btn-primary" onclick="Submit()">Confirm to add a new item</button>
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Confirm to add a new item</button>
                 <button type="button" class="btn btn-secondary" onclick="Clear()">Clear</button>
                 <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
               </div>
@@ -196,6 +183,18 @@ if(isset($_SESSION['expire'])){
 
           </div>
         </form>
+
+        <!-- alert -->
+        <div class="row">
+          <div id="successful" class="alert alert-success d-none" role="alert">
+
+          </div>
+
+          <div id="fail" class="alert alert-danger d-none" role="alert">
+            fail to add a new spare part.<br>Reason: [The reason of submit fail]<br>Please try again.
+          </div>
+        </div>
+        <!-- alert -->
       </div>
     </div>
   </div>
