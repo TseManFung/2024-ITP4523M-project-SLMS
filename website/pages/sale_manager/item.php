@@ -24,8 +24,8 @@ if (isset($_POST["sparePartNum"])) {
         $target_dir = "../../images/item/";
         $imageFileType = strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
 
-        $number = substr($sparePartNumber, 1);
-        $FileName = (ord(substr($sparePartNumber, 0, 1)) - 64) . $number . "." . strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
+
+        $FileName = $sparePartNumber . "." . strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
 
         $target_file = $target_dir . $FileName;
         $uploadOk = 1;
@@ -91,10 +91,10 @@ if (isset($_POST["sparePartNum"])) {
     $row = $result->fetch_assoc();
     //  max(sparePartNum) = A00001 +1 -> A00002
     $code = $row['max(sparePartNum)'];
-    $number = (int) substr($code, 1);
-    $sparePartNumber = $category . str_pad($number + 1, 5, '0', STR_PAD_LEFT);
+    $number = (int) $sparePartNumber;
+    $sparePartNumber = $number + 1;
 
-    $newFileName = (ord($category) - 64) . str_pad($number + 1, 5, '0', STR_PAD_LEFT) . "." . strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
+    $newFileName = $sparePartNumber . "." . strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
 
     $target_dir = "../../images/item/";
     $imageFileType = strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
