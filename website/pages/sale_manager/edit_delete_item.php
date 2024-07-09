@@ -15,6 +15,7 @@ if (isset($_SESSION['expire'])) {
   session_destroy();
   header('Location: ../../index.php');
 }
+
 ?>
 
 <head>
@@ -82,7 +83,15 @@ if (isset($_SESSION['expire'])) {
   <div class="d-flex position-relative content-bg justify-content-center">
     <div class="container content-wrap">
       <br>
-      <div>
+      <?php if(!isset( $_POST["spnum"])){echo '  <div class="alert alert-danger position-relative" role="alert">
+            <h1>Please re-enter to this page</h1> <br><br>
+            <div class="position-absolute bottom-0 start-0 m-2">
+            <button type="button" class="btn btn-primary" onclick="goBack()">Go Back</button>
+              
+            </div>
+
+          </div>';} ?>
+      <div <?php if(!isset( $_POST["spnum"])){echo 'class="d-none"';} ?>>
         <form name="ED_item" id="ED_item" method="post">
           <?php
           $sql = sprintf("SELECT * FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum WHERE s.sparePartNum = '%s'", $_POST["spnum"]);
@@ -119,8 +128,8 @@ if (isset($_SESSION['expire'])) {
               </div>
               <div class="col">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="SpacePartNumber" name="sparePartNum" placeholder="Space Part Number" disabled value="<?php echo $_POST["spnum"] ?>">
-                  <label for="SpacePartNumber">Space Part Number</label>
+                  <input type="text" class="form-control" id="SparePartNumber" name="sparePartNum" placeholder="Spare Part Number" disabled value="<?php echo $_POST["spnum"] ?>">
+                  <label for="SparePartNumber">Spare Part Number</label>
                 </div>
               </div>
               <div class="col">
@@ -217,8 +226,8 @@ if (isset($_SESSION['expire'])) {
           </div>
 
           <div id="confirm-delete" class="alert alert-secondary d-none position-relative" role="alert">
-            For delete spare part : [item number] <br>
-            Please enter the spare part name below: [spare part name] <br><br>
+            For delete spare part : <?php echo $_POST["spnum"] ?> <br>
+            Please enter the spare part name below: <b><u id="CSName"><?php echo $row["sparePartName"] ?></u></b> <br><br>
             <div class="form-floating">
               <input type="text" class="form-control" id="delete-name" placeholder="Spare Part Name" name="confirmName" disabled>
               <label for="delete-name">Spare Part Name</label>

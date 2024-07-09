@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   $("#ED_item").on("submit", function (e) {
     //$(".alert").addClass("d-none");
     e.preventDefault();
+    $("#delete-name").prop("disabled", true);
     // check if any is null or wrong: alert wornging
     // https://getbootstrap.com/docs/5.3/forms/floating-labels/#input-groups
     is_valid = true;
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // document.add_item.submit(); is not ok
     // use other way to submit
     var formData = new FormData(this);
-    formData.append("sparePartNum", $("#SpacePartNumber").val());
+    formData.append("sparePartNum", $("#SparePartNumber").val());
     $.ajax({
       url: "./item.php",
       type: "POST",
@@ -55,35 +56,72 @@ document.addEventListener("DOMContentLoaded", function () {
       processData: false,
       success: function (response) {
         jsonResponse = JSON.parse(response);
-        $("#successful")
-          .html(`successful to edit or delete the spare part: ${jsonResponse.sparePartName}.`);
+        $("#successful").html(
+          `successful to edit the spare part: ${jsonResponse.sparePartName}.`
+        );
 
-          $("#successful").removeClass("d-none");
-          $("#fail").addClass("d-none");
-          $("#confirm-delete").addClass("d-none");
+        $("#successful").removeClass("d-none");
+        $("#fail").addClass("d-none");
+        $("#confirm-delete").addClass("d-none");
       },
       error: function (jqXHR, textStatus, errorThrown) {
         $("#fail").html(
-          `fail to add a new spare part.<br>Reason: ${jqXHR.responseText}<br>Please try again.`
+          `fail to edit the spare part.<br>Reason: ${jqXHR.responseText}<br>Please try again.`
         );
         $("#fail").removeClass("d-none");
         $("#successful").addClass("d-none");
         $("#confirm-delete").addClass("d-none");
       },
     });
-    
-  })
+  });
 });
-
-
 
 function Cancel_delete() {
   $(".alert").addClass("d-none");
+  $("#delete-name").prop("disabled", true);
 }
 
 function Delete() {
+  $("#delete-name").prop("disabled", true);
   $(".alert").addClass("d-none");
+
+  if ($("#delete-name").val() != $("#CSName").text()) {
+    $("#fail").html(
+      `fail to delete the spare part.<br>Reason: The name you entered is not the same as the spare part name.<br>Please try again.`
+    );
+    $("#fail").removeClass("d-none");
+    return;
+  }
+
   // try to set the state to D (delete) of this item
+  sql = `UPDATE spare SET state = 'D' WHERE sparePartNum = '${$(
+    "#SparePartNumber"
+  ).val()}'`;
+  $.ajax({
+    url: "../db/query.php",
+    type: "POST",
+    data: { query: sql },
+    success: function (response) {
+      $("#successful").html(
+        `successful to delete the spare part: ${$(
+          "#SparePartNumber"
+        ).val()}.<br>you will be redirected to the previou page in 3 seconds.`
+      );
+
+      $("#successful").removeClass("d-none");
+      setTimeout(function () {
+        goBack();
+      }, 3000);
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      // Handle error response
+      $("#fail").html(
+        `fail to delete the spare part.<br>Reason: ${jqXHR.responseText}<br>Please try again.`
+      );
+      $("#fail").removeClass("d-none");
+    },
+  });
+
   // if success, show the successful alert
   $("#successful").removeClass("d-none");
   // if fail, show the fail alert
@@ -91,6 +129,6 @@ function Delete() {
 
 function confirm_delete() {
   $(".alert").addClass("d-none");
-
+  $("#delete-name").prop("disabled", false);
   $("#confirm-delete").removeClass("d-none");
 }

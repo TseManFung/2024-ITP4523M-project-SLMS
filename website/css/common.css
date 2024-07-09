@@ -339,6 +339,7 @@ footer ul.sns li img {
   max-height: 162px;
   border-radius: 10px;
   max-width: 225px;
+  object-fit:contain;
 }
 
 .item-wrap .item-box .item-info {
