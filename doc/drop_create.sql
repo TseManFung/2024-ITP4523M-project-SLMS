@@ -62,7 +62,7 @@ CREATE TABLE
     `orderID` integer (10) PRIMARY KEY AUTO_INCREMENT,
     `orderDateTime` timestamp NOT NULL,
     `deliveryAddress` varchar(255) NOT NULL,
-    `deliveryDate` date,
+    `deliveryDate` date default null,
     `salesManagerID` integer (10),
     `dealerID` integer (10) NOT NULL,
     `orderItemNumber` integer (10) NOT NULL,
