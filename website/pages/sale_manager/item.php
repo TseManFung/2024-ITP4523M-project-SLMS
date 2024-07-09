@@ -91,7 +91,7 @@ if (isset($_POST["sparePartNum"])) {
     $row = $result->fetch_assoc();
     //  max(sparePartNum) = A00001 +1 -> A00002
     $code = $row['max(sparePartNum)'];
-    $number = (int) $sparePartNumber;
+    $number = (int) $code;
     $sparePartNumber = $number + 1;
 
     $newFileName = $sparePartNumber . "." . strtolower(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_EXTENSION));
