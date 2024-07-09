@@ -122,7 +122,7 @@ if (isset($_SESSION['expire'])) {
                 <div class="input-group mb-3">
                   <span class="input-group-text">$</span>
                   <div class="form-floating">
-                    <input type="number" class="form-control" name="price" id="price" placeholder="Price" min="0">
+                    <input type="number" step="0.01" class="form-control" name="price" id="price" placeholder="Price" min="0">
                     <label for="price">Price</label>
                   </div>
                 </div>
@@ -130,7 +130,7 @@ if (isset($_SESSION['expire'])) {
               <div class="col">
                 <div class="input-group mb-3">
                   <div class="form-floating">
-                    <input type="number" class="form-control" id="weight" name="weight"  placeholder="Weight" min="0">
+                    <input type="number" step="0.0001" class="form-control" id="weight" name="weight"  placeholder="Weight" min="0">
                     <label for="weight">Weight</label>
                   </div>
                   <span class="input-group-text">kg</span>

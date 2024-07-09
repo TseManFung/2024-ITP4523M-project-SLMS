@@ -1,7 +1,10 @@
 <?php
 require_once 'db/dbconnect.php';
-$sql = sprintf("SELECT *,count(*) as resultNum FROM `user` WHERE `LoginName` = '%s' AND `Password` = concat('0',sha2('%s',256));", $_POST['LoginName'], $_POST['Password']);
-$result = mysqli_query($conn, $sql);
+$sql = "SELECT *,count(*) as resultNum FROM `user` WHERE `LoginName` = ? AND `Password` = concat('0',sha2(?,256));";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "ss", $_POST['LoginName'], $_POST['Password']);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 $row = mysqli_fetch_assoc($result);
 // userID, LoginName, password, salesManagerID, dealerID, resultNum
 /* btnLogin.addEventListener('click',function(e){

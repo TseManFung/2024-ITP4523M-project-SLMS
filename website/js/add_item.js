@@ -46,7 +46,6 @@ $(document).ready(function () {
     // document.add_item.submit(); is not ok
     // use other way to submit
     var formData = new FormData(this);
-
     $.ajax({
       url: "./item.php",
       type: "POST",
@@ -54,7 +53,7 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       success: function (response) {
-        var jsonResponse = JSON.parse(response);
+        jsonResponse = JSON.parse(response);
         $("#successful")
           .html(`successful to add a new spare part: ${jsonResponse.sparePartName}.<br>
             The new spare part number is: ${jsonResponse.sparePartNumber}`);

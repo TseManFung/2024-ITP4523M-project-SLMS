@@ -289,7 +289,7 @@ if(isset($_SESSION['expire'])){
             <?php
               $sql = sprintf("SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty
                FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum 
-               where state = 'N' and stockItemQty > 0 %s 
+               where state = 'N' %s 
                limit %d,12;",$condition, ($currentPage - 1) * 12);
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_array($result)) {
