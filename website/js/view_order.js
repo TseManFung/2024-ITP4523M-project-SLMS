@@ -13,9 +13,9 @@ $(document).ready(function () {
     }
   });
   $(".btn-primary").bind("click", function () {
-    window.location.href = "./view_order_detail.html";
+    window.location.href = "./view_order_detail.php";
   });
   $(".order-2many-item").bind("click", function () {
-    window.location.href = "./view_order_detail.html";
+    window.location.href = "./view_order_detail.php";
   });
 });

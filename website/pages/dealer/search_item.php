@@ -281,7 +281,7 @@ if (isset($_SESSION['expire'])) {
                                       } else  ?>>Price: Low to High</option>
                   <option value="PHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "PHL") {
                                         echo "selected";
-                                      } else  ?>>Price: High to Low</option>
+                                      } ?>>Price: High to Low</option>
                 </select>
                 <label for="sort">Sort</label>
               </div>
