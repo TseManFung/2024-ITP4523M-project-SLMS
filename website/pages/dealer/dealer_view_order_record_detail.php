@@ -244,7 +244,7 @@ if(isset($_SESSION['expire'])){
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Total Weight：</span> 1541
+                            <span class="fw-bold me-4">Total Weight：</span> 1541KG
                         </p>
                     </div>
                     <div class="d-flex justify-content-between mb-2">

@@ -7,4 +7,5 @@ $sql = sprintf("UPDATE dealer
                 WHERE dealerID=%d"
                 ,$_POST['contactName'],$_POST['contactNumber'], $_POST['faxNumber'], $_POST['deliveryAddress'], $_POST['dealerID']);
 mysqli_query($conn, $sql);
+mysqli_close($conn);
 ?>

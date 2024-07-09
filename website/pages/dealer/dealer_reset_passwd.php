@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -33,9 +33,9 @@ if(isset($_SESSION['expire'])){
   <!-- /css -->
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/dealer/dealer_template_resetpasswd.js"></script>
-
   <!-- /css -->
   <!-- js -->
   <!-- /js -->
@@ -105,34 +105,31 @@ if(isset($_SESSION['expire'])){
             <h4 class="text-right">Reset Password</h4>
           </div>
           <div class="col-md-12">
-            <label class="labels">Current Password: </label><input type="password" id="myInput1" class="form-control"
-                   value="">
+            <label class="labels">Current Password: </label><input type="password" id="ShowCurrentPW" class="form-control" value="">
             <input type="checkbox" onclick="ShowCurrentPassword()">Show Password
           </div>
           <div class="row mt-3">
             <div class="col-md-12">
-              <label class="labels">New Password: </label><input type="password" id="myInput2" class="form-control"
-                     value="">
+              <label class="labels">New Password: </label><input type="password" id="ShowNewPW" class="form-control" value="">
               <input type="checkbox" onclick="ShowNewPassword()">Show Password
             </div>
             <div class="row mt-3">
               <div class="col-md-12">
-                <label class="labels">Confirm Password: </label><input type="password" id="myInput3"
-                       class="form-control" value="">
+                <label class="labels">Confirm Password: </label><input type="password" id="ShowConfirmPW" class="form-control" value="">
                 <input type="checkbox" onclick="ShowConfirmPassword()">Show Password
               </div>
             </div>
             <div class="row mt-3">
               <div class="col-md-6 ">
-                  <a href="dealer_information_update.php">
-                      <button class="btn btn-primary profile-button" type="button">
-                          Return
-                      </button>
-                  </a>
+                <a href="dealer_information_update.php">
+                  <button class="btn btn-primary profile-button" type="button">
+                    Return
+                  </button>
+                </a>
               </div>
               <div class="col-md-6 ">
-                <button class="btn btn-primary profile-button" type="button" onclick="">
-                  Reset Password
+                <button class="btn btn-primary profile-button" onclick=" ResetPS(<?php echo $_SESSION['userID']; ?>)" type="button">
+                  Reset
                 </button>
               </div>
             </div>
@@ -141,15 +138,30 @@ if(isset($_SESSION['expire'])){
       </div>
     </div>
   </div>
+  </div>
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+          ...
+        </div>
+        <div class="modal-footer" id="modal-footer">
+          <button type="button" id="showModalButton" class="btn btn-secondary" onclick="$('#myModal').modal('hide');">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <footer>
     <p>© 2024 Smart & Luxury Motor Spares inc.</p>
   </footer>
-    <!-- return top -->
+  <!-- return top -->
 
-    <div id="page-top" style="">
+  <div id="page-top" style="">
     <a href="#header"><img src="../../images/common/returan-top.png" /></a>
   </div>
-
   <!-- /return top -->
 </body>
 

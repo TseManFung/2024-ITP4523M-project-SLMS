@@ -25,13 +25,13 @@ if (isset($_SESSION['expire'])) {
 
   <!-- css -->
   <!-- icon -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous">
   <link rel="stylesheet" href="../../css/reset.css">
   <link rel="stylesheet" href="../../css/common.css">
   <link rel="stylesheet" href="../../css/bs/bootstrap.css">
   <!-- /css -->
   <!-- js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/dealer/dealer_information.js"></script>
   <!-- /js -->
