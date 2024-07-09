@@ -91,6 +91,7 @@ if (isset($_SESSION['expire'])) {
   $result = mysqli_query($conn, $sql);
   $dealer = mysqli_fetch_array($result);
   $dealerIDFormatted = sprintf('%06d', $dealer['dealerID']);
+  mysqli_close($conn);
   ?>
 <div class="container rounded bg-white mt-5 mb-5">
   <div class="row">

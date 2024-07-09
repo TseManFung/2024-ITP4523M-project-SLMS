@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -34,6 +34,7 @@ if(isset($_SESSION['expire'])){
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
+  <script src="../../js/dealer/product_detail.js"></script>
   <!-- /js -->
 </head>
 
@@ -84,6 +85,14 @@ if(isset($_SESSION['expire'])){
     <!-- /navbar -->
   </div>
   <br>
+  <?php
+  $spnum = $_GET['spnum'];
+  $sql = "SELECT * FROM spare WHERE sparePartNum = $spnum";
+  $result = mysqli_query($conn, $sql);
+  $detail= mysqli_fetch_array($result);
+  mysqli_close($conn);
+  ?>
+
   <hr style="border: rgb(103, 149, 255) 10px solid;" class="content">
   <div class="d-flex position-relative content-bg justify-content-center">
     <div class="container content-wrap">
@@ -91,34 +100,34 @@ if(isset($_SESSION['expire'])){
       <div class="">
         <div class="row">
           <div class="col">
-            <img src="../../images/item/100001.jpg" class="float-left img-fluid img-thumbnail">
+            <img src="<?php echo $detail['sparePartImage']; ?>" class="float-left img-fluid img-thumbnail img400">
           </div>
           <div class="col">
             <div class="row">
               <div class="col">
-                <h1>Name</h1>
+                <h1><?php echo $detail['sparePartName']; ?></h1>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <p>Spare ID:1000001</p>
+                <p><?php echo $detail['sparePartNum']; ?></p>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <p>Price: $100</p>
+                <p>$<?php echo $detail['price']; ?></p>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <p>Retail Inventory: 100(pieces)</p>
+                <p>Retail Inventory: 100(pieces)none echo</p>
               </div>
             </div>
             <hr />
             <h2>About the Spare:</h2>
-            <p><small>sparePartDescription...</small></p>
+            <p><small><?php echo $detail['sparePartDescription']; ?></small></p>
             <form class="row g-3">
-              <p>Spare Weight (Single):</p>
+              <p>Spare Weight (Single):<?php echo $detail['weight']; ?>KG</p>
               <div class="col-md-4">
                 <label for="validationServer01" class="form-label">Quantity</label>
                 <input type="text" class="form-control is-invalid" id="validationServer01" required>
@@ -130,14 +139,13 @@ if(isset($_SESSION['expire'])){
                 </div>
               </div>
               <div class="col-12">
-                  <button class="btn btn-primary" type="submit">
-                      <h class="fa-solid fa-cart-shopping"></h>Add to Cart
+                <button class="btn btn-primary" type="submit">
+                  <h class="fa-solid fa-cart-shopping"></h>Add to Cart
+                </button>
+                <a href="./search_item.php" <button class="btn btn-primary" type="submit">
+                  Back
                   </button>
-                  <a href="./search_item.php"
-                  <button class="btn btn-primary" type="submit">
-                      Back 
-                  </button>
-                  </a>
+                </a>
               </div>
             </form>
           </div>
