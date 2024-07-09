@@ -51,16 +51,17 @@ if (isset($_GET["show"])) {
     $condition = "$condition 'RU' like concat('%',o.state,'%') ";
   }
 } else {
-  $condition = "$condition o.state = 'N' ";
+  $condition = "$condition o.state = 'C' ";
 }
 
 if (isset($_GET["search"])) {
-  $condition = sprintf("$condition and CONCAT(
-  o.orderID, 
-  o.orderDateTime,
-  o.deliveryAddress,
-  TA
-) LIKE CONCAT('%',%s , '%') ", $_GET["search"]);
+  $search = mysqli_real_escape_string($conn, $_GET["search"]);
+  $condition = $condition . " and CONCAT(
+    o.orderID,'\r\n' ,
+    o.orderDateTime,'\r\n' ,
+    o.deliveryAddress,'\r\n' ,
+    o.TotalAmount + o.shipCost
+  ) LIKE CONCAT('%', '$search', '%') ";
 }
 $condition = "$condition GROUP BY o.orderID ";
 if (isset($_GET["sort"])) {
@@ -77,7 +78,7 @@ if (isset($_GET["sort"])) {
   } else if ($_GET["sort"] == "AHL") {
     $condition = "$condition order by TA desc ";
   }
-}else{
+} else {
   $condition = "$condition order by o.orderDateTime desc ";
 }
 
@@ -103,18 +104,14 @@ $sql = "SELECT
   o.state AS orderStatus
 FROM `order` o
 INNER JOIN orderSpare os ON o.orderID = os.orderID  
-$condition";
-try{
+$condition Limit " . ($currentPage - 1) * 10 . ", 10;";
+
 $result = mysqli_query($conn, $sql);
-if ($result) {
+/* if ($result) {
   $order = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
   $order = [];
-}}catch(Exception $e){
-  echo $e->getMessage()."<br>";
-  echo $sql;
-}
-
+} */
 ?>
 
 
@@ -154,14 +151,14 @@ if ($result) {
   <!-- search-bar -->
   <div style="height: calc(20lvh + 74px)" id="header" class="d-flex position-relative justify-content-center align-items-center">
     <div class="position-relative start-0 end-0 d-flex justify-content-center" style="margin-top: 10px">
-      <form class="position-relative d-flex search-bar" role="search">
+      <div class="position-relative d-flex search-bar" role="search">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search-input" value="<?php if (isset($_GET["search"])) {
                                                                                                                       echo $_GET["search"];
                                                                                                                     } ?>" />
         <div class="search-box" id="search-box">
           <i class="fa-solid fa-magnifying-glass fa-xl"></i>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <!-- /search-bar -->
@@ -172,61 +169,61 @@ if ($result) {
       <br />
       <div class="row row--top-40">
         <div class="col-md-4">
-          <h2 class="row__title">Order(<?php echo $orderCount;?>)</h2>
+          <h2 class="row__title">Order(<?php echo $orderCount; ?>)</h2>
         </div>
         <div class="col d-flex justify-content-center align-items-end">
-        <nav aria-label="Page navigation">
-                <ul class="pagination page-nav" style="margin-bottom: 0">
-                  <li class="page-item <?php if ($currentPage <= 1) {
-                                          echo "disabled";
-                                        }
-                                        ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                        echo "1";
-                                                      } else {
-                                                        echo $currentPage - 1;
-                                                      }; ?>" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <?php
-                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
-                  ?>
-                    <li class="page-item <?php if ($i == $currentPage) {
-                                            echo "active";
-                                          } ?>">
-                      <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                  <?php } ?>
-                  <li class="page-item <?php if ($currentPage >= $totalPage) {
-                                          echo "disabled";
-                                        }
-                                        ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                        echo $totalPage;
-                                                      } else {
-                                                        echo $currentPage + 1;
-                                                      }; ?>" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+          <nav aria-label="Page navigation">
+            <ul class="pagination page-nav" style="margin-bottom: 0">
+              <li class="page-item <?php if ($currentPage <= 1) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
+                                                    echo "1";
+                                                  } else {
+                                                    echo $currentPage - 1;
+                                                  }; ?>" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <?php
+              for ($i = max(1, $currentPage - 2); $i <= min($totalPage, $currentPage + 2); $i++) {
+              ?>
+                <li class="page-item <?php if ($i == $currentPage) {
+                                        echo "active";
+                                      } ?>">
+                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+              <?php } ?>
+              <li class="page-item <?php if ($currentPage >= $totalPage) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
+                                                    echo $totalPage;
+                                                  } else {
+                                                    echo $currentPage + 1;
+                                                  }; ?>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
         <div class="col-md-4 position-relative">
           <div class="position-absolute bottom-0 end-0 d-flex">
             <div class="form-floating" style="padding-right: 12px">
 
               <select class="form-select" id="show">
-                <option value="N" <?php if (!isset($_GET["sort"]) || $_GET["sort"] == "N") {
-                                      echo "selected";
-                                    } else ?>>Not Assigned</option>
-                <option value="A" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "A") {
-                                        echo "selected";
-                                      } else  ?>>Accepted</option>
-                <option value="R" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "R") {
-                                        echo "selected";
-                                      } ?>>Rejected</option>
+                <option value="N" <?php if (!isset($_GET["show"]) || $_GET["show"] == "N") {
+                                    echo "selected";
+                                  } else ?>>Not Assigned</option>
+                <option value="A" <?php if (isset($_GET["show"]) && $_GET["show"] == "A") {
+                                    echo "selected";
+                                  } else  ?>>Accepted</option>
+                <option value="R" <?php if (isset($_GET["show"]) && $_GET["show"] == "R") {
+                                    echo "selected";
+                                  } ?>>Rejected</option>
               </select>
               <label for="show">Show</label>
             </div>
@@ -235,23 +232,23 @@ if ($result) {
 
               <select class="form-select" id="sort">
                 <option value="N" <?php if (!isset($_GET["sort"]) || $_GET["sort"] == "N") {
-                                      echo "selected";
-                                    } else ?>>Newest</option>
+                                    echo "selected";
+                                  } else ?>>Newest</option>
                 <option value="O" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "O") {
-                                        echo "selected";
-                                      } else  ?>>Oldest</option>
+                                    echo "selected";
+                                  } else  ?>>Oldest</option>
                 <option value="QLH" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "QLH") {
-                                        echo "selected";
-                                      } else  ?>>Quantity: Low to High</option>
+                                      echo "selected";
+                                    } else  ?>>Quantity: Low to High</option>
                 <option value="QHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "QHL") {
-                                        echo "selected";
-                                      } else  ?>>Quantity: High to Low</option>
+                                      echo "selected";
+                                    } else  ?>>Quantity: High to Low</option>
                 <option value="ALH" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "ALH") {
-                                        echo "selected";
-                                      } else  ?>>Amount: Low to High</option>
+                                      echo "selected";
+                                    } else  ?>>Amount: Low to High</option>
                 <option value="AHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "AHL") {
-                                        echo "selected";
-                                      }  ?>>Amount: High to Low</option>
+                                      echo "selected";
+                                    }  ?>>Amount: High to Low</option>
               </select>
               <label for="sort">Sort</label>
             </div>
@@ -274,153 +271,110 @@ if ($result) {
           </div>
           <!-- /table header -->
 
-          <!-- item(order record) -->
-          <div class="row item-box table-content">
-            <div class="col-10">
-              <div class="row table-content-data">
-                <div class="col" style="width: 10%">0123456789</div>
-                <div class="col" style="width: 20%">16/05/2024 | 16:00</div>
-                <address class="col" style="width: 40%">
-                  Susan Lai <br>
-                  12th floor, Flat G <br>
-                  Magnolia Building <br>
-                  212 Sycamore Street <br>
-                  WAN CHAI, HONG KONG
-                </address>
-                <div class="col" style="width: 10%">12</div>
-                <div class="col" style="width: 10%">$12345</div>
-                <div class="col" style="width: 10%">Create</div>
 
-              </div>
-              <div class="d-flex">
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100001.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/200002.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/300003.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/400004.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100004.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/200004.jpg" />
-                </div>
-                <div class="order-img order-2many-item">
-                  <img class="order-abs-img" src="../../images/item/300004.jpg" />
-                </div>
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="item-btn">
-                <div class="bg"></div>
-                <button type="button" class="btn btn-primary">Order Detail</button>
-                <br />
-                <button type="button" class="btn btn-success">Accept</button>
-                <br>
-                <button type="button" class="btn btn-danger">Reject</button>
-              </div>
-            </div>
-            <hr class="z-1" />
-          </div>
-          <!-- /item(order record) -->
+          <?php
+          $stateConvert = array(
+            "C" => "Create",
+            "A" => "Accepted",
+            "R" => "Rejected",
+            "T" => "In Transmit",
+            "U" => "Unavailable",
+            "F" => "Finished"
+          );
+          ?>
 
-          <!-- item(order record) -->
-          <div class="row item-box table-content">
-            <div class="col-10">
-              <div class="row table-content-data">
-                <div class="col" style="width: 10%">0123456789</div>
-                <div class="col" style="width: 20%">16/05/2024 | 16:00</div>
-                <address class="col" style="width: 40%">
-                  Susan Lai,
-                  12th floor, Flat G,
-                  Magnolia Building,
-                  212 Sycamore Street,
-                  WAN CHAI, HONG KONG
-                </address>
-                <div class="col" style="width: 10%">12</div>
-                <div class="col" style="width: 10%">$12345</div>
-                <div class="col" style="width: 10%">Create</div>
+          <?php
 
+          while ($row = mysqli_fetch_array($result)) {
+            $s = "SELECT sparePartImage FROM orderspare os inner join spare s on s.sparePartNum=os.sparePartNum where orderID = " . $row['orderID'] . " limit 0,7;";
+            $r = mysqli_query($conn, $s);
+            $images = mysqli_fetch_all($r, MYSQLI_ASSOC);
+          ?>
+            <!-- item(order record) -->
+            <div class="row item-box table-content">
+              <div class="col-10">
+                <div class="row table-content-data">
+                  <div class="col" style="width: 10%"><?php echo str_pad($row["orderID"], 10, "0", STR_PAD_LEFT) ?></div>
+                  <div class="col" style="width: 20%"><?php echo $row["orderDateTime"] ?></div>
+                  <address class="col" style="width: 40%">
+                    <?php echo $row["deliveryAddress"] ?>
+                  </address>
+                  <div class="col" style="width: 10%"><?php echo $row["orderQuantity"] ?></div>
+                  <div class="col" style="width: 10%">$<?php echo $row["TA"] ?></div>
+                  <div class="col" style="width: 10%"><?php echo $stateConvert[$row["orderStatus"]] ?></div>
+
+                </div>
+                <div class="d-flex">
+
+                  <?php for ($i = 0; $i < count($images); $i++) { ?>
+                    <div class="order-img <?php if ($i == 6) {
+                                            echo "order-2many-item";
+                                          } ?>" name="<?php echo $row["orderID"]; ?>">
+                      <img class="order-abs-img" src="<?php echo $images[$i]["sparePartImage"]; ?>" />
+                    </div>
+                  <?php } ?>
+
+                </div>
               </div>
-              <div class="d-flex">
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100001.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/200002.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/300003.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/400004.jpg" />
+              <div class="col-2">
+                <div class="item-btn">
+                  <div class="bg"></div>
+                  <button type="button" class="btn btn-primary">
+                    Order Detail
+                  </button>
+                  <br />
+                  <button type="button" class="btn btn-success">Accept</button>
+                  <br>
+                  <button type="button" class="btn btn-danger">Reject</button>
                 </div>
               </div>
+              <hr class="z-1" />
             </div>
-            <div class="col-2">
-              <div class="item-btn">
-                <div class="bg"></div>
-                <button type="button" class="btn btn-primary">
-                  Order Detail
-                </button>
-                <br />
-                <button type="button" class="btn btn-success">Accept</button>
-                <br>
-                <button type="button" class="btn btn-danger">Reject</button>
-              </div>
-            </div>
-            <hr class="z-1" />
-          </div>
-          <!-- /item(order record) -->
+            <!-- /item(order record) -->
+          <?php } ?>
         </div>
       </div>
 
       <br />
       <div class="row">
         <div class="col d-flex justify-content-center align-items-end">
-        <nav aria-label="Page navigation">
-                <ul class="pagination page-nav" style="margin-bottom: 0">
-                  <li class="page-item <?php if ($currentPage <= 1) {
-                                          echo "disabled";
-                                        }
-                                        ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                        echo "1";
-                                                      } else {
-                                                        echo $currentPage - 1;
-                                                      }; ?>" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <?php
-                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
-                  ?>
-                    <li class="page-item <?php if ($i == $currentPage) {
-                                            echo "active";
-                                          } ?>">
-                      <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                  <?php } ?>
-                  <li class="page-item <?php if ($currentPage >= $totalPage) {
-                                          echo "disabled";
-                                        }
-                                        ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                        echo $totalPage;
-                                                      } else {
-                                                        echo $currentPage + 1;
-                                                      }; ?>" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+          <nav aria-label="Page navigation">
+            <ul class="pagination page-nav" style="margin-bottom: 0">
+              <li class="page-item <?php if ($currentPage <= 1) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
+                                                    echo "1";
+                                                  } else {
+                                                    echo $currentPage - 1;
+                                                  }; ?>" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <?php
+              for ($i = max(1, $currentPage - 2); $i <= min($totalPage, $currentPage + 2); $i++) {
+              ?>
+                <li class="page-item <?php if ($i == $currentPage) {
+                                        echo "active";
+                                      } ?>">
+                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+              <?php } ?>
+              <li class="page-item <?php if ($currentPage >= $totalPage) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
+                                                    echo $totalPage;
+                                                  } else {
+                                                    echo $currentPage + 1;
+                                                  }; ?>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
       <br>
