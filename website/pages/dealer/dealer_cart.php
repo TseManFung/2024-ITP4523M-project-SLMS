@@ -36,9 +36,8 @@ if (isset($_SESSION['expire'])) {
   <!-- js -->
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/add_itemm.js"></script>
-  <script src="../../js/dealer_view_orderrecord_token.js"></script>
-
+  <script src="../../js/add_item.js"></script> <!-- Corrected filename -->
+  <script src="../../js/dealer/dealer_API_GET.js"></script>
 
   <!-- /js -->
 </head>
@@ -122,62 +121,67 @@ if (isset($_SESSION['expire'])) {
                       <tbody>
                         <?php
                         $sql = "SELECT cart.userID, cart.qty, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
-        FROM cart 
-        JOIN spare ON cart.sparePartNum = spare.sparePartNum 
-        WHERE cart.userID = $userID;";
+                                FROM cart 
+                                JOIN spare ON cart.sparePartNum = spare.sparePartNum 
+                                WHERE cart.userID = $userID;";
                         $result = mysqli_query($conn, $sql);
+
+                        $totalWeight = 0;
+                        $subTotal = 0;
 
                         if (mysqli_num_rows($result) > 0) {
                           while ($row = mysqli_fetch_array($result)) {
+                            $itemTotalPrice = $row['qty'] * $row['price'];
+                            $subTotal += $itemTotalPrice;
+                            $totalWeight += $row['qty'] * $row['weight'];
+
                             printf(
                               '
-            <tr>
-                <th scope="row">
-                    <div class="d-flex align-items-center">
-                        <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
-                    </div>
-                </th>
-                <td class="align-middle">
-                    <p class="mb-0" style="font-weight: 500">%s</p>
-                </td>
-                <td class="align-middle">
-                    <p class="mb-0" style="font-weight: 500">$%.2f</p>
-                </td>
-                <td class="align-middle">
-                    <div class="d-flex flex-row">
-                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepDown()">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <input id="form1" min="1" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
-                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepUp()">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                </td>
-                <td class="align-middle">
-                    <p class="mb-0" style="font-weight: 500;">$%.2f</p>
-                </td>
-                <td class="align-middle">
-                    <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
-                </td>
-            </tr>
-        </tbody>',
+                              <tr>
+                                <th scope="row">
+                                  <div class="d-flex align-items-center">
+                                    <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
+                                  </div>
+                                </th>
+                                <td class="align-middle">
+                                  <p class="mb-0" style="font-weight: 500">%s</p>
+                                </td>
+                                <td class="align-middle">
+                                  <p class="mb-0" style="font-weight: 500">$%.2f</p>
+                                </td>
+                                <td class="align-middle">
+                                  <div class="d-flex flex-row">
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepDown()">
+                                      <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input id="form1" min="1" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepUp()">
+                                      <i class="fas fa-plus"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                                <td class="align-middle">
+                                  <p class="mb-0" style="font-weight: 500;">$%.2f</p>
+                                </td>
+                                <td class="align-middle">
+                                  <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
+                                </td>
+                              </tr>',
                               $row['sparePartImage'],
                               $row['sparePartName'],
                               $row['sparePartName'],
                               $row['price'],
                               $row['qty'],
-                              $row['qty'] * $row['price']
+                              $itemTotalPrice
                             );
                           }
                         } else {
                           echo '
-    <tbody>
-        <tr>
-            <td colspan="6" class="text-center align-middle">
-                <p class="mb-0" style="font-weight: 500;">Your car is empty.</p>
-            </td>
-        </tr>';
+                          <tr>
+                            <td colspan="6" class="text-center align-middle">
+                              <p class="mb-0" style="font-weight: 500;">Your cart is empty.</p>
+                            </td>
+                          </tr>';
                         }
                         ?>
                       </tbody>
@@ -185,31 +189,32 @@ if (isset($_SESSION['expire'])) {
                   </div>
                 </div>
               </div>
+                    
               <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
                 <div class="card-body p-4">
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-2">Delivery fee</p>
-                    <p class="mb-2">6.0kg</p>
+                    <p class="mb-2">$6.00</p>
                   </div>
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-2">Total weight</p>
-                    <p class="mb-2">6.0kg</p>
+                    <p class="mb-2"><?php echo $totalWeight; ?> kg</p>
                   </div>
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-0">Subtotal</p>
-                    <p class="mb-0">$1013.50</p>
+                    <p class="mb-0">$<?php echo number_format($subTotal, 2); ?></p>
                   </div>
                   <hr class="my-4">
                   <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
                     <p class="mb-2">Total</p>
-                    <p class="mb-2">$1013.50</p>
+                    <p class="mb-2">$<?php echo number_format($subTotal + 6.00, 2); ?></p>
                   </div>
                   <div class="d-grid gap-2 d-md-block">
                     <a href="./checkout.php">
                       <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                         <div class="d-flex justify-content-between">
                           <span>Checkout</span>
-                          <span>($26.48)</span>
+                          <span>($<?php echo number_format($subTotal + 6.00, 2); ?>)</span>
                         </div>
                       </button>
                     </a>
@@ -236,8 +241,8 @@ if (isset($_SESSION['expire'])) {
     <!-- link -->
 
     <ul class="sns">
-      <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-        <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
+      <!-- <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
+      <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
 
     <!-- /link -->
