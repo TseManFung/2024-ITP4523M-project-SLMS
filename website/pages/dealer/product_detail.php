@@ -1,6 +1,4 @@
-﻿<!DOCTYPE html>
-<html>
-<?php
+﻿<?php
 session_start();
 
 if (isset($_SESSION['expire'])) {
@@ -17,10 +15,11 @@ if (isset($_SESSION['expire'])) {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Product Detail</title>
 
   <!-- css -->
@@ -37,7 +36,6 @@ if (isset($_SESSION['expire'])) {
   <script src="../../js/dealer/product_detail.js"></script>
   <!-- /js -->
 </head>
-
 <body>
   <div class="fixed-top">
     <!-- navbar -->
@@ -78,7 +76,6 @@ if (isset($_SESSION['expire'])) {
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     </nav>
@@ -87,9 +84,9 @@ if (isset($_SESSION['expire'])) {
   <br>
   <?php
   $spnum = $_GET['spnum'];
-  $sql = "SELECT * FROM spare WHERE sparePartNum = $spnum";
+  $sql = "SELECT s.sparePartNum, s.category, s.sparePartName, s.sparePartImage, s.sparePartDescription, s.weight, s.price, s.state, sq.stockItemQty FROM spare s JOIN spareqty sq ON s.sparePartNum = sq.sparePartNum WHERE s.sparePartNum = $spnum";
   $result = mysqli_query($conn, $sql);
-  $detail= mysqli_fetch_array($result);
+  $detail = mysqli_fetch_array($result);
   mysqli_close($conn);
   ?>
 
@@ -115,39 +112,32 @@ if (isset($_SESSION['expire'])) {
             </div>
             <div class="row">
               <div class="col">
-                <p>$<?php echo $detail['price']; ?></p>
+                <p id="price" data-value="<?php echo $detail['price']; ?>">$<?php echo $detail['price']; ?></p>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <p>Retail Inventory: 100(pieces)none echo</p>
+                <p>Retail Inventory: <?php echo $detail['stockItemQty']; ?>(pieces)</p>
               </div>
             </div>
             <hr />
             <h2>About the Spare:</h2>
             <p><small><?php echo $detail['sparePartDescription']; ?></small></p>
-            <form class="row g-3">
-              <p>Spare Weight (Single):<?php echo $detail['weight']; ?>KG</p>
-              <div class="col-md-4">
-                <label for="validationServer01" class="form-label">Quantity</label>
-                <input type="text" class="form-control is-invalid" id="validationServer01" required>
-                <div class="valid-feedback">
-                  Looks good!
+            <div class="container">
+              <div class="row g-3">
+                <p>Spare Weight (Single): <?php echo $detail['weight']; ?>KG</p>
+                <div class="col-md-4">
+                  <label for="quantityInput" class="form-label">Quantity</label>
+                  <input type="number" class="form-control" value="1" id="quantityInput" min="1" max="<?php echo $detail['stockItemQty']; ?>" required>
                 </div>
-                <div class="invalid-feedback">
-                  Out of stock notification!
-                </div>
-              </div>
-              <div class="col-12">
-                <button class="btn btn-primary" type="submit">
-                  <h class="fa-solid fa-cart-shopping"></h>Add to Cart
-                </button>
-                <a href="./search_item.php" <button class="btn btn-primary" type="submit">
-                  Back
+                <div class="col-12">
+                  <button class="btn btn-primary" id="addToCartBtn" onclick="addToCartqty() " >
+                    <span class="fa-solid fa-cart-shopping"></span> Add to Cart
                   </button>
-                </a>
+                  <a href="./search_item.php" class="btn btn-primary">Back</a>
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -155,21 +145,16 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <footer>
-
     <!-- link -->
-
     <ul class="sns">
       <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
                             <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
-
     <!-- /link -->
     <p>© 2024 Smart & Luxury Motor Spares inc.</p>
   </footer>
   <div id="page-top" style="">
     <a href="#header"><img src="../../images/common/returan-top.png"></a>
   </div>
-
 </body>
-
 </html>

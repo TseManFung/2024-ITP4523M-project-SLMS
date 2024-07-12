@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -45,8 +45,8 @@ if(isset($_SESSION['expire'])){
 
 <body>
   <div class="fixed-top">
-<!-- navbar -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -83,7 +83,6 @@ if(isset($_SESSION['expire'])){
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     </nav>
@@ -95,10 +94,9 @@ if(isset($_SESSION['expire'])){
   <!-- content -->
   <?php
   $userID = $_SESSION['userID'];
-  $sql = "SELECT COUNT(userID) AS NID , SUM(qty) AS total_quantity FROM cart WHERE userID = $userID";
+  $sql = " SELECT COUNT(cart.userID) AS NID, SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
   $result = mysqli_query($conn, $sql);
   $cart = mysqli_fetch_array($result);
-  mysqli_close($conn);
   ?>
   <div class="content-bg">
     <div class="container">
@@ -122,79 +120,66 @@ if(isset($_SESSION['expire'])){
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">
-                            <div class="d-flex align-items-center">
-                              <img src="../../images/item/100001.jpg" class="img-fluid rounded-3" style="width: 120px;"
-                                   alt="Book">
-                            </div>
-                          </th>
-                          <td class="align-middle">
-                            <p class="mb-0" style="font-weight: 500">100001</p>
-                          </td>
-                          <td class="align-middle">
-                            <p class="mb-0" style="font-weight: 500">10.00</p>
-                          </td>
-                          <td class="align-middle">
-                            <div class="d-flex flex-row">
-                              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                <i class="fas fa-minus"></i>
-                              </button>
+                        <?php
+                        $sql = "SELECT cart.userID, cart.qty, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
+        FROM cart 
+        JOIN spare ON cart.sparePartNum = spare.sparePartNum 
+        WHERE cart.userID = $userID;";
+                        $result = mysqli_query($conn, $sql);
 
-                              <input id="form1" min="0" name="quantity" value="2" type="number"
-                                     class="form-control form-control-sm" style="width: 50px;" />
-
-                              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                <i class="fas fa-plus"></i>
-                              </button>
-                            </div>
-                          </td>
-                          <td class="align-middle">
-                            <p class="mb-0" style="font-weight: 500;">$1000.00</p>
-                          </td>
-                          <td class="align-middle">
-                            <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" class="border-bottom-0">
-                            <div class="d-flex align-items-center">
-                              <img src="../../images/item/100002.jpg" class="img-fluid rounded-3" style="width: 120px;"
-                                   alt="Book">
-                            </div>
-                          </th>
-
-                          <td class="align-middle border-bottom-0">
-                            <p class="mb-0" style="font-weight: 500;">100002</p>
-                          </td>
-                          <td class="align-middle border-bottom-0">
-                            <p class="mb-0" style="font-weight: 500;">13.50</p>
-                          </td>
-                          <td class="align-middle border-bottom-0">
-                            <div class="d-flex flex-row">
-                              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                <i class="fas fa-minus"></i>
-                              </button>
-
-                              <input id="form1" min="0" name="quantity" value="1" type="number"
-                                     class="form-control form-control-sm" style="width: 50px;" />
-
-                              <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                <i class="fas fa-plus"></i>
-                              </button>
-                            </div>
-                          </td>
-                          <td class="align-middle border-bottom-0">
-                            <p class="mb-0" style="font-weight: 500;">$13.50</p>
-                          </td>
-                          <td class="align-middle border-bottom-0">
-                            <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
-                          </td>
-                        </tr>
+                        if (mysqli_num_rows($result) > 0) {
+                          while ($row = mysqli_fetch_array($result)) {
+                            printf(
+                              '
+            <tr>
+                <th scope="row">
+                    <div class="d-flex align-items-center">
+                        <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
+                    </div>
+                </th>
+                <td class="align-middle">
+                    <p class="mb-0" style="font-weight: 500">%s</p>
+                </td>
+                <td class="align-middle">
+                    <p class="mb-0" style="font-weight: 500">$%.2f</p>
+                </td>
+                <td class="align-middle">
+                    <div class="d-flex flex-row">
+                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepDown()">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input id="form1" min="1" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
+                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepUp()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <p class="mb-0" style="font-weight: 500;">$%.2f</p>
+                </td>
+                <td class="align-middle">
+                    <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
+                </td>
+            </tr>
+        </tbody>',
+                              $row['sparePartImage'],
+                              $row['sparePartName'],
+                              $row['sparePartName'],
+                              $row['price'],
+                              $row['qty'],
+                              $row['qty'] * $row['price']
+                            );
+                          }
+                        } else {
+                          echo '
+    <tbody>
+        <tr>
+            <td colspan="6" class="text-center align-middle">
+                <p class="mb-0" style="font-weight: 500;">Your car is empty.</p>
+            </td>
+        </tr>';
+                        }
+                        ?>
                       </tbody>
                     </table>
                   </div>
@@ -220,23 +205,21 @@ if(isset($_SESSION['expire'])){
                     <p class="mb-2">$1013.50</p>
                   </div>
                   <div class="d-grid gap-2 d-md-block">
-                      <a href="./checkout.php">
-                          <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                  class="btn btn-primary btn-block btn-lg">
-                              <div class="d-flex justify-content-between">
-                                  <span>Checkout</span>
-                                  <span>($26.48)</span>
-                              </div>
-                          </button>
-                      </a>
-                      <a href="./search_item.php">
-                          <button type="button" data-mdb-button-init data-mdb-ripple-init
-                                  class="btn btn-primary btn-block btn-lg">
-                              <div class="d-flex justify-content-between">
-                                  <span>Back to view item</span>
-                              </div>
-                          </button>
-                      </a>
+                    <a href="./checkout.php">
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                        <div class="d-flex justify-content-between">
+                          <span>Checkout</span>
+                          <span>($26.48)</span>
+                        </div>
+                      </button>
+                    </a>
+                    <a href="./search_item.php">
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                        <div class="d-flex justify-content-between">
+                          <span>Back to view item</span>
+                        </div>
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -244,17 +227,17 @@ if(isset($_SESSION['expire'])){
           </div>
         </div>
       </section>
+      <br><br>
     </div>
   </div>
-
   <!-- /content -->
-  <footer>
 
+  <footer>
     <!-- link -->
 
     <ul class="sns">
       <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-            <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
+        <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
 
     <!-- /link -->
@@ -262,8 +245,8 @@ if(isset($_SESSION['expire'])){
   </footer>
   <!-- return top -->
 
-  <div id="page-top" >
-    <a href="#header"><img src="../../images/common/returan-top.png"></a>
+  <div id="page-top" style="">
+    <a href="#header"><img src="../../images/common/returan-top.png" /></a>
   </div>
 
   <!-- /return top -->
