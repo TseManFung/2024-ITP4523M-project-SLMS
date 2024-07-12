@@ -40,15 +40,15 @@ if (isset($_SESSION['expire'])) {
 </head>
 
 <?php
-$condition = "where ";
+$condition = " where ";
 
 if (isset($_GET["show"])) {
   if ($_GET["show"] == "N") {
     $condition = "$condition o.state = 'C' ";
   } else if ($_GET["show"] == "A") {
-    $condition = "$condition 'ATF' like concat('%',o.state,'%') ";
+    $condition = "$condition 'ATF' like concat('%',o.state,'%') and salesManagerID = " . $_SESSION['salesManagerID'] . " ";
   } else if ($_GET["show"] == "R") {
-    $condition = "$condition 'RU' like concat('%',o.state,'%') ";
+    $condition = "$condition 'RU' like concat('%',o.state,'%') and salesManagerID = " . $_SESSION['salesManagerID'] . " ";
   }
 } else {
   $condition = "$condition o.state = 'C' ";
@@ -63,6 +63,20 @@ if (isset($_GET["search"])) {
     o.TotalAmount + o.shipCost
   ) LIKE CONCAT('%', '$search', '%') ";
 }
+
+
+
+$sql = "SELECT count(*) FROM `order` o $condition ;";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_array($result);
+$orderCount = $row[0];
+if (isset($_GET['pages']) && $_GET['pages'] > 0) {
+  $currentPage = $_GET['pages'];
+} else {
+  $currentPage = 1;
+}
+$totalPage = ceil($orderCount / 10);
+
 $condition = "$condition GROUP BY o.orderID ";
 if (isset($_GET["sort"])) {
   if ($_GET["sort"] == "N") {
@@ -81,19 +95,6 @@ if (isset($_GET["sort"])) {
 } else {
   $condition = "$condition order by o.orderDateTime desc ";
 }
-
-
-$sql = "SELECT count(*) FROM `order`;";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_array($result);
-$orderCount = $row[0];
-if (isset($_GET['pages']) && $_GET['pages'] > 0) {
-  $currentPage = $_GET['pages'];
-} else {
-  $currentPage = 1;
-}
-$totalPage = ceil($orderCount / 10);
-
 
 $sql = "SELECT 
   o.orderID,
@@ -309,7 +310,7 @@ $result = mysqli_query($conn, $sql);
                   <?php for ($i = 0; $i < count($images); $i++) { ?>
                     <div class="order-img <?php if ($i == 6) {
                                             echo "order-2many-item";
-                                          } ?>" name="<?php echo $row["orderID"]; ?>">
+                                          } ?>" data-order-id="<?php echo $row["orderID"]; ?>">
                       <img class="order-abs-img" src="<?php echo $images[$i]["sparePartImage"]; ?>" />
                     </div>
                   <?php } ?>
@@ -319,13 +320,17 @@ $result = mysqli_query($conn, $sql);
               <div class="col-2">
                 <div class="item-btn">
                   <div class="bg"></div>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" class="btn btn-primary" data-order-id="<?php echo $row["orderID"]; ?>">
                     Order Detail
                   </button>
+                  <?php if(isset($_GET["show"]) && $_GET["show"] != "A") { ?>
                   <br />
-                  <button type="button" class="btn btn-success">Accept</button>
+                  <button type="button" class="btn btn-success" data-order-id="<?php echo $row["orderID"]; ?>">Accept</button>
+                  <?php } ?>
+                  <?php if(isset($_GET["show"]) && ($_GET["show"] != "R" && $_GET["show"] !="A")) { ?>
                   <br>
-                  <button type="button" class="btn btn-danger">Reject</button>
+                  <button type="button" class="btn btn-danger" data-order-id="<?php echo $row["orderID"]; ?>">Reject</button>
+                  <?php } ?>
                 </div>
               </div>
               <hr class="z-1" />

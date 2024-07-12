@@ -12,10 +12,46 @@ $(document).ready(function () {
       $(".btn-danger").hide();
     }
   });
+
   $(".btn-primary").bind("click", function () {
-    window.location.href = "./view_order_detail.php";
+    GoToPage_POST("./view_order_detail.php", {
+      orderID: $(this).attr("data-order-id"),
+    });
   });
+
+  $(".btn-success").bind("click", function () {
+    $.ajax({
+      url: "../db/query.php",
+      type: "POST",
+      data: {
+        query:
+          "update `order` set state = 'A' where orderID = " +
+          $(this).attr("data-order-id"),
+      },
+      success: function (data) {
+        location.reload();
+      },
+    });
+  });
+
+  $(".btn-danger").bind("click", function () {
+    $.ajax({
+      url: "../db/query.php",
+      type: "POST",
+      data: {
+        query:
+          "update `order` set state = 'R' where orderID = " +
+          $(this).attr("data-order-id"),
+      },
+      success: function (data) {
+        location.reload();
+      },
+    });
+  });
+
   $(".order-2many-item").bind("click", function () {
-    window.location.href = "./view_order_detail.php";
+    GoToPage_POST("./view_order_detail.php", {
+      orderID: $(this).attr("data-order-id"),
+    });
   });
 });

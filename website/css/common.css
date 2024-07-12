@@ -421,6 +421,9 @@ footer ul.sns li img {
   flex-basis: auto !important;
 }
 div {
+  word-wrap: break-word;
+
+
   &.order-img {
     position: relative;
     --bs-gutter-y: 5px;

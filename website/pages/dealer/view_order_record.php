@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -34,21 +34,20 @@ if(isset($_SESSION['expire'])){
   <!-- /css -->
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  
+
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/view_order_record.js"></script>
-
+  <script src="../../js/search_item.js"></script>
   <!-- /js -->
 </head>
 
 <body>
   <div class="fixed-top">
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
@@ -57,17 +56,25 @@ if(isset($_SESSION['expire'])){
               <a class="nav-link" href="./search_item.php">Our Product</a>
             </li>
           </ul>
+          <?php
+          $sql = "SELECT count(*) as cn FROM cart where userID = " . $_SESSION['userID'] . ";";
+          $result = mysqli_query($conn, $sql);
+          $row = mysqli_fetch_array($result);
+          $cartNum = $row['cn'];
+          if ($cartNum > 99) {
+            $cartNum = "99+";
+          }
+          ?>
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              Hi [username]<span class="note-label">99+</span>
+            <a class="nav-link dropdown-toggle d-flex flex-nowrap align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Hi <?php echo $_SESSION["dealerName"] ?><span class="note-label"><?php echo $cartNum ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="./dealer_information.php">Your Information</a></li>
               <li><a class="dropdown-item" href="./view_order_record.php">Your Order</a></li>
               <li>
                 <a class="dropdown-item position-relative d-flex flex-nowrap" href="./dealer_cart.php">
-                  Cart<span class="cart-number-label">99+</span>
+                  Cart<span class="cart-number-label"><?php echo $cartNum ?></span>
                 </a>
               </li>
               <li class="dropdown-item">
@@ -75,6 +82,7 @@ if(isset($_SESSION['expire'])){
               </li>
             </ul>
           </div>
+
         </div>
       </div>
     </nav>
@@ -83,15 +91,16 @@ if(isset($_SESSION['expire'])){
 
   <!-- header -->
   <!-- search-bar -->
-  <div style="height: calc(20lvh + 74px)" id="header"
-       class="d-flex position-relative justify-content-center align-items-center">
+  <div style="height: calc(20lvh + 74px)" id="header" class="d-flex position-relative justify-content-center align-items-center">
     <div class="position-relative start-0 end-0 d-flex justify-content-center" style="margin-top: 10px">
-      <form class="position-relative d-flex search-bar" role="search">
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
-        <div class="search-box">
+      <div class="position-relative d-flex search-bar" role="search">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search-input" value="<?php if (isset($_GET["search"])) {
+                                                                                                                      echo $_GET["search"];
+                                                                                                                    } ?>" />
+        <div class="search-box" id="search-box">
           <i class="fa-solid fa-magnifying-glass fa-xl"></i>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <!-- /search-bar -->
@@ -240,7 +249,7 @@ if(isset($_SESSION['expire'])){
           <!-- /item(order record) -->
         </div>
       </div>
-
+      <br>
       <div class="row">
         <div class="col d-flex justify-content-center align-items-end">
           <nav aria-label="Page navigation">
