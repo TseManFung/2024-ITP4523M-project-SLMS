@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Define the cost calculation logic
 def calculate_shipping_cost(mode, value):
@@ -48,7 +50,7 @@ def ship_cost_api(mode, value):
         return jsonify({
             "result": "rejected",
             "reason": info
-        }), 400
+        })
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080)
