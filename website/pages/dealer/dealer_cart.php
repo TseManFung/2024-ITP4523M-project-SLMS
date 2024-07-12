@@ -29,11 +29,11 @@ if (isset($_SESSION['expire'])) {
   <link rel="stylesheet" href="../../css/reset.css">
   <link rel="stylesheet" href="../../css/common.css">
   <link rel="stylesheet" href="../../css/bs/bootstrap.css">
-  <link rel="stylesheet" href="../../css/dealer_view_orderrecord_token.css">
   <link rel="stylesheet" href="../../css/dealer_cart.css">
 
   <!-- /css -->
   <!-- js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/add_item.js"></script> <!-- Corrected filename -->
@@ -125,12 +125,12 @@ if (isset($_SESSION['expire'])) {
                                 JOIN spare ON cart.sparePartNum = spare.sparePartNum 
                                 WHERE cart.userID = $userID;";
                         $result = mysqli_query($conn, $sql);
-
                         $totalWeight = 0;
                         $subTotal = 0;
-
+                        $itemTotalqty = 0;
                         if (mysqli_num_rows($result) > 0) {
                           while ($row = mysqli_fetch_array($result)) {
+                            $itemTotalqty += $row['qty'];
                             $itemTotalPrice = $row['qty'] * $row['price'];
                             $subTotal += $itemTotalPrice;
                             $totalWeight += $row['qty'] * $row['weight'];
@@ -189,16 +189,16 @@ if (isset($_SESSION['expire'])) {
                   </div>
                 </div>
               </div>
-                    
+
               <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
                 <div class="card-body p-4">
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-2">Delivery fee</p>
-                    <p class="mb-2">$6.00</p>
+                    <p class="mb-2" id="delivery" total-qty="<?php echo $itemTotalqty; ?>">$6.00</p>
                   </div>
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-2">Total weight</p>
-                    <p class="mb-2"><?php echo $totalWeight; ?> kg</p>
+                    <p class="mb-2" id="totalWeight" total-weight="<?php echo $totalWeight; ?>"><?php echo $totalWeight; ?> kg</p>
                   </div>
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-0">Subtotal</p>
@@ -214,7 +214,7 @@ if (isset($_SESSION['expire'])) {
                       <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                         <div class="d-flex justify-content-between">
                           <span>Checkout</span>
-                          <span>($<?php echo number_format($subTotal + 6.00, 2); ?>)</span>
+                          <span>($<?php echo number_format($subTotal, 2); ?>)</span>
                         </div>
                       </button>
                     </a>
