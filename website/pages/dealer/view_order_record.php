@@ -34,7 +34,7 @@ if (isset($_SESSION['expire'])) {
   <!-- /css -->
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+  <script src="../../js/search_item.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/view_order_record.js"></script>
@@ -45,10 +45,8 @@ if (isset($_SESSION['expire'])) {
 <?php
 $condition = " where dealerID = {$_SESSION['dealerID']} ";
 
-if (isset($_GET["filter"])) {
-  if ($_GET["filter"] != "A") {
+if (isset($_GET["filter"]) && $_GET["filter"] != "N") {
     $condition = "$condition and o.state = '{$_GET["filter"]}' ";
-  }
 }
 
 if (isset($_GET["search"])) {
@@ -100,14 +98,12 @@ $sql = "SELECT
   o.state AS orderStatus
 FROM `order` o
 $condition Limit " . ($currentPage - 1) * 10 . ", 10;";
-
-echo $sql;
 $result = mysqli_query($conn, $sql);
-/* if ($result) {
+if ($result) {
   $order = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
   $order = [];
-} */
+}
 ?>
 
 <body>
@@ -289,53 +285,44 @@ $result = mysqli_query($conn, $sql);
             <hr class="z-1" />
           </div>
           <!-- /table header -->
+          <?php foreach ($order as $row) {
+            $s = "SELECT sparePartImage FROM orderspare os inner join spare s on s.sparePartNum=os.sparePartNum where orderID = " . $row['orderID'] . " limit 0,7;";
+            $r = mysqli_query($conn, $s);
+            $images = mysqli_fetch_all($r, MYSQLI_ASSOC); ?>
 
-          <!-- item(order record) -->
-          <div class="row item-box table-content">
-            <div class="col-10">
-              <div class="row table-content-data">
-                <div class="col" style="width: 20%">0123456789</div>
-                <div class="col" style="width: 30%">16/05/2024 | 16:00</div>
-                <div class="col" style="width: 20%">Create</div>
-                <div class="col" style="width: 30%">$12345</div>
+            <!-- item(order record) -->
+            <div class="row item-box table-content">
+              <div class="col-10">
+                <div class="row table-content-data">
+                  <div class="col" style="width: 20%"><?php echo str_pad($row["orderID"], 10, "0", STR_PAD_LEFT) ?></div>
+                  <div class="col" style="width: 30%"><?php echo $row["orderDateTime"] ?></div>
+                  <div class="col" style="width: 20%"><?php echo $stateConvert[$row["orderStatus"]] ?></div>
+                  <div class="col" style="width: 30%">$<?php echo $row["TA"] ?></div>
 
-              </div>
-              <div class="d-flex">
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100001.jpg" />
                 </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/200002.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/300003.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/400004.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100004.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/200004.jpg" />
-                </div>
-                <div class="order-img order-2many-item">
-                  <img class="order-abs-img" src="../../images/item/300004.jpg" />
+                <div class="d-flex">
+                <?php for ($i = 0; $i < count($images); $i++) { ?>
+                    <div class="order-img <?php if ($i == 6) {
+                                            echo "order-2many-item";
+                                          } ?>" data-order-id="<?php echo $row["orderID"]; ?>">
+                      <img class="order-abs-img" src="<?php echo $images[$i]["sparePartImage"]; ?>" />
+                    </div>
+                  <?php } ?>
                 </div>
               </div>
+              <div class="col-2">
+                <button class="cta" data-order-id="<?php echo $row["orderID"]; ?>">
+                  <span>View more</span>
+                  <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <hr class="z-1" />
             </div>
-            <div class="col-2">
-              <button class="cta">
-                <span>View more</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                  <path d="M1,5 L11,5"></path>
-                  <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-              </button>
-            </div>
-            <hr class="z-1" />
-          </div>
-          <!-- /item(order record) -->
+            <!-- /item(order record) -->
+          <?php } ?>
         </div>
       </div>
       <br>
@@ -394,8 +381,8 @@ $result = mysqli_query($conn, $sql);
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
-    
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
+
   </footer>
   <!-- return top -->
 

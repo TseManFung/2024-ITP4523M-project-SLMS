@@ -28,6 +28,7 @@ if (isset($_SESSION['expire'])) {
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/common.css" />
   <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
+  <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css" />
   <!-- /css -->
 
   <!-- js -->

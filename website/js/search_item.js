@@ -11,16 +11,10 @@ $(document).ready(function () {
       }
     });
   }
-  $("#sort").on("change", function () {
-    const sortValue = this.value;
+  $(".form-select").on("change", function () {
+    const V = this.value;
     const url = new URL(window.location.href);
-    url.searchParams.set("sort", sortValue);
-    window.location.href = url.toString();
-  });
-  $("#show").on("change", function () {
-    const sortValue = this.value;
-    const url = new URL(window.location.href);
-    url.searchParams.set("show", sortValue);
+    url.searchParams.set($(this).attr("id"), V);
     window.location.href = url.toString();
   });
 
