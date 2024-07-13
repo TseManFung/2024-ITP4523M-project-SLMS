@@ -20,11 +20,9 @@ if (isset($_SESSION['expire'])) {
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
   <title>Cart</title>
 
   <!-- css -->
-  <!-- icon -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous">
   <link rel="stylesheet" href="../../css/reset.css">
   <link rel="stylesheet" href="../../css/common.css">
@@ -38,7 +36,6 @@ if (isset($_SESSION['expire'])) {
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/add_item.js"></script> <!-- Corrected filename -->
   <script src="../../js/dealer/dealer_API_GET.js"></script>
-
   <!-- /js -->
 </head>
 
@@ -93,7 +90,7 @@ if (isset($_SESSION['expire'])) {
   <!-- content -->
   <?php
   $userID = $_SESSION['userID'];
-  $sql = " SELECT COUNT(cart.userID) AS NID, SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
+  $sql = "SELECT COUNT(cart.userID) AS NID, SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
   $result = mysqli_query($conn, $sql);
   $cart = mysqli_fetch_array($result);
   ?>
@@ -105,7 +102,6 @@ if (isset($_SESSION['expire'])) {
             <div class="col">
               <div class="card mb-5">
                 <div class="card-body p-4">
-
                   <div class="table-responsive">
                     <table class="table">
                       <thead>
@@ -120,10 +116,10 @@ if (isset($_SESSION['expire'])) {
                       </thead>
                       <tbody>
                         <?php
-                        $sql = "SELECT cart.userID, cart.qty, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
-                                FROM cart 
-                                JOIN spare ON cart.sparePartNum = spare.sparePartNum 
-                                WHERE cart.userID = $userID;";
+                        $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum ,spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
+                                                        FROM cart 
+                                                        JOIN spare ON cart.sparePartNum = spare.sparePartNum 
+                                                        WHERE cart.userID = $userID;";
                         $result = mysqli_query($conn, $sql);
                         $totalWeight = 0;
                         $subTotal = 0;
@@ -134,54 +130,56 @@ if (isset($_SESSION['expire'])) {
                             $itemTotalPrice = $row['qty'] * $row['price'];
                             $subTotal += $itemTotalPrice;
                             $totalWeight += $row['qty'] * $row['weight'];
-
                             printf(
                               '
-                              <tr>
-                                <th scope="row">
-                                  <div class="d-flex align-items-center">
-                                    <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
-                                  </div>
-                                </th>
-                                <td class="align-middle">
-                                  <p class="mb-0" style="font-weight: 500">%s</p>
-                                </td>
-                                <td class="align-middle">
-                                  <p class="mb-0" style="font-weight: 500">$%.2f</p>
-                                </td>
-                                <td class="align-middle">
-                                  <div class="d-flex flex-row">
-                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepDown()">
-                                      <i class="fas fa-minus"></i>
-                                    </button>
-                                    <input id="form1" min="1" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
-                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="this.parentNode.querySelector(\'input[type=number]\').stepUp()">
-                                      <i class="fas fa-plus"></i>
-                                    </button>
-                                  </div>
-                                </td>
-                                <td class="align-middle">
-                                  <p class="mb-0" style="font-weight: 500;">$%.2f</p>
-                                </td>
-                                <td class="align-middle">
-                                  <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
-                                </td>
-                              </tr>',
+                                                            <tr>
+                                                                <th scope="row">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
+                                                                    </div>
+                                                                </th>
+                                                                <td class="align-middle">
+                                                                    <p class="mb-0" style="font-weight: 500">%s</p>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                    <p class="mb-0" style="font-weight: 500">$%.2f</p>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                    <div class="d-flex flex-row">
+                                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="decreaseQuantity(%s)">
+                                                                            <i class="fas fa-minus"></i>
+                                                                        </button>
+                                                                        <input id="form1%s" min="1" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
+                                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="increaseQuantity(%s)">
+                                                                            <i class="fas fa-plus"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                    <p class="mb-0" style="font-weight: 500;">$%.2f</p>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                    <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
+                                                                </td>
+                                                            </tr>',
                               $row['sparePartImage'],
                               $row['sparePartName'],
                               $row['sparePartName'],
                               $row['price'],
+                              $row['sparePartNum'],
+                              $row['sparePartNum'],
                               $row['qty'],
+                              $row['sparePartNum'],
                               $itemTotalPrice
                             );
                           }
                         } else {
                           echo '
-                          <tr>
-                            <td colspan="6" class="text-center align-middle">
-                              <p class="mb-0" style="font-weight: 500;">Your cart is empty.</p>
-                            </td>
-                          </tr>';
+                                                    <tr>
+                                                        <td colspan="6" class="text-center align-middle">
+                                                            <p class="mb-0" style="font-weight: 500;">Your cart is empty.</p>
+                                                        </td>
+                                                    </tr>';
                         }
                         ?>
                       </tbody>
@@ -194,7 +192,7 @@ if (isset($_SESSION['expire'])) {
                 <div class="card-body p-4">
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-2">Delivery fee</p>
-                    <p class="mb-2" id="delivery" total-qty="<?php echo $itemTotalqty; ?>">$6.00</p>
+                    <p class="mb-2" id="delivery" value="0" total-qty="<?php echo $itemTotalqty; ?>"></p>
                   </div>
                   <div class="d-flex justify-content-between" style="font-weight: 500;">
                     <p class="mb-2">Total weight</p>
@@ -207,14 +205,13 @@ if (isset($_SESSION['expire'])) {
                   <hr class="my-4">
                   <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
                     <p class="mb-2">Total</p>
-                    <p class="mb-2">$<?php echo number_format($subTotal + 6.00, 2); ?></p>
+                    <p class="mb-2" id="Total-SAD" subtotal-method="<?php echo $subTotal; ?>"></p>
                   </div>
                   <div class="d-grid gap-2 d-md-block">
                     <a href="./checkout.php">
                       <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                         <div class="d-flex justify-content-between">
                           <span>Checkout</span>
-                          <span>($<?php echo number_format($subTotal, 2); ?>)</span>
                         </div>
                       </button>
                     </a>
@@ -239,21 +236,17 @@ if (isset($_SESSION['expire'])) {
 
   <footer>
     <!-- link -->
-
     <ul class="sns">
       <!-- <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-      <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
+            <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
-
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
-
   <div id="page-top" style="">
     <a href="#header"><img src="../../images/common/returan-top.png" /></a>
   </div>
-
   <!-- /return top -->
 </body>
 

@@ -44,19 +44,56 @@ function get_delivery_cost(weight, quantity) {
 
 
 $(document).ready(function () {
-  let TW = $("#totalWeight").attr("total-weight");
-  let TQ = $("#delivery").attr("total-qty");
-  console.log(TW);
+  let TW = parseFloat($("#totalWeight").attr("total-weight"));
+  let TQ = parseInt($("#delivery").attr("total-qty"), 10);
+  let ST = parseFloat($("#Total-SAD").attr("subtotal-method"));
   get_delivery_cost(TW, TQ)
-      .then(result => {
-          console.log('Delivery cost:', result);
-          if(result==="Error"){
-            document.getElementById("delivery").innerHTML = "Order Rejected, too heavy or too many items";
-          }else{
-            document.getElementById("delivery").innerHTML = "$" + result;
-          }
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
+    .then(result => {
+      console.log('Delivery cost:', result);
+      if (result === "Error") {
+        document.getElementById("delivery").innerHTML = "Order Rejected, too heavy or too many items";
+        document.getElementById("delivery").value = result;
+        document.getElementById("Total-SAD").innerHTML = "Rejected";
+      } else {
+        // Convert result to a number
+        let deliveryCost = parseFloat(result);
+        document.getElementById("delivery").innerHTML = "$" + deliveryCost.toFixed(2);
+
+        // Ensure ST is a number and add deliveryCost to it
+        ST += deliveryCost;
+
+        document.getElementById("Total-SAD").innerHTML = "$" + ST.toFixed(2);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 });
+
+function decreaseQuantity(id) {
+  const input = document.getElementById('form1' + id);
+  if (input.value > 1) {
+    input.stepDown();
+    update_qty(id,input.value);
+  }
+}
+
+function increaseQuantity(id) {
+  const input = document.getElementById('form1' + id);
+  input.stepUp();
+  update_qty(id,input.value);
+}
+
+function update_qty(spnum,qty) {
+  $.ajax({
+    type: "POST",
+    url: "./update_cart.php",
+    data: {
+      sparePartNum: spnum,
+      qty: qty
+    },
+    success: function (data) {
+      location.reload();
+    }
+  });
+}

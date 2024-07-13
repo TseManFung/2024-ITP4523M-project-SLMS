@@ -2,15 +2,15 @@
 <html>
 <?php
 session_start();
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -32,17 +32,17 @@ if(isset($_SESSION['expire'])){
 
   <!-- /css -->
   <!-- js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/checkout.js"></script>
-  <script src="../../js/dealer_template_resetpasswd.js"></script>
   <!-- /js -->
 </head>
 
 <body>
   <div class="fixed-top">
-<!-- navbar -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -105,92 +105,123 @@ if(isset($_SESSION['expire'])){
               <span class="badge badge-secondary badge-pill">3</span>
             </h4>
             <ul class="list-group mb-3 sticky-top">
-              <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100001.jpg" />
-                </div>
-                <div>
-                  <h6 class="my-0">Spare name</h6>
-                  <small class="text-muted">Quantity:10</small>
-                </div>
-                <span class="text-muted">$1000</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100002.jpg" />
-                </div>
-                <div>
-                  <h6 class="my-0">Spare name</h6>
-                  <small class="text-muted">Quantity:2</small>
-                </div>
-                <span class="text-muted">$200</span>
-              </li>
+              <?php
+              $userID = $_SESSION['userID'];
+              $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.weight, spare.state 
+              FROM cart 
+              JOIN spare ON cart.sparePartNum = spare.sparePartNum 
+              WHERE cart.userID = $userID;";
+              $result = mysqli_query($conn, $sql);
+              $totalWeight = 0;
+              $subTotal = 0;
+              $itemTotalqty = 0;
+              $Qty=0;
+              if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_array($result)) {
+                  $itemTotalqty += $row['qty'];
+                  $itemTotalPrice = $row['qty'] * $row['price'];
+                  $subTotal += $itemTotalPrice;
+                  printf(
+                    '<li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div class="order-img">
+                      <img class="order-abs-img img-100" src="%s" />
+                    </div>
+                    <div>
+                      <h6 class="my-0">%s</h6>
+                      <small class="text-muted">Quantity:%d</small>
+                    </div>
+                    <span class="text-muted">$%d</span>
+                  </li>',
+                    $row['sparePartImage'],
+                    $row['sparePartName'],
+                    $row['qty'],
+                    $itemTotalPrice
+                  );
+                }
+              }
+              ?>
+              <?php
+              $sql = "SELECT SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
+              $result = mysqli_query($conn, $sql);
+              $cart = mysqli_fetch_array($result);
+              ?>
               <li class="list-group-item d-flex justify-content-between">
-                  <div class="d-grid gap-2 d-md-block">
-                      <a href="./dealer_cart.php">
-                      <button type="button" data-mdb-button-init data-mdb-ripple-init
-                              class="btn btn-primary btn-block btn-lg">
-                          <div class="d-flex justify-content-between">
-                              <span>View your cart</span>
-                          </div>
-                      </button>
-                      </a>
-                  </div>
+                <div class="d-grid gap-2 d-md-block">
+                  <a href="./dealer_cart.php">
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                      <div class="d-flex justify-content-between">
+                        <span>View your cart</span>
+                      </div>
+                    </button>
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
           <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Your order information:</h4>
-            <form class="needs-validation" novalidate="" action="./dealer_view_order_record_detail.php" method="get">
-                <div class="row">
-                    <div class="mb-3">
-                        <label for="address"> Your order ID:</label>
-                        <input type="text" class="form-control" id="Order-ID" value="12132120220512" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address"> Order Date & Time:</label>
-                        <input type="text" class="form-control" id="Order-D-T" value="2022/01/01" disabled>
-                    </div>
-                </div>
+              <div class="row">
                 <div class="mb-3">
-                    <label for="address"> Order Quantity:</label>
-                    <input type="text" class="form-control" id="Order-Quantity" value="12" disabled>
+                  <label for="address"> Order Date & Time:</label>
+                  <input type="text" class="form-control" id="Order-D-T" value="" disabled>
                 </div>
-                <div class="mb-3">
-                    <label for="address">Order Price:</label>
-                    <input type="text" class="form-control" id="Order-Price" value="$1234" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address"> Order Item Quantity:</label>
+                <input type="text" class="form-control" id="Order-Quantity" value="<?php echo $cart['total_quantity']; ?>" total-qty="<?php echo $cart['total_quantity']; ?>" disabled>
+              </div>
+              <?php
+              $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum ,spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
+                                                        FROM cart 
+                                                        JOIN spare ON cart.sparePartNum = spare.sparePartNum 
+                                                        WHERE cart.userID = $userID;";
+              $result = mysqli_query($conn, $sql);
+              $totalWeight = 0;
+              $subTotal = 0;
+              $itemTotalqty = 0;
+              if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_array($result)) {
+                  $itemTotalqty += $row['qty'];
+                  $itemTotalPrice = $row['qty'] * $row['price'];
+                  $subTotal += $itemTotalPrice;
+                  $totalWeight += $row['qty'] * $row['weight'];
+                  $subTotalFormatted = number_format($subTotal, 2);
+                }
+              }
+              ?>
+              <div class="mb-3">
+                <label for="address">Total Weight:</label>
+                <input type="text" class="form-control" id="Order-Weight" value="<?php echo $totalWeight; ?> KG" total-weight=<?php echo $totalWeight; ?> disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address">Total Item Amount:</label>
+                <input type="text" class="form-control" id="Order-Amount" value="$<?php echo $subTotalFormatted; ?>" total-amount="<?php echo $subTotal; ?>.toFixed(2)" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="address">Delivery Fee:</label>
+                <input type="text" class="form-control" id="Delivery-Fee" value="" disabled>
+              </div>
+              <div class="row">
+                <div class=" mb-3">
+                  <label for="zip">Total Order Amount:</label>
+                  <input type="text" class="form-control" value="$11234" id="Total-Order-Amount" placeholder="" disabled>
                 </div>
-                <div class="mb-3">
-                    <label for="address">Order Amount:</label>
-                    <input type="text" class="form-control" id="Order-Amount" value="$1234" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="address">Delivery Fee:</label>
-                    <input type="text" class="form-control" id="Delivery-Fee" value="$10000" disabled>
-                </div>
-                <div class="row">
-                    <div class=" mb-3">
-                        <label for="zip">Total Order Amount:</label>
-                        <input type="text" class="form-control" value="$11234" id="Total-Order-Amount" placeholder="" disabled>
-                    </div>
-                </div>
-                <h4 class="mb-3">Please enter information to create an order</h4>
-                <div class="mb-3">
-                    <label for="address">Delivery Address </label>
-                    <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="Delivery Address get from database" required>
-                    <div class="invalid-feedback"> Please enter your shipping address. </div>
-                </div>
-                <div class="mb-3">
-                    <label for="address2">Please choose a Delivery Date <span class="text-muted"></span></label>
-                    <section class="container">
-                        <!-- use js to make min and max date -->
-                        <input type="date" id="start" name="trip-start" value="2024-07-22" min="2024-01-01"
-                               max="2024-12-31" />
-                    </section>
-                </div>
-                <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
-            </form>
+              </div>
+              <h4 class="mb-3">Please enter delivery address</h4>
+              <?php
+              
+              $sql = "SELECT SUM(cart.qty) AS total_quantity, d.dealerID, d.deliveryAddress FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum JOIN `user` u ON cart.userID = u.userID JOIN dealer d ON u.dealerID = d.dealerID WHERE cart.userID = $userID";
+              $result = mysqli_query($conn, $sql);
+              $row = mysqli_fetch_array($result);
+              mysqli_close($conn);
+              ?>
+              <div class="mb-3">
+                <label for="address">Delivery Address </label>
+                <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="<?php echo $row['deliveryAddress']; ?>" required>
+                <div class="invalid-feedback"> Please enter your shipping address. </div>
+              </div>
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>)">Continue to checkout</button>
           </div>
         </div>
         <ul class="list-inline">
@@ -198,6 +229,24 @@ if(isset($_SESSION['expire'])){
       </div>
     </div>
   </div>
+
+  <!-- message box-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+          ...
+        </div>
+        <div class="modal-footer" id="modal-footer">
+        <button type="button" id="showModalButton" class="btn btn-secondary" onclick="closeModal()">Close</button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- /message box -->
   <!-- <img src="../../images/menu/chisato.png"> -->
   <!-- /content -->
 
@@ -210,7 +259,7 @@ if(isset($_SESSION['expire'])){
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
 
   <!-- return top -->
