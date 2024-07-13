@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -31,8 +31,9 @@ if(isset($_SESSION['expire'])){
   <link rel="stylesheet" href="../../css/bs/bootstrap.css">
   <link rel="stylesheet" href="../../css/dealer_view_orderrecord_token.css">
   <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.css">
   <!-- /css -->
+
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
@@ -40,6 +41,7 @@ if(isset($_SESSION['expire'])){
   <script src="../../js/add_itemm.js"></script>
   <script src="../../js/dealer_view_orderrecord_token.js"></script>
   <script src="../../js/view_order_record.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
 </head>
 
@@ -105,184 +107,160 @@ if(isset($_SESSION['expire'])){
                       <h5 class="text-muted mb-0">Thanks for your Order, <a>(dealername)</a>!</h5>
                       <br />
                       <div class="col">
-                          <a href="./dealer_delete_order.php">
-                              <button class="cta">
-                                  <span>Delete this Order</span>
-                                  <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                      <path d="M1,5 L11,5"></path>
-                                      <polyline points="8 1 12 5 8 9"></polyline>
-                                  </svg>
-                              </button>
-                          </a>
+                        <a href="./dealer_delete_order.php">
+                          <button class="cta">
+                            <span>Delete this Order</span>
+                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                              <path d="M1,5 L11,5"></path>
+                              <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                          </button>
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <p class="lead fw-normal mb-0">(Order ID)</p>
-                        <p class="small text-muted mb-0">Sales Manager ID: (ID)</p>
-                    </div>
-                    <div class="card shadow-0 border mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0">Item picture</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0">Spare name</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">Categories</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">Qantity</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">Price</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">Total Price</p>
-                                </div>
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="lead fw-normal mb-0">Order ID: (Order ID)</p>
+                  </div>
+
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="fw-bold mb-0">Order Information</p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">
+                        Order Date & Time
+                        :
+                      </span>22 Dec,2019(12:00)
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">
+                        Manager’s Contact
+                        Name:
+                      </span>name
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">
+                        Manager’s Contact
+                        Number:
+                      </span>27272727
+                    </p>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="fw-bold mb-0">Delivery Information</p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">Delivery Date</span> 22
+                      Dec,2020
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">
+                        Delivery Address
+                        :
+                      </span>your home
+                    </p>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="fw-bold mb-0">Item Information</p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">Total Order Item Quantity:</span> 20
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <p class="text-muted mb-0">
+                      <span class="fw-bold me-4">Total Order Item Weight:</span> 15 KG
+                    </p>
+                  </div>
+                  <!-- table-->
+                    <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
+                      <!-- table header -->
+                      <thead class="table-light table-header">
+                        <tr>
+                          <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
+                          <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
+                          <th scope="col" style="width: 20%;text-align:center;">photo</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">Price</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">Quantity</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">Amount</th>
+                        </tr>
+                      </thead>
+                      <!-- /table header -->
+                      <!-- table body -->
+                      <tbody>
+                        <!-- record -->
+                        <tr>
+                          <th scope="row">100001</th>
+                          <td>idk</td>
+                          <td>
+                            <div class="table-img-box center-LR center-TB">
+                              <img class="table-img" src="../../images/item/100001.jpg" />
                             </div>
-                        </div>
-                        <hr />
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img src="../../images/item/100002.jpg" class="img-fluid" alt="1000002">
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0">(item name)</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">(ABCD)</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">10</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">$100</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">$1000</p>
-                                </div>
+                          </td>
+                          <td>120</td>
+                          <td>10</td>
+                          <td>$1200</td>
+                        </tr>
+                        <!-- /record -->
+                        <!-- record -->
+                        <tr>
+                          <th scope="row">200002</th>
+                          <td>Name</td>
+                          <td>
+                            <div class="table-img-box center-LR center-TB">
+                              <img class="table-img" src="../../images/item/200002.jpg" />
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img src="../../images/item/100001.jpg" class="img-fluid" alt="100001">
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0">(item name)</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">(ABCD)</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small"> 5</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">$100</p>
-                                </div>
-                                <div class="col-md-2 text-center child-center-flex">
-                                    <p class="text-muted mb-0 small">$500</p>
-                                </div>
-                            </div>
-                        </div>
+                          </td>
+                          <td>150</td>
+                          <td>10</td>
+                          <td>$1500</td>
+                        </tr>
+                        <!-- /record -->
+                      </tbody>
+                      <!-- table body -->
+                    </table>
+                    <!-- /table -->
+                     <br>
+                  <div class="row d-flex align-items-center">
+                    <div class="col-md-2">
+                      <p class="text-muted mb-0 small">Order Status</p>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="fw-bold mb-0">Order Details</p>
+                    <div class="col-md-10">
+                      <div class="progress" style="height: 6px; border-radius: 16px;">
+                        <div class="progress-bar" role="progressbar" style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
+                      </div>
+                      <div class="d-flex justify-content-around mb-1">
+                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
+                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
+                        <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
+                        <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is finished</p>
+                      </div>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Order Price:</span>price
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Order ID :</span>788152
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">
-                                Order Date & Time
-                                :
-                            </span>22 Dec,2019(12:00)
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">
-                                Manager’s Contact
-                                Name:
-                            </span>name
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">
-                                Manager’s Contact
-                                Number:
-                            </span>27272727
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">
-                                Delivery Address
-                                :
-                            </span>your home
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Delivery Cost:</span>
-                            321312321
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Delivery Date</span> 22
-                            Dec,2020
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Total Weight：</span> 1541KG
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <p class="text-muted mb-0">
-                            <span class="fw-bold me-4">Total Spares：</span> 15
-                        </p>
-                    </div>
-                    <br />
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-2">
-                            <p class="text-muted mb-0 small">Order Status</p>
-                        </div>
-                        <div class="col-md-10">
-                            <div class="progress" style="height: 6px; border-radius: 16px;">
-                                <div class="progress-bar" role="progressbar"
-                                     style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
-                            </div>
-                            <div class="d-flex justify-content-around mb-1">
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
-                                <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is finished</p>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
 
                 </div>
                 <div class="card-footer border-0 px-4 py-5">
-                  <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
-                    Total Order Amount: <span class="h2 mb-0 ms-2">$1500</span>
-                  </h5>
+                <div class="row mb-2" style="color: white;">
+                    <h2>Payment Details</h2>
+                    <div class="col">
+                      <div class="cell"><b>Subtotal: </b> [item total price]</div>
+                      <div class="cell"><b>Delivery Fee: </b> [Delivery Fee]</div>
+                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$2700</span></div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -302,7 +280,7 @@ if(isset($_SESSION['expire'])){
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

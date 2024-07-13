@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -29,6 +29,7 @@ if(isset($_SESSION['expire'])){
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/common.css" />
   <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.css">
   <!-- /css -->
 
   <!-- js -->
@@ -36,6 +37,7 @@ if(isset($_SESSION['expire'])){
   <script src="../../js/common.js"></script>
   <script src="../../js/sale_manager/view_order_detail.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
 </head>
 
@@ -44,8 +46,7 @@ if(isset($_SESSION['expire'])){
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
@@ -95,14 +96,13 @@ if(isset($_SESSION['expire'])){
                     <div class="row mb-2">
                       <h2>Order Detail</h2>
                       <div class="col-6">
-                        <div class="cell"><b>Your Name:</b> [ManagerContactName / null]</div>
-                        <div class="cell"><b>Your Contact Number:</b> [ManagerContact / null]</div>
+                        <div class="cell"><b>Manager's Name:</b> [ManagerContactName / null]</div>
+                        <div class="cell"><b>Manager's Contact Number:</b> [ManagerContact / null]</div>
                         <div class="cell"><b>Order Date & Time:</b> [2024-01-01 00:00:00]</div>
                         <div class="cell"><b>Delivery Date:</b> [2024-01-01 00:00:00 / null]</div>
                       </div>
                       <div class="col-6">
-                        <div class="cell"><a href="./dealer_information.php?DID=123"><button type="button"
-                                    class="btn btn-link p-0"><b>Dealer ID:</b>
+                        <div class="cell"><a href="./dealer_information.php?DID=123"><button type="button" class="btn btn-link p-0"><b>Dealer ID:</b>
                               [DealerID]</button></a></div>
                         <div class="cell"><b>Dealer Name:</b> [DealerContactName]</div>
                         <div class="cell"><b>Dealer Contact Number:</b> [DealerContact]</div>
@@ -124,8 +124,7 @@ if(isset($_SESSION['expire'])){
                       </div>
                       <div class="col-md-10">
                         <div class="progress" style="height: 6px; border-radius: 16px;">
-                          <div class="progress-bar" role="progressbar"
-                               style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
+                          <div class="progress-bar" role="progressbar" style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
                         </div>
                         <div class="d-flex justify-content-around mb-1">
                           <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
@@ -138,16 +137,17 @@ if(isset($_SESSION['expire'])){
                     <hr>
                     <!-- table-->
                     <p><b>Total Order Item Quantity:</b> 20</p>
-                    <table id="item-report" class="table table-striped table-hover">
+                    <p><b>Total Order Item Weight:</b> 20 KG</p>
+                    <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
                       <!-- table header -->
                       <thead class="table-light table-header">
                         <tr>
-                          <th scope="col" style="width: 10%;">ID</th>
-                          <th scope="col" style="width: 40%;">Name</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
+                          <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
                           <th scope="col" style="width: 20%;text-align:center;">photo</th>
-                          <th scope="col" style="width: 10%;">Price</th>
-                          <th scope="col" style="width: 10%;">Quantity</th>
-                          <th scope="col" style="width: 10%;">Amount</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">Price</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">Quantity</th>
+                          <th scope="col" style="width: 10%;" data-sortable="true">Amount</th>
                         </tr>
                       </thead>
                       <!-- /table header -->
@@ -196,8 +196,7 @@ if(isset($_SESSION['expire'])){
                     <div class="col">
                       <div class="cell"><b>Subtotal: </b> [item total price]</div>
                       <div class="cell"><b>Delivery Fee: </b> [Delivery Fee]</div>
-                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span
-                              class="double-bottom-line">$2700</span></div>
+                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line">$2700</span></div>
                     </div>
 
                   </div>
@@ -253,7 +252,7 @@ if(isset($_SESSION['expire'])){
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 
