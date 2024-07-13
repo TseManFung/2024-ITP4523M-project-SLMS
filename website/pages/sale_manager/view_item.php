@@ -127,12 +127,13 @@ if(isset($_SESSION['expire'])){
   $spareCount = $row['spareCount'];
   $spareMaxPrice = $row['SpareMaxPrice'];
   $spareMinPrice = $row['SpareMinPrice'];
+  $totalPage = ceil($spareCount / 12);
   if (isset($_GET['pages']) && $_GET['pages'] > 0) {
-    $currentPage = $_GET['pages'];
+    $currentPage = min(max(1, $_GET['pages']), $totalPage);
   } else {
     $currentPage = 1;
   }
-  $totalPage = ceil($spareCount / 12);
+
   ?>
   <!-- content -->
   <div class="d-flex position-relative content-bg justify-content-center">

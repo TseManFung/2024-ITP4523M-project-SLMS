@@ -71,12 +71,12 @@ $sql = "SELECT count(*) FROM `order` o $condition ;";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_array($result);
 $orderCount = $row[0];
+$totalPage = ceil($orderCount / 10);
 if (isset($_GET['pages']) && $_GET['pages'] > 0) {
-  $currentPage = $_GET['pages'];
+  $currentPage = min(max(1, $_GET['pages']), $totalPage);
 } else {
   $currentPage = 1;
 }
-$totalPage = ceil($orderCount / 10);
 
 $condition = "$condition GROUP BY o.orderID ";
 if (isset($_GET["sort"])) {

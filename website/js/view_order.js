@@ -21,12 +21,11 @@ $(document).ready(function () {
 
   $(".btn-success").bind("click", function () {
     $.ajax({
-      url: "../db/query.php",
+      url: "./update_order.php",
       type: "POST",
       data: {
-        query:
-          "update `order` set state = 'A' where orderID = " +
-          $(this).attr("data-order-id"),
+        orderID: $(this).attr("data-order-id"),
+        state: "A",
       },
       success: function (data) {
         location.reload();
@@ -36,12 +35,11 @@ $(document).ready(function () {
 
   $(".btn-danger").bind("click", function () {
     $.ajax({
-      url: "../db/query.php",
+      url: "./update_order.php",
       type: "POST",
       data: {
-        query:
-          "update `order` set state = 'R' where orderID = " +
-          $(this).attr("data-order-id"),
+        orderID: $(this).attr("data-order-id"),
+        state: "R",
       },
       success: function (data) {
         location.reload();

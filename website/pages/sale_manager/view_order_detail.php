@@ -40,6 +40,12 @@ if (isset($_SESSION['expire'])) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
 </head>
+<?php
+$sql = "SELECT * FROM `order` where orderID = {$_POST["orderID"]};";
+$result = mysqli_query($conn, $sql);
+$orderDetail = mysqli_fetch_assoc($result);
+// orderID, orderDateTime, deliveryAddress, deliveryDate, salesManagerID, dealerID, orderItemNumber, TotalAmount, shipCost, state
+?>
 
 <body>
   <div class="fixed-top">
@@ -88,8 +94,12 @@ if (isset($_SESSION['expire'])) {
               <div class="card" style="border-radius: 10px;">
                 <div class="card-body p-4">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <p class="lead fw-normal mb-0">Order ID: [0123456789]</p>
-                    <p class="small text-muted mb-0">Sales Manager ID: [0123456789 / null]</p>
+                    <p class="lead fw-normal mb-0">Order ID: <?php echo str_pad($orderDetail["orderID"], 10, "0", STR_PAD_LEFT) ?></p>
+                    <p class="small text-muted mb-0">Sales Manager ID: <?php if ($orderDetail["salesManagerID"] == null) {
+                                                                          echo "no sale Manager";
+                                                                        } else {
+                                                                          echo str_pad($orderDetail["salesManagerID"], 10, "0", STR_PAD_LEFT);
+                                                                        } ?></p>
                   </div>
                   <!-- order detail -->
                   <div>
@@ -98,23 +108,23 @@ if (isset($_SESSION['expire'])) {
                       <div class="col-6">
                         <div class="cell"><b>Manager's Name:</b> [ManagerContactName / null]</div>
                         <div class="cell"><b>Manager's Contact Number:</b> [ManagerContact / null]</div>
-                        <div class="cell"><b>Order Date & Time:</b> [2024-01-01 00:00:00]</div>
-                        <div class="cell"><b>Delivery Date:</b> [2024-01-01 00:00:00 / null]</div>
+                        <div class="cell"><b>Order Date & Time:</b> <?php echo $orderDetail["orderDateTime"] ?></div>
+                        <div class="cell"><b>Delivery Date:</b> <?php if ($orderDetail["deliveryDate"] == null) {
+                                                                  echo "no delivery date";
+                                                                } else {
+                                                                  echo $orderDetail["deliveryDate"];
+                                                                } ?></div>
                       </div>
                       <div class="col-6">
-                        <div class="cell"><a href="./dealer_information.php?DID=123"><button type="button" class="btn btn-link p-0"><b>Dealer ID:</b>
-                              [DealerID]</button></a></div>
+                        <div class="cell"><a href="./dealer_information.php?DID=<?php echo $orderDetail["dealerID"]; ?>"><button type="button" class="btn btn-link p-0"><b>Dealer ID:</b>
+                              <?php echo str_pad($orderDetail["dealerID"], 10, "0", STR_PAD_LEFT); ?></button></a></div>
                         <div class="cell"><b>Dealer Name:</b> [DealerContactName]</div>
                         <div class="cell"><b>Dealer Contact Number:</b> [DealerContact]</div>
 
                       </div>
                       <div class="cell"><b>Delivery Address:</b>
                         <address>
-                          Susan Lai <br>
-                          12th floor, Flat G <br>
-                          Magnolia Building <br>
-                          212 Sycamore Street <br>
-                          WAN CHAI, HONG KONG
+                          <?php echo $orderDetail["deliveryAddress"]; ?>
                         </address>
                       </div>
                     </div>
@@ -194,9 +204,9 @@ if (isset($_SESSION['expire'])) {
                   <div class="row mb-2">
                     <h2>Payment Details</h2>
                     <div class="col">
-                      <div class="cell"><b>Subtotal: </b> [item total price]</div>
-                      <div class="cell"><b>Delivery Fee: </b> [Delivery Fee]</div>
-                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line">$2700</span></div>
+                      <div class="cell text-end"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"]; ?></div>
+                      <div class="cell text-end"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
+                      <div class="cell text-end" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
 
                   </div>
