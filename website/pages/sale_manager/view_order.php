@@ -271,19 +271,6 @@ $result = mysqli_query($conn, $sql);
             <hr class="z-1" />
           </div>
           <!-- /table header -->
-
-
-          <?php
-          $stateConvert = array(
-            "C" => "Create",
-            "A" => "Accepted",
-            "R" => "Rejected",
-            "T" => "In Transmit",
-            "U" => "Unavailable",
-            "F" => "Finished"
-          );
-          ?>
-
           <?php
 
           while ($row = mysqli_fetch_array($result)) {
@@ -397,7 +384,7 @@ $result = mysqli_query($conn, $sql);
     </ul>
 
     <!-- /link -->
-    <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

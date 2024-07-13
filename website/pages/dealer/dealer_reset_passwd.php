@@ -155,7 +155,7 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <footer>
-    <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

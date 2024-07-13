@@ -384,7 +384,7 @@ if(isset($_SESSION['expire'])){
     </ul>
 
     <!-- /link -->
-    <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

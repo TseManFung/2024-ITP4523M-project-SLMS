@@ -42,10 +42,78 @@ if (isset($_SESSION['expire'])) {
   <!-- /js -->
 </head>
 
+<?php
+$condition = " where dealerID = {$_SESSION['dealerID']} ";
+
+if (isset($_GET["filter"])) {
+  if ($_GET["filter"] != "A") {
+    $condition = "$condition and o.state = '{$_GET["filter"]}' ";
+  }
+}
+
+if (isset($_GET["search"])) {
+  $search = mysqli_real_escape_string($conn, $_GET["search"]);
+  $condition = $condition . " and CONCAT(
+    o.orderID,'\r\n' ,
+    o.orderDateTime,'\r\n' ,
+    o.deliveryAddress,'\r\n' ,
+    o.TotalAmount + o.shipCost
+  ) LIKE CONCAT('%', '$search', '%') ";
+}
+
+
+
+$sql = "SELECT count(*) FROM `order` o $condition ;";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_array($result);
+$orderCount = $row[0];
+if (isset($_GET['pages']) && $_GET['pages'] > 0) {
+  $currentPage = $_GET['pages'];
+} else {
+  $currentPage = 1;
+}
+$totalPage = ceil($orderCount / 10);
+
+if (isset($_GET["sort"])) {
+  if ($_GET["sort"] == "N") {
+    $condition = "$condition order by o.orderDateTime desc ";
+  } else if ($_GET["sort"] == "O") {
+    $condition = "$condition order by o.orderDateTime ";
+  } else if ($_GET["sort"] == "QLH") {
+    $condition = "$condition order by orderItemNumber ";
+  } else if ($_GET["sort"] == "QHL") {
+    $condition = "$condition order by orderItemNumber desc ";
+  } else if ($_GET["sort"] == "ALH") {
+    $condition = "$condition order by TA ";
+  } else if ($_GET["sort"] == "AHL") {
+    $condition = "$condition order by TA desc ";
+  }
+} else {
+  $condition = "$condition order by o.orderDateTime desc ";
+}
+
+$sql = "SELECT 
+  o.orderID,
+  o.orderDateTime,
+  ifnull(o.deliveryAddress,'') AS deliveryAddress, 
+  o.TotalAmount + o.shipCost as TA,
+  o.state AS orderStatus
+FROM `order` o
+$condition Limit " . ($currentPage - 1) * 10 . ", 10;";
+
+echo $sql;
+$result = mysqli_query($conn, $sql);
+/* if ($result) {
+  $order = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+  $order = [];
+} */
+?>
+
 <body>
   <div class="fixed-top">
-<!-- navbar -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -82,7 +150,6 @@ if (isset($_SESSION['expire'])) {
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     </nav>
@@ -111,27 +178,41 @@ if (isset($_SESSION['expire'])) {
       <br />
       <div class="row row--top-40">
         <div class="col-md-4">
-          <h2 class="row__title">Order(2)</h2>
+          <h2 class="row__title">Order(<?php echo $orderCount; ?>)</h2>
         </div>
         <div class="col d-flex justify-content-center align-items-end">
           <nav aria-label="Page navigation">
             <ul class="pagination page-nav" style="margin-bottom: 0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
+              <li class="page-item <?php if ($currentPage <= 1) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
+                                                    echo "1";
+                                                  } else {
+                                                    echo $currentPage - 1;
+                                                  }; ?>" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+              <?php
+              for ($i = max(1, $currentPage - 2); $i <= min($totalPage, $currentPage + 2); $i++) {
+              ?>
+                <li class="page-item <?php if ($i == $currentPage) {
+                                        echo "active";
+                                      } ?>">
+                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+              <?php } ?>
+              <li class="page-item <?php if ($currentPage >= $totalPage) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
+                                                    echo $totalPage;
+                                                  } else {
+                                                    echo $currentPage + 1;
+                                                  }; ?>" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -139,13 +220,59 @@ if (isset($_SESSION['expire'])) {
           </nav>
         </div>
         <div class="col-md-4 position-relative">
-          <div class="form-floating position-absolute bottom-0 end-0" style="padding-right: 12px">
-            <select class="form-select" id="sort">
-              <option value="NA">Newest Arrivals</option>
-              <option value="PLH">Price: Low to High</option>
-              <option value="PHL">Price: High to Low</option>
-            </select>
-            <label for="sort">Sort</label>
+          <div class="position-absolute bottom-0 end-0 d-flex">
+            <div class="form-floating" style="padding-right: 12px">
+
+              <select class="form-select" id="filter">
+                <option value="N" <?php if (!isset($_GET["filter"]) || $_GET["filter"] == "N") {
+                                    echo "selected";
+                                  } ?>>All</option>
+                <option value="C" <?php if (isset($_GET["filter"]) && $_GET["filter"] == "C") {
+                                    echo "selected";
+                                  } ?>>Create Order</option>
+                <option value="A" <?php if (isset($_GET["filter"]) && $_GET["filter"] == "A") {
+                                    echo "selected";
+                                  } ?>>Accepted</option>
+                <option value="R" <?php if (isset($_GET["filter"]) && $_GET["filter"] == "R") {
+                                    echo "selected";
+                                  } ?>>Rejected</option>
+                <option value="T" <?php if (isset($_GET["filter"]) && $_GET["filter"] == "T") {
+                                    echo "selected";
+                                  } ?>>In Transmit</option>
+                <option value="U" <?php if (isset($_GET["filter"]) && $_GET["filter"] == "U") {
+                                    echo "selected";
+                                  } ?>>Unavailable</option>
+                <option value="F" <?php if (isset($_GET["filter"]) && $_GET["filter"] == "F") {
+                                    echo "selected";
+                                  } ?>>Finished</option>
+              </select>
+              <label for="filter">State Filter</label>
+            </div>
+
+            <div class="form-floating" style="padding-right: 12px">
+
+              <select class="form-select" id="sort">
+                <option value="N" <?php if (!isset($_GET["sort"]) || $_GET["sort"] == "N") {
+                                    echo "selected";
+                                  } else ?>>Newest</option>
+                <option value="O" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "O") {
+                                    echo "selected";
+                                  } else  ?>>Oldest</option>
+                <option value="QLH" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "QLH") {
+                                      echo "selected";
+                                    } else  ?>>Quantity: Low to High</option>
+                <option value="QHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "QHL") {
+                                      echo "selected";
+                                    } else  ?>>Quantity: High to Low</option>
+                <option value="ALH" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "ALH") {
+                                      echo "selected";
+                                    } else  ?>>Amount: Low to High</option>
+                <option value="AHL" <?php if (isset($_GET["sort"]) && $_GET["sort"] == "AHL") {
+                                      echo "selected";
+                                    }  ?>>Amount: High to Low</option>
+              </select>
+              <label for="sort">Sort</label>
+            </div>
           </div>
         </div>
       </div>
@@ -209,44 +336,6 @@ if (isset($_SESSION['expire'])) {
             <hr class="z-1" />
           </div>
           <!-- /item(order record) -->
-
-          <!-- item(order record) -->
-          <div class="row item-box table-content">
-            <div class="col-10">
-              <div class="row table-content-data">
-                <div class="col" style="width: 20%">0123456789</div>
-                <div class="col" style="width: 30%">16/05/2024 | 16:00</div>
-                <div class="col" style="width: 20%">Create</div>
-                <div class="col" style="width: 30%">$12345</div>
-
-              </div>
-              <div class="d-flex">
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/100001.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/200002.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/300003.jpg" />
-                </div>
-                <div class="order-img">
-                  <img class="order-abs-img" src="../../images/item/400004.jpg" />
-                </div>
-              </div>
-            </div>
-            <div class="col-2">
-              <button class="cta">
-                <span>View more</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                  <path d="M1,5 L11,5"></path>
-                  <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-              </button>
-            </div>
-            <hr class="z-1" />
-          </div>
-          <!-- /item(order record) -->
         </div>
       </div>
       <br>
@@ -254,22 +343,36 @@ if (isset($_SESSION['expire'])) {
         <div class="col d-flex justify-content-center align-items-end">
           <nav aria-label="Page navigation">
             <ul class="pagination page-nav" style="margin-bottom: 0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
+              <li class="page-item <?php if ($currentPage <= 1) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
+                                                    echo "1";
+                                                  } else {
+                                                    echo $currentPage - 1;
+                                                  }; ?>" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+              <?php
+              for ($i = max(1, $currentPage - 2); $i <= min($totalPage, $currentPage + 2); $i++) {
+              ?>
+                <li class="page-item <?php if ($i == $currentPage) {
+                                        echo "active";
+                                      } ?>">
+                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+              <?php } ?>
+              <li class="page-item <?php if ($currentPage >= $totalPage) {
+                                      echo "disabled";
+                                    }
+                                    ?>">
+                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
+                                                    echo $totalPage;
+                                                  } else {
+                                                    echo $currentPage + 1;
+                                                  }; ?>" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -291,7 +394,8 @@ if (isset($_SESSION['expire'])) {
     </ul>
 
     <!-- /link -->
-    <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    
   </footer>
   <!-- return top -->
 

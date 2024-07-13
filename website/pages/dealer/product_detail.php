@@ -151,7 +151,7 @@ if (isset($_SESSION['expire'])) {
                             <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
     <!-- /link -->
-    <p>© 2024 Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <div id="page-top" style="">
     <a href="#header"><img src="../../images/common/returan-top.png"></a>
