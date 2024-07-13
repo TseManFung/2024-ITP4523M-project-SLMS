@@ -33,7 +33,15 @@ $(document).ready(function () {
       window.location.href = currentUrl.toString();
     }
   });
+
+  $(".page-link").on("click", function () {
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set("pages", $(this).attr("pages"));
+    window.location.href = currentUrl.toString();
+  });
 });
+
+
 
 function Submitfilter() {
   // get name="Category"

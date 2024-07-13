@@ -41,7 +41,7 @@ if (isset($_SESSION['expire'])) {
   <!-- /js -->
 </head>
 <?php
-$sql = "SELECT * FROM `order` where orderID = {$_POST["orderID"]};";
+$sql = "SELECT o.orderDateTime, o.deliveryAddress, o.deliveryDate, o.salesManagerID, o.dealerID, o.orderItemNumber, o.TotalAmount, o.shipCost, o.state, d.dealerName, d.contactNumber FROM `order` o inner join dealer d on o.dealerID = d.dealerID where orderID = {$_POST["orderID"]};";
 $result = mysqli_query($conn, $sql);
 $orderDetail = mysqli_fetch_assoc($result);
 // orderID, orderDateTime, deliveryAddress, deliveryDate, salesManagerID, dealerID, orderItemNumber, TotalAmount, shipCost, state
@@ -94,7 +94,7 @@ $orderDetail = mysqli_fetch_assoc($result);
               <div class="card" style="border-radius: 10px;">
                 <div class="card-body p-4">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <p class="lead fw-normal mb-0">Order ID: <?php echo str_pad($orderDetail["orderID"], 10, "0", STR_PAD_LEFT) ?></p>
+                    <p class="lead fw-normal mb-0">Order ID: <?php echo str_pad($_POST["orderID"], 10, "0", STR_PAD_LEFT) ?></p>
                     <p class="small text-muted mb-0">Sales Manager ID: <?php if ($orderDetail["salesManagerID"] == null) {
                                                                           echo "no sale Manager";
                                                                         } else {
@@ -106,8 +106,13 @@ $orderDetail = mysqli_fetch_assoc($result);
                     <div class="row mb-2">
                       <h2>Order Detail</h2>
                       <div class="col-6">
-                        <div class="cell"><b>Manager's Name:</b> [ManagerContactName / null]</div>
-                        <div class="cell"><b>Manager's Contact Number:</b> [ManagerContact / null]</div>
+                        <?php if ($orderDetail["salesManagerID"] != null) {
+                          $sql = "SELECT managerName,contactNumber FROM salemanager where salesManagerID = {$orderDetail["salesManagerID"]};";
+                          $result = mysqli_query($conn, $sql);
+                          $managerDetail = mysqli_fetch_assoc($result);
+                        ?>
+                          <div class="cell"><b>Manager's Name:</b> <?php echo $managerDetail["managerName"] ?></div>
+                          <div class="cell"><b>Manager's Contact Number:</b> <?php echo $managerDetail["contactNumber"] ?> </div><?php } ?>
                         <div class="cell"><b>Order Date & Time:</b> <?php echo $orderDetail["orderDateTime"] ?></div>
                         <div class="cell"><b>Delivery Date:</b> <?php if ($orderDetail["deliveryDate"] == null) {
                                                                   echo "no delivery date";
@@ -118,8 +123,8 @@ $orderDetail = mysqli_fetch_assoc($result);
                       <div class="col-6">
                         <div class="cell"><a href="./dealer_information.php?DID=<?php echo $orderDetail["dealerID"]; ?>"><button type="button" class="btn btn-link p-0"><b>Dealer ID:</b>
                               <?php echo str_pad($orderDetail["dealerID"], 10, "0", STR_PAD_LEFT); ?></button></a></div>
-                        <div class="cell"><b>Dealer Name:</b> [DealerContactName]</div>
-                        <div class="cell"><b>Dealer Contact Number:</b> [DealerContact]</div>
+                        <div class="cell"><b>Dealer Name:</b> <?php echo $orderDetail["dealerName"]; ?> </div>
+                        <div class="cell"><b>Dealer Contact Number:</b> <?php echo $orderDetail["contactNumber"]; ?></div>
 
                       </div>
                       <div class="cell"><b>Delivery Address:</b>
@@ -134,20 +139,50 @@ $orderDetail = mysqli_fetch_assoc($result);
                       </div>
                       <div class="col-md-10">
                         <div class="progress" style="height: 6px; border-radius: 16px;">
-                          <div class="progress-bar" role="progressbar" style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
+                          <div class="progress-bar" role="progressbar" style="width: <?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U" || $orderDetail["state"] == "F") {
+                                                                                        echo "100";
+                                                                                      } elseif ($orderDetail["state"] == "A") {
+                                                                                        echo "65";
+                                                                                      } elseif ($orderDetail["state"] == "T") {
+                                                                                        echo "42.5";
+                                                                                      } else {
+                                                                                        echo "20";
+                                                                                      } ?>%;--bs-progress-bar-bg:<?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U") {
+                                                                                                                    echo "red";
+                                                                                                                  } else {
+                                                                                                                    echo "cornflowerblue";
+                                                                                                                  } ?>;"></div>
                         </div>
                         <div class="d-flex justify-content-around mb-1">
                           <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is finished</p>
+                          <?php if ($orderDetail["state"] != "R" || $orderDetail["state"] != "U") { ?>
+                            <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
+                            <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
+                          <?php } ?>
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is <?php if ($orderDetail["state"] == "R") {
+                                                                                        echo "rejected";
+                                                                                      } elseif ($orderDetail["state"] == "U") {
+                                                                                        echo "unavailable";
+                                                                                      } else {
+                                                                                        echo "finished";
+                                                                                      } ?> </p>
                         </div>
                       </div>
                     </div>
                     <hr>
+                    <?php
+                    $sql = "SELECT ROUND(SUM(orderQty * weight), 2) as TW FROM orderspare os INNER JOIN spare s ON os.sparePartNum = s.sparePartNum WHERE orderID = {$_POST["orderID"]};";
+                    $result = mysqli_query($conn, $sql);
+                    $totalWeight = mysqli_fetch_assoc($result)["TW"];
+                    ?>
+                    <p><b>Total Order Item Quantity:</b> <?php echo $orderDetail["orderItemNumber"]; ?></p>
+                    <p><b>Total Order Item Weight:</b> <?php echo $totalWeight; ?> KG</p>
                     <!-- table-->
-                    <p><b>Total Order Item Quantity:</b> 20</p>
-                    <p><b>Total Order Item Weight:</b> 20 KG</p>
+                    <?php
+                    $sql = "SELECT os.sparePartNum, orderQty, sparePartOrderPrice,sparePartName,sparePartImage FROM orderspare os inner join spare s on os.sparePartNum =s.sparePartNum where orderID={$_POST["orderID"]};";
+                    $result = mysqli_query($conn, $sql);
+
+                    ?>
                     <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
                       <!-- table header -->
                       <thead class="table-light table-header">
@@ -163,34 +198,22 @@ $orderDetail = mysqli_fetch_assoc($result);
                       <!-- /table header -->
                       <!-- table body -->
                       <tbody>
-                        <!-- record -->
-                        <tr>
-                          <th scope="row">100001</th>
-                          <td>idk</td>
-                          <td>
-                            <div class="table-img-box center-LR center-TB">
-                              <img class="table-img" src="../../images/item/100001.jpg" />
-                            </div>
-                          </td>
-                          <td>120</td>
-                          <td>10</td>
-                          <td>$1200</td>
-                        </tr>
-                        <!-- /record -->
-                        <!-- record -->
-                        <tr>
-                          <th scope="row">200002</th>
-                          <td>Name</td>
-                          <td>
-                            <div class="table-img-box center-LR center-TB">
-                              <img class="table-img" src="../../images/item/200002.jpg" />
-                            </div>
-                          </td>
-                          <td>150</td>
-                          <td>10</td>
-                          <td>$1500</td>
-                        </tr>
-                        <!-- /record -->
+                        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                          <!-- record -->
+                          <tr>
+                            <th scope="row"><?php echo $row["sparePartNum"]; ?></th>
+                            <td><?php echo $row["sparePartName"]; ?></td>
+                            <td>
+                              <div class="table-img-box center-LR center-TB">
+                                <img class="table-img" src="<?php echo $row["sparePartImage"]; ?>" />
+                              </div>
+                            </td>
+                            <td><?php echo $row["sparePartOrderPrice"]; ?></td>
+                            <td><?php echo $row["orderQty"]; ?></td>
+                            <td>$<?php echo $row["sparePartOrderPrice"] * $row["orderQty"]; ?></td>
+                          </tr>
+                          <!-- /record -->
+                        <?php } ?>
                       </tbody>
                       <!-- table body -->
                     </table>

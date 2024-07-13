@@ -58,7 +58,7 @@ if (isset($_GET["show"])) {
 if (isset($_GET["search"])) {
   $search = mysqli_real_escape_string($conn, $_GET["search"]);
   $condition = $condition . " and CONCAT(
-    o.orderID,'\r\n' ,
+    LPAD(o.orderID, 10, '0'), '\r\n',
     o.orderDateTime,'\r\n' ,
     o.deliveryAddress,'\r\n' ,
     o.TotalAmount + o.shipCost
@@ -180,11 +180,11 @@ $result = mysqli_query($conn, $sql);
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                    echo "1";
-                                                  } else {
-                                                    echo $currentPage - 1;
-                                                  }; ?>" aria-label="Previous">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage <= 1) {
+                                                              echo "1";
+                                                            } else {
+                                                              echo $currentPage - 1;
+                                                            }; ?>" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
@@ -194,18 +194,18 @@ $result = mysqli_query($conn, $sql);
                 <li class="page-item <?php if ($i == $currentPage) {
                                         echo "active";
                                       } ?>">
-                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                  <a class="page-link cursor-pointer" pages="<?php echo $i; ?>"><?php echo $i; ?></a>
                 </li>
               <?php } ?>
               <li class="page-item <?php if ($currentPage >= $totalPage) {
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                    echo $totalPage;
-                                                  } else {
-                                                    echo $currentPage + 1;
-                                                  }; ?>" aria-label="Next">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage >= $totalPage) {
+                                                              echo $totalPage;
+                                                            } else {
+                                                              echo $currentPage + 1;
+                                                            }; ?>" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -311,13 +311,13 @@ $result = mysqli_query($conn, $sql);
                   <button type="button" class="btn btn-primary" data-order-id="<?php echo $row["orderID"]; ?>">
                     Order Detail
                   </button>
-                  <?php if(isset($_GET["show"]) && $_GET["show"] != "A") { ?>
-                  <br />
-                  <button type="button" class="btn btn-success" data-order-id="<?php echo $row["orderID"]; ?>">Accept</button>
+                  <?php if (isset($_GET["show"]) && $_GET["show"] != "A") { ?>
+                    <br />
+                    <button type="button" class="btn btn-success" data-order-id="<?php echo $row["orderID"]; ?>">Accept</button>
                   <?php } ?>
-                  <?php if(isset($_GET["show"]) && ($_GET["show"] != "R" && $_GET["show"] !="A")) { ?>
-                  <br>
-                  <button type="button" class="btn btn-danger" data-order-id="<?php echo $row["orderID"]; ?>">Reject</button>
+                  <?php if (isset($_GET["show"]) && ($_GET["show"] != "R" && $_GET["show"] != "A")) { ?>
+                    <br>
+                    <button type="button" class="btn btn-danger" data-order-id="<?php echo $row["orderID"]; ?>">Reject</button>
                   <?php } ?>
                 </div>
               </div>
@@ -337,11 +337,11 @@ $result = mysqli_query($conn, $sql);
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                    echo "1";
-                                                  } else {
-                                                    echo $currentPage - 1;
-                                                  }; ?>" aria-label="Previous">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage <= 1) {
+                                                              echo "1";
+                                                            } else {
+                                                              echo $currentPage - 1;
+                                                            }; ?>" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
@@ -351,18 +351,18 @@ $result = mysqli_query($conn, $sql);
                 <li class="page-item <?php if ($i == $currentPage) {
                                         echo "active";
                                       } ?>">
-                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                  <a class="page-link cursor-pointer" pages="<?php echo $i; ?>"><?php echo $i; ?></a>
                 </li>
               <?php } ?>
               <li class="page-item <?php if ($currentPage >= $totalPage) {
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                    echo $totalPage;
-                                                  } else {
-                                                    echo $currentPage + 1;
-                                                  }; ?>" aria-label="Next">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage >= $totalPage) {
+                                                              echo $totalPage;
+                                                            } else {
+                                                              echo $currentPage + 1;
+                                                            }; ?>" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -385,7 +385,7 @@ $result = mysqli_query($conn, $sql);
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

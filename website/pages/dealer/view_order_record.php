@@ -46,13 +46,13 @@ if (isset($_SESSION['expire'])) {
 $condition = " where dealerID = {$_SESSION['dealerID']} ";
 
 if (isset($_GET["filter"]) && $_GET["filter"] != "N") {
-    $condition = "$condition and o.state = '{$_GET["filter"]}' ";
+  $condition = "$condition and o.state = '{$_GET["filter"]}' ";
 }
 
 if (isset($_GET["search"])) {
   $search = mysqli_real_escape_string($conn, $_GET["search"]);
   $condition = $condition . " and CONCAT(
-    o.orderID,'\r\n' ,
+    LPAD(o.orderID, 10, '0'),'\r\n' ,
     o.orderDateTime,'\r\n' ,
     o.deliveryAddress,'\r\n' ,
     o.TotalAmount + o.shipCost
@@ -183,11 +183,11 @@ if ($result) {
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                    echo "1";
-                                                  } else {
-                                                    echo $currentPage - 1;
-                                                  }; ?>" aria-label="Previous">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage <= 1) {
+                                                              echo "1";
+                                                            } else {
+                                                              echo $currentPage - 1;
+                                                            }; ?>" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
@@ -197,18 +197,18 @@ if ($result) {
                 <li class="page-item <?php if ($i == $currentPage) {
                                         echo "active";
                                       } ?>">
-                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                  <a class="page-link cursor-pointer" pages="<?php echo $i; ?>"><?php echo $i; ?></a>
                 </li>
               <?php } ?>
               <li class="page-item <?php if ($currentPage >= $totalPage) {
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                    echo $totalPage;
-                                                  } else {
-                                                    echo $currentPage + 1;
-                                                  }; ?>" aria-label="Next">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage >= $totalPage) {
+                                                              echo $totalPage;
+                                                            } else {
+                                                              echo $currentPage + 1;
+                                                            }; ?>" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -301,7 +301,7 @@ if ($result) {
 
                 </div>
                 <div class="d-flex">
-                <?php for ($i = 0; $i < count($images); $i++) { ?>
+                  <?php for ($i = 0; $i < count($images); $i++) { ?>
                     <div class="order-img <?php if ($i == 6) {
                                             echo "order-2many-item";
                                           } ?>" data-order-id="<?php echo $row["orderID"]; ?>">
@@ -334,11 +334,11 @@ if ($result) {
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                    echo "1";
-                                                  } else {
-                                                    echo $currentPage - 1;
-                                                  }; ?>" aria-label="Previous">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage <= 1) {
+                                                              echo "1";
+                                                            } else {
+                                                              echo $currentPage - 1;
+                                                            }; ?>" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
@@ -348,18 +348,18 @@ if ($result) {
                 <li class="page-item <?php if ($i == $currentPage) {
                                         echo "active";
                                       } ?>">
-                  <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                  <a class="page-link cursor-pointer" pages="<?php echo $i; ?>"><?php echo $i; ?></a>
                 </li>
               <?php } ?>
               <li class="page-item <?php if ($currentPage >= $totalPage) {
                                       echo "disabled";
                                     }
                                     ?>">
-                <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                    echo $totalPage;
-                                                  } else {
-                                                    echo $currentPage + 1;
-                                                  }; ?>" aria-label="Next">
+                <a class="page-link cursor-pointer" pages="<?php if ($currentPage >= $totalPage) {
+                                                              echo $totalPage;
+                                                            } else {
+                                                              echo $currentPage + 1;
+                                                            }; ?>" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>

@@ -44,6 +44,12 @@ if (isset($_SESSION['expire'])) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
 </head>
+<?php
+$sql = "SELECT o.orderDateTime, o.deliveryAddress, o.deliveryDate, o.salesManagerID, o.orderItemNumber, o.TotalAmount, o.shipCost, o.state, d.dealerName FROM `order` o inner join dealer d on o.dealerID = d.dealerID where orderID = {$_POST["orderID"]};";
+$result = mysqli_query($conn, $sql);
+$orderDetail = mysqli_fetch_assoc($result);
+// orderID, orderDateTime, deliveryAddress, deliveryDate, salesManagerID, dealerID, orderItemNumber, TotalAmount, shipCost, state
+?>
 
 <body>
   <div class="fixed-top">
@@ -104,25 +110,25 @@ if (isset($_SESSION['expire'])) {
                 <div class="card-header px-4 py-5">
                   <div class="row">
                     <div class="col">
-                      <h5 class="text-muted mb-0">Thanks for your Order, <a>(dealername)</a>!</h5>
+                      <h5 class="text-muted mb-0">Thanks for your Order, <?php echo $orderDetail["dealerName"]; ?>!</h5>
                       <br />
                       <div class="col">
-                        <a href="./dealer_delete_order.php">
-                          <button class="cta">
-                            <span>Delete this Order</span>
-                            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                              <path d="M1,5 L11,5"></path>
-                              <polyline points="8 1 12 5 8 9"></polyline>
-                            </svg>
-                          </button>
-                        </a>
+
+                        <button class="cta" data-order-id="<?php echo $_POST["orderID"]; ?>">
+                          <span>Delete this Order</span>
+                          <svg width="15px" height="10px" viewBox="0 0 13 10">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
+                          </svg>
+                        </button>
+
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="card-body p-4">
                   <div class="d-flex justify-content-between align-items-center mb-4">
-                    <p class="lead fw-normal mb-0">Order ID: (Order ID)</p>
+                    <p class="lead fw-normal mb-0">Order ID: <?php echo str_pad($_POST["orderID"], 10, "0", STR_PAD_LEFT) ?></p>
                   </div>
 
                   <div class="d-flex justify-content-between mb-2">
@@ -133,33 +139,42 @@ if (isset($_SESSION['expire'])) {
                       <span class="fw-bold me-4">
                         Order Date & Time
                         :
-                      </span>22 Dec,2019(12:00)
+                      </span><?php echo $orderDetail["orderDateTime"] ?>
                     </p>
                   </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <p class="text-muted mb-0">
-                      <span class="fw-bold me-4">
-                        Manager’s Contact
-                        Name:
-                      </span>name
-                    </p>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <p class="text-muted mb-0">
-                      <span class="fw-bold me-4">
-                        Manager’s Contact
-                        Number:
-                      </span>27272727
-                    </p>
-                  </div>
+                  <?php if ($orderDetail["salesManagerID"] != null) {
+                    $sql = "SELECT contactName,contactNumber FROM salemanager where salesManagerID = {$orderDetail["salesManagerID"]};";
+                    $result = mysqli_query($conn, $sql);
+                    $managerDetail = mysqli_fetch_assoc($result);
+                  ?>
+                    <div class="d-flex justify-content-between mb-2">
+                      <p class="text-muted mb-0">
+                        <span class="fw-bold me-4">
+                          Manager’s Contact
+                          Name:
+                        </span><?php echo $managerDetail["contactName"] ?>
+                      </p>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                      <p class="text-muted mb-0">
+                        <span class="fw-bold me-4">
+                          Manager’s Contact
+                          Number:
+                        </span><?php echo $managerDetail["contactNumber"] ?>
+                      </p>
+                    </div>
+                  <?php } ?>
                   <hr>
                   <div class="d-flex justify-content-between mb-2">
                     <p class="fw-bold mb-0">Delivery Information</p>
                   </div>
                   <div class="d-flex justify-content-between mb-2">
                     <p class="text-muted mb-0">
-                      <span class="fw-bold me-4">Delivery Date</span> 22
-                      Dec,2020
+                      <span class="fw-bold me-4">Delivery Date</span><?php if ($orderDetail["deliveryDate"] == null) {
+                                                                        echo "no delivery date";
+                                                                      } else {
+                                                                        echo $orderDetail["deliveryDate"];
+                                                                      } ?>
                     </p>
                   </div>
                   <div class="d-flex justify-content-between mb-2">
@@ -167,97 +182,115 @@ if (isset($_SESSION['expire'])) {
                       <span class="fw-bold me-4">
                         Delivery Address
                         :
-                      </span>your home
+                      </span><?php echo $orderDetail["deliveryAddress"]; ?>
                     </p>
                   </div>
                   <hr>
+                  <?php
+                  $sql = "SELECT ROUND(SUM(orderQty * weight), 2) as TW FROM orderspare os INNER JOIN spare s ON os.sparePartNum = s.sparePartNum WHERE orderID = {$_POST["orderID"]};";
+                  $result = mysqli_query($conn, $sql);
+                  $totalWeight = mysqli_fetch_assoc($result)["TW"];
+                  ?>
                   <div class="d-flex justify-content-between mb-2">
                     <p class="fw-bold mb-0">Item Information</p>
                   </div>
                   <div class="d-flex justify-content-between mb-2">
                     <p class="text-muted mb-0">
-                      <span class="fw-bold me-4">Total Order Item Quantity:</span> 20
+                      <span class="fw-bold me-4">Total Order Item Quantity:</span> <?php echo $orderDetail["orderItemNumber"]; ?>
                     </p>
                   </div>
                   <div class="d-flex justify-content-between mb-2">
                     <p class="text-muted mb-0">
-                      <span class="fw-bold me-4">Total Order Item Weight:</span> 15 KG
+                      <span class="fw-bold me-4">Total Order Item Weight:</span> <?php echo $totalWeight; ?> KG
                     </p>
                   </div>
                   <!-- table-->
-                    <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
-                      <!-- table header -->
-                      <thead class="table-light table-header">
-                        <tr>
-                          <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
-                          <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
-                          <th scope="col" style="width: 20%;text-align:center;">photo</th>
-                          <th scope="col" style="width: 10%;" data-sortable="true">Price</th>
-                          <th scope="col" style="width: 10%;" data-sortable="true">Quantity</th>
-                          <th scope="col" style="width: 10%;" data-sortable="true">Amount</th>
-                        </tr>
-                      </thead>
-                      <!-- /table header -->
-                      <!-- table body -->
-                      <tbody>
+                  <?php
+                  $sql = "SELECT os.sparePartNum, orderQty, sparePartOrderPrice,sparePartName,sparePartImage FROM orderspare os inner join spare s on os.sparePartNum =s.sparePartNum where orderID={$_POST["orderID"]};";
+                  $result = mysqli_query($conn, $sql);
+
+                  ?>
+                  <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
+                    <!-- table header -->
+                    <thead class="table-light table-header">
+                      <tr>
+                        <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
+                        <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
+                        <th scope="col" style="width: 20%;text-align:center;">photo</th>
+                        <th scope="col" style="width: 10%;" data-sortable="true">Price</th>
+                        <th scope="col" style="width: 10%;" data-sortable="true">Quantity</th>
+                        <th scope="col" style="width: 10%;" data-sortable="true">Amount</th>
+                      </tr>
+                    </thead>
+                    <!-- /table header -->
+                    <!-- table body -->
+                    <tbody>
+                      <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                         <!-- record -->
                         <tr>
-                          <th scope="row">100001</th>
-                          <td>idk</td>
+                          <th scope="row"><?php echo $row["sparePartNum"]; ?></th>
+                          <td><?php echo $row["sparePartName"]; ?></td>
                           <td>
                             <div class="table-img-box center-LR center-TB">
-                              <img class="table-img" src="../../images/item/100001.jpg" />
+                              <img class="table-img" src="<?php echo $row["sparePartImage"]; ?>" />
                             </div>
                           </td>
-                          <td>120</td>
-                          <td>10</td>
-                          <td>$1200</td>
+                          <td><?php echo $row["sparePartOrderPrice"]; ?></td>
+                          <td><?php echo $row["orderQty"]; ?></td>
+                          <td>$<?php echo $row["sparePartOrderPrice"] * $row["orderQty"]; ?></td>
                         </tr>
                         <!-- /record -->
-                        <!-- record -->
-                        <tr>
-                          <th scope="row">200002</th>
-                          <td>Name</td>
-                          <td>
-                            <div class="table-img-box center-LR center-TB">
-                              <img class="table-img" src="../../images/item/200002.jpg" />
-                            </div>
-                          </td>
-                          <td>150</td>
-                          <td>10</td>
-                          <td>$1500</td>
-                        </tr>
-                        <!-- /record -->
-                      </tbody>
-                      <!-- table body -->
-                    </table>
-                    <!-- /table -->
-                     <br>
+                      <?php } ?>
+                    </tbody>
+                    <!-- table body -->
+                  </table>
+                  <!-- /table -->
+                  <br>
                   <div class="row d-flex align-items-center">
                     <div class="col-md-2">
                       <p class="text-muted mb-0 small">Order Status</p>
                     </div>
                     <div class="col-md-10">
                       <div class="progress" style="height: 6px; border-radius: 16px;">
-                        <div class="progress-bar" role="progressbar" style="width: 20%;--bs-progress-bar-bg:cornflowerblue;"></div>
+                        <div class="progress-bar" role="progressbar" style="width: <?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U" || $orderDetail["state"] == "F") {
+                                                                                      echo "100";
+                                                                                    } elseif ($orderDetail["state"] == "A") {
+                                                                                      echo "65";
+                                                                                    } elseif ($orderDetail["state"] == "T") {
+                                                                                      echo "42.5";
+                                                                                    } else {
+                                                                                      echo "20";
+                                                                                    } ?>%;--bs-progress-bar-bg:<?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U") {
+                                                                                                                    echo "red";
+                                                                                                                  } else {
+                                                                                                                    echo "cornflowerblue";
+                                                                                                                  } ?>;"></div>
                       </div>
                       <div class="d-flex justify-content-around mb-1">
                         <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is finished</p>
+                        <?php if ($orderDetail["state"] != "R" || $orderDetail["state"] != "U") { ?>
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
+                          <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
+                        <?php } ?>
+                        <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is <?php if ($orderDetail["state"] == "R") {
+                                                                                      echo "rejected";
+                                                                                    } elseif ($orderDetail["state"] == "U") {
+                                                                                      echo "unavailable";
+                                                                                    } else {
+                                                                                      echo "finished";
+                                                                                    } ?> </p>
                       </div>
                     </div>
                   </div>
 
                 </div>
                 <div class="card-footer border-0 px-4 py-5">
-                <div class="row mb-2" style="color: white;">
+                  <div class="row mb-2" style="color: white;">
                     <h2>Payment Details</h2>
                     <div class="col">
-                      <div class="cell"><b>Subtotal: </b> [item total price]</div>
-                      <div class="cell"><b>Delivery Fee: </b> [Delivery Fee]</div>
-                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$2700</span></div>
+                      <div class="cell"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"]; ?></div>
+                      <div class="cell"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
+                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
 
                   </div>

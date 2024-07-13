@@ -144,8 +144,7 @@ if (isset($_SESSION['expire'])) {
     $currentPage = min(max(1, $_GET['pages']), $totalPage);
   } else {
     $currentPage = 1;
-  }
-;
+  };
   ?>
 
 
@@ -154,7 +153,11 @@ if (isset($_SESSION['expire'])) {
     <div class="container content-wrap">
       <br />
       <div class="row">
-        <h2><?php if(isset($_GET["search"])){echo "search for: ".$_GET["search"];}else{echo "All item";}?></h2>
+        <h2><?php if (isset($_GET["search"])) {
+              echo "search for: " . $_GET["search"];
+            } else {
+              echo "All item";
+            } ?></h2>
       </div>
       <hr />
       <div class="row category-item">
@@ -235,32 +238,32 @@ if (isset($_SESSION['expire'])) {
                                           echo "disabled";
                                         }
                                         ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                        echo "1";
-                                                      } else {
-                                                        echo $currentPage - 1;
-                                                      }; ?>" aria-label="Previous">
+                    <a class="page-link cursor-pointer" pages="<?php if ($currentPage <= 1) {
+                                                                  echo "1";
+                                                                } else {
+                                                                  echo $currentPage - 1;
+                                                                }; ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
                   <?php
-                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
+                  for ($i = max(1, $currentPage - 2); $i <= min($totalPage, $currentPage + 2); $i++) {
                   ?>
                     <li class="page-item <?php if ($i == $currentPage) {
                                             echo "active";
                                           } ?>">
-                      <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                      <a class="page-link cursor-pointer" pages="<?php echo $i; ?>"><?php echo $i; ?></a>
                     </li>
                   <?php } ?>
                   <li class="page-item <?php if ($currentPage >= $totalPage) {
                                           echo "disabled";
                                         }
                                         ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                        echo $totalPage;
-                                                      } else {
-                                                        echo $currentPage + 1;
-                                                      }; ?>" aria-label="Next">
+                    <a class="page-link cursor-pointer" pages="<?php if ($currentPage >= $totalPage) {
+                                                                  echo $totalPage;
+                                                                } else {
+                                                                  echo $currentPage + 1;
+                                                                }; ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -295,7 +298,7 @@ if (isset($_SESSION['expire'])) {
               $sql = sprintf("SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty
                FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum 
                where state = 'N' and stockItemQty > 0 %s 
-               limit %d,12;",$condition, ($currentPage - 1) * 12);
+               limit %d,12;", $condition, ($currentPage - 1) * 12);
               $result = mysqli_query($conn, $sql);
               while ($row = mysqli_fetch_array($result)) {
 
@@ -338,32 +341,32 @@ if (isset($_SESSION['expire'])) {
                                           echo "disabled";
                                         }
                                         ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage <= 1) {
-                                                        echo "1";
-                                                      } else {
-                                                        echo $currentPage - 1;
-                                                      }; ?>" aria-label="Previous">
+                    <a class="page-link cursor-pointer" pages="<?php if ($currentPage <= 1) {
+                                                                  echo "1";
+                                                                } else {
+                                                                  echo $currentPage - 1;
+                                                                }; ?>" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
                   <?php
-                  for ($i = max(1,$currentPage-2); $i <= min($totalPage,$currentPage+2); $i++) {
+                  for ($i = max(1, $currentPage - 2); $i <= min($totalPage, $currentPage + 2); $i++) {
                   ?>
                     <li class="page-item <?php if ($i == $currentPage) {
                                             echo "active";
                                           } ?>">
-                      <a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
+                      <a class="page-link cursor-pointer" pages="<?php echo $i; ?>"><?php echo $i; ?></a>
                     </li>
                   <?php } ?>
                   <li class="page-item <?php if ($currentPage >= $totalPage) {
                                           echo "disabled";
                                         }
                                         ?>">
-                    <a class="page-link" href="?pages=<?php if ($currentPage >= $totalPage) {
-                                                        echo $totalPage;
-                                                      } else {
-                                                        echo $currentPage + 1;
-                                                      }; ?>" aria-label="Next">
+                    <a class="page-link cursor-pointer" pages="<?php if ($currentPage >= $totalPage) {
+                                                                  echo $totalPage;
+                                                                } else {
+                                                                  echo $currentPage + 1;
+                                                                }; ?>" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -388,7 +391,7 @@ if (isset($_SESSION['expire'])) {
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 
