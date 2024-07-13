@@ -262,9 +262,9 @@ $result = mysqli_query($conn, $sql);
         <div id="order" class="col item-wrap list d-flex">
           <!-- table header -->
           <div class="row item-box table-header">
-            <div class="col-1">Order ID</div>
+            <div class="col-2">Order ID</div>
             <div class="col-2">Order Date & Time</div>
-            <div class="col-4">Delivery Address</div>
+            <div class="col-3">Delivery Address</div>
             <div class="col-1">Order Quantity</div>
             <div class="col-1">Total Amount</div>
             <div class="col-1">Order Status</div>
@@ -283,9 +283,9 @@ $result = mysqli_query($conn, $sql);
             <div class="row item-box table-content">
               <div class="col-10">
                 <div class="row table-content-data">
-                  <div class="col" style="width: 10%"><?php echo str_pad($row["orderID"], 10, "0", STR_PAD_LEFT) ?></div>
+                  <div class="col" style="width: 20%"><?php echo str_pad($row["orderID"], 10, "0", STR_PAD_LEFT) ?></div>
                   <div class="col" style="width: 20%"><?php echo $row["orderDateTime"] ?></div>
-                  <address class="col" style="width: 40%">
+                  <address class="col" style="width: 30%">
                     <?php echo $row["deliveryAddress"] ?>
                   </address>
                   <div class="col" style="width: 10%"><?php echo $row["orderQuantity"] ?></div>
