@@ -255,30 +255,30 @@ $orderDetail = mysqli_fetch_assoc($result);
                         <div class="progress-bar" role="progressbar" style="width: <?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U" || $orderDetail["state"] == "F") {
                                                                                       echo "100";
                                                                                     } elseif ($orderDetail["state"] == "A") {
-                                                                                      echo "65";
+                                                                                      echo "35";
                                                                                     } elseif ($orderDetail["state"] == "T") {
-                                                                                      echo "42.5";
+                                                                                      echo "65";
                                                                                     } else {
-                                                                                      echo "20";
+                                                                                      echo "10";
                                                                                     } ?>%;--bs-progress-bar-bg:<?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U") {
                                                                                                                     echo "red";
                                                                                                                   } else {
                                                                                                                     echo "cornflowerblue";
                                                                                                                   } ?>;"></div>
                       </div>
-                      <div class="d-flex justify-content-around mb-1">
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
-                        <?php if ($orderDetail["state"] != "R" || $orderDetail["state"] != "U") { ?>
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
+                      <div class="d-flex justify-content-between mb-1">
+                        <p class="text-muted mt-1 mb-0 small ">Create Order</p>
+                        <?php if ($orderDetail["state"] != "R" && $orderDetail["state"] != "U") { ?>
+                          <p class="text-muted mt-1 mb-0 small ">Accept</p>
+                          <p class="text-muted mt-1 mb-0 small ">In Transmit</p>
                         <?php } ?>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is <?php if ($orderDetail["state"] == "R") {
-                                                                                      echo "rejected";
-                                                                                    } elseif ($orderDetail["state"] == "U") {
-                                                                                      echo "unavailable";
-                                                                                    } else {
-                                                                                      echo "finished";
-                                                                                    } ?> </p>
+                        <p class="text-muted mt-1 mb-0 small ">this order is <?php if ($orderDetail["state"] == "R") {
+                                                                                echo "rejected";
+                                                                              } elseif ($orderDetail["state"] == "U") {
+                                                                                echo "unavailable";
+                                                                              } else {
+                                                                                echo "finished";
+                                                                              } ?> </p>
                       </div>
                     </div>
                   </div>

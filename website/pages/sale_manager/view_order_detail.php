@@ -36,6 +36,7 @@ if (isset($_SESSION['expire'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/sale_manager/view_order_detail.js"></script>
+  <script src="../../js/view_order.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
@@ -142,24 +143,24 @@ $orderDetail = mysqli_fetch_assoc($result);
                           <div class="progress-bar" role="progressbar" style="width: <?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U" || $orderDetail["state"] == "F") {
                                                                                         echo "100";
                                                                                       } elseif ($orderDetail["state"] == "A") {
-                                                                                        echo "65";
+                                                                                        echo "35";
                                                                                       } elseif ($orderDetail["state"] == "T") {
-                                                                                        echo "42.5";
+                                                                                        echo "65";
                                                                                       } else {
-                                                                                        echo "20";
+                                                                                        echo "10";
                                                                                       } ?>%;--bs-progress-bar-bg:<?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U") {
                                                                                                                     echo "red";
                                                                                                                   } else {
                                                                                                                     echo "cornflowerblue";
                                                                                                                   } ?>;"></div>
                         </div>
-                        <div class="d-flex justify-content-around mb-1">
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">Create Order</p>
-                          <?php if ($orderDetail["state"] != "R" || $orderDetail["state"] != "U") { ?>
-                            <p class="text-muted mt-1 mb-0 small ms-xl-5">Accept</p>
-                            <p class="text-muted mt-1 mb-0 small ms-xl-5">In Transmit</p>
+                        <div class="d-flex justify-content-between mb-1">
+                          <p class="text-muted mt-1 mb-0 small ">Create Order</p>
+                          <?php if ($orderDetail["state"] != "R" && $orderDetail["state"] != "U") { ?>
+                            <p class="text-muted mt-1 mb-0 small ">Accept</p>
+                            <p class="text-muted mt-1 mb-0 small ">In Transmit</p>
                           <?php } ?>
-                          <p class="text-muted mt-1 mb-0 small ms-xl-5">this order is <?php if ($orderDetail["state"] == "R") {
+                          <p class="text-muted mt-1 mb-0 small ">this order is <?php if ($orderDetail["state"] == "R") {
                                                                                         echo "rejected";
                                                                                       } elseif ($orderDetail["state"] == "U") {
                                                                                         echo "unavailable";
@@ -245,25 +246,34 @@ $orderDetail = mysqli_fetch_assoc($result);
 
       <div class="row">
         <div class="cell child-center-LR">
-          <button type="button" class="btn btn-primary m-2" onclick="show_edit_status()">Edit Spare Status</button>
-
-          <button type="button" class="btn btn-success m-2">Accept</button>
-
-          <button type="button" class="btn btn-danger  m-2">Reject</button>
+          <?php if ($orderDetail["state"] == "A" || $orderDetail["state"] == "T") { ?>
+            <button type="button" class="btn btn-primary m-2" onclick="show_edit_status()">Edit Order Status</button>
+          <?php } ?>
+          <?php if ($orderDetail["state"] == "C" || $orderDetail["state"] == "R" || $orderDetail["state"] == "U") { ?>
+            <button type="button" class="btn btn-success m-2" data-order-id="<?php echo $_POST["orderID"]; ?>">Accept</button>
+          <?php } ?>
+          <?php if ($orderDetail["state"] == "C") { ?>
+            <button type="button" class="btn btn-danger  m-2" data-order-id="<?php echo $_POST["orderID"]; ?>">Reject</button>
+          <?php } ?>
         </div>
         <br>
         <div class="alert alert-secondary position-relative" role="alert" id="edit_status">
           <div class="form-floating">
             <select class="form-select" id="status_selecter">
-              <option value="C" selected>[Current status (get by js)]</option>
-              <option value="T">In Transmit</option>
-              <option value="U">Unavailable</option>
-              <option value="F">Finished</option>
+                <option value="T" <?php if ($orderDetail["state"]== "T") {
+                                    echo "selected";
+                                  } ?>>In Transmit</option>
+                <option value="U" <?php if ($orderDetail["state"] == "U") {
+                                    echo "selected";
+                                  } ?>>Unavailable</option>
+                <option value="F" <?php if ($orderDetail["state"] == "F") {
+                                    echo "selected";
+                                  } ?>>Finished</option>
             </select>
             <label for="status_selecter">Status</label>
           </div><br><br>
           <div class="position-absolute bottom-0 end-0 m-2">
-            <button type="button" class="btn btn-primary" onclick="">Save</button>
+            <button type="button" class="btn btn-primary" onclick="setState(<?php echo $_POST['orderID'];?>,$('#status_selecter').val())">Save</button>
             <button type="button" class="btn btn-secondary" onclick="Cancel()">Cancel</button>
           </div>
 
@@ -275,6 +285,29 @@ $orderDetail = mysqli_fetch_assoc($result);
   </div>
   <!-- <img src="../../images/menu/chisato.png"> -->
   <!-- /content -->
+
+  <!-- pop up -->
+  <div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select a delivery date</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-floating">
+            <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" placeholder="Delivery Date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>">
+            <label for="deliveryDate">Delivery Date</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" Accept>Accept Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /pop up -->
 
   <footer>
     <!-- link -->

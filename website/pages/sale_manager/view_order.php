@@ -311,11 +311,11 @@ $result = mysqli_query($conn, $sql);
                   <button type="button" class="btn btn-primary" data-order-id="<?php echo $row["orderID"]; ?>">
                     Order Detail
                   </button>
-                  <?php if (isset($_GET["show"]) && $_GET["show"] != "A") { ?>
+                  <?php if (!isset($_GET["show"]) || $_GET["show"] != "A") { ?>
                     <br />
                     <button type="button" class="btn btn-success" data-order-id="<?php echo $row["orderID"]; ?>">Accept</button>
                   <?php } ?>
-                  <?php if (isset($_GET["show"]) && ($_GET["show"] != "R" && $_GET["show"] != "A")) { ?>
+                  <?php if (!isset($_GET["show"]) || ($_GET["show"] != "R" && $_GET["show"] != "A")) { ?>
                     <br>
                     <button type="button" class="btn btn-danger" data-order-id="<?php echo $row["orderID"]; ?>">Reject</button>
                   <?php } ?>
@@ -375,7 +375,28 @@ $result = mysqli_query($conn, $sql);
   </div>
   <!-- <img src="../../images/menu/chisato.png"> -->
   <!-- /content -->
-
+  <!-- pop up -->
+  <div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select a delivery date</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-floating">
+            <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" placeholder="Delivery Date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>">
+            <label for="deliveryDate">Delivery Date</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" Accept>Accept Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /pop up -->
   <footer>
     <!-- link -->
 
