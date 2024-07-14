@@ -21,35 +21,62 @@ $(document).ready(function () {
     });
   });
   $(".btn-primary[Accept]").bind("click", function () {
-    if (DeliveryDate.val() === "") {
+    if ($("#deliveryDate").val() === "") {
       alert("Please enter delivery date");
       return;
     }
+  
+    let orderID = $(this).attr("order-id");
+    let sql = `UPDATE spareQty s
+     JOIN (SELECT os.sparePartNum, os.orderQty
+           FROM orderSpare os
+           JOIN \`order\` o ON os.orderID = o.orderID
+           WHERE os.orderID = ${orderID} AND (o.state = 'R' OR o.state = 'U')) o
+       ON s.sparePartNum = o.sparePartNum
+  SET s.stockItemQty = s.stockItemQty - o.orderQty;`;
+  
+    // 第一个 AJAX 请求，用于更新 spareQty 表
     $.ajax({
-      url: "./update_order.php",
+      url: "../db/query.php",
       type: "POST",
       data: {
-        deliveryDate: $("#deliveryDate").val(),
-        orderID: $(this).attr("order-id"),
-        state: "A",
+        query: sql,
       },
       success: function (data) {
-        location.reload();
+        // 成功后执行第二个 AJAX 请求，用于更新 order 的状态
+        $.ajax({
+          url: "./update_order.php",
+          type: "POST",
+          data: {
+            deliveryDate: $("#deliveryDate").val(),
+            orderID: orderID,
+            state: "A",
+          },
+          success: function (data) {
+            location.reload();
+          },
+          error: function (error) {
+            console.error("Error updating order state:", error);
+          }
+        });
       },
+      error: function (error) {
+        console.error("Error updating spareQty:", error);
+      }
     });
   });
   $(".btn-success[data-order-id]").bind("click", function () {
     $(".btn-primary[Accept]").attr("order-id", $(this).attr("data-order-id"));
     $("#deliveryDate").val("");
     myModal.modal("show");
-    myModal.on('shown.bs.modal', function () {
+    myModal.on("shown.bs.modal", function () {
       DeliveryDate.focus();
     });
     //DeliveryDate.attr("data-order-id", $(this).attr("data-order-id"));
   });
 
   $(".btn-danger[data-order-id]").bind("click", function () {
-    setState($(this).attr("data-order-id"),"R");
+    setState($(this).attr("data-order-id"), "R");
   });
 
   $(".order-2many-item").bind("click", function () {
@@ -59,7 +86,37 @@ $(document).ready(function () {
   });
 });
 
-function setState(orderID,state){
+function setState(orderID, state) {
+  if (state === "R" || state === "U") {
+    // 第一個 AJAX 請求，用於更新 spareQty 表
+    let sql = `UPDATE spareQty s
+      JOIN (SELECT sparePartNum, orderQty
+      FROM orderSpare
+      WHERE orderID = ${orderID}) o
+      ON s.sparePartNum = o.sparePartNum
+      SET s.stockItemQty = s.stockItemQty + o.orderQty;`;
+
+    $.ajax({
+      url: "../db/query.php",
+      type: "POST",
+      data: {
+        query: sql,
+      },
+      success: function (data) {
+        // 成功後執行第二個 AJAX 請求，用於更新 order 的狀態
+        updateOrderState(orderID, state);
+      },
+      error: function (error) {
+        console.error("Error updating spareQty:", error);
+      },
+    });
+  } else {
+    // 如果 state 不是 "R" 或 "U"，直接執行第二個 AJAX 請求
+    updateOrderState(orderID, state);
+  }
+}
+
+function updateOrderState(orderID, state) {
   $.ajax({
     url: "./update_order.php",
     type: "POST",
@@ -69,6 +126,9 @@ function setState(orderID,state){
     },
     success: function (data) {
       location.reload();
+    },
+    error: function (error) {
+      console.error("Error updating order state:", error);
     },
   });
 }
