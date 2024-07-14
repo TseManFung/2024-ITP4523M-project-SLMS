@@ -37,7 +37,14 @@ if(isset($_SESSION['expire'])){
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <!-- /js -->
 </head>
-
+<?php
+  $dealerID = $_GET['DID'];
+  $sql = "SELECT * FROM dealer WHERE dealerID = $dealerID";
+  $result = mysqli_query($conn, $sql);
+  $dealer = mysqli_fetch_array($result);
+  $dealerIDFormatted = sprintf('%06d', $dealer['dealerID']);
+  mysqli_close($conn);
+  ?>
 <body>
   <div class="fixed-top">
     <!-- navbar -->
@@ -83,36 +90,35 @@ if(isset($_SESSION['expire'])){
       <div class="row">
         <div class="col-md-3 border-right child-center-TB">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-            <span class="font-weight-bold rounded-circle mt-5">(dealer name)</span><span class="text-black-50">
-              (dealer
-              ID)
+            <span class="font-weight-bold rounded-circle mt-5"><?php echo $dealer['dealerName']; ?></span><span class="text-black-50">
+            DID:<?php echo $dealerIDFormatted; ?>
             </span><span> </span>
           </div>
         </div>
         <div class="col-md-5 border-right">
           <div class="p-3 py-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h4 class="text-right">Your Imformation</h4>
+              <h4 class="text-right">Delaer Imformation</h4>
             </div>
             <div class="row mt-2">
               <div class="col-md-12">
-                <label class="labels">Name</label><input type="text" class="form-control" placeholder="Delaer name"
+                <label class="labels"><?php echo $dealer['dealerName']; ?></label><input type="text" class="form-control" placeholder="Delaer name"
                        value="" disabled>
               </div>
             </div>
             <div class="row mt-3">
               <div class="col-md-12">
-                <label class="labels">Contact Name</label><input type="text" class="form-control" value="?" disabled>
+                <label class="labels">Contact Name</label><input type="text" class="form-control" value="<?php echo $dealer['contactName']; ?>" disabled>
               </div>
               <div class="col-md-12">
-                <label class="labels">Contant Number</label><input type="text" class="form-control" value="" disabled>
+                <label class="labels">Contant Number</label><input type="text" class="form-control" value="<?php echo $dealer['contactNumber']; ?>" disabled>
               </div>
               <div class="col-md-12">
-                <label class="labels">Fax Number</label><input type="text" class="form-control" value="" disabled>
+                <label class="labels">Fax Number</label><input type="text" class="form-control" value="<?php echo $dealer['faxNumber']; ?>" disabled>
               </div>
               <div class="col-md-12">
                 <label class="labels">Delivery Address</label><input type="text" class="form-control"
-                       placeholder="come form database" value="" disabled>
+                       placeholder="come form database" value="<?php echo $dealer['deliveryAddress']; ?>" disabled>
               </div>
             </div>
             <div class="mt-5 text-center">
