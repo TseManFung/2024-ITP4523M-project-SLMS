@@ -42,7 +42,7 @@ if(isset($_SESSION['expire'])){
   $sql = "SELECT * FROM dealer WHERE dealerID = $dealerID";
   $result = mysqli_query($conn, $sql);
   $dealer = mysqli_fetch_array($result);
-  $dealerIDFormatted = sprintf('%06d', $dealer['dealerID']);
+  $dealerIDFormatted = sprintf('%010d', $dealer['dealerID']);
   mysqli_close($conn);
   ?>
 <body>
@@ -91,19 +91,19 @@ if(isset($_SESSION['expire'])){
         <div class="col-md-3 border-right child-center-TB">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5">
             <span class="font-weight-bold rounded-circle mt-5"><?php echo $dealer['dealerName']; ?></span><span class="text-black-50">
-            DID:<?php echo $dealerIDFormatted; ?>
+            Dealer ID:<?php echo $dealerIDFormatted; ?>
             </span><span> </span>
           </div>
         </div>
         <div class="col-md-5 border-right">
           <div class="p-3 py-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h4 class="text-right">Delaer Imformation</h4>
+              <h4 class="text-right">Delaer Information</h4>
             </div>
             <div class="row mt-2">
               <div class="col-md-12">
-                <label class="labels"><?php echo $dealer['dealerName']; ?></label><input type="text" class="form-control" placeholder="Delaer name"
-                       value="" disabled>
+                <label class="labels">Delaer Name</label><input type="text" class="form-control" placeholder="Delaer name"
+                       value="<?php echo $dealer['dealerName']; ?>" disabled>
               </div>
             </div>
             <div class="row mt-3">
