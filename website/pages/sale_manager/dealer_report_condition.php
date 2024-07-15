@@ -115,7 +115,7 @@ if(isset($_SESSION['expire'])){
                 <div class="row">
                   <div class="col">
                     <div class="form-floating">
-                      <input type="date" class="form-control" id="startDate" placeholder="From">
+                      <input type="date" class="form-control" id="startDate" name="startDate" placeholder="From" disabled required>
                       <label for="startDate">From</label>
                     </div>
                   </div>
@@ -123,7 +123,7 @@ if(isset($_SESSION['expire'])){
                 <div class="row">
                   <div class="col">
                     <div class="form-floating">
-                      <input type="date" class="form-control" id="untilDate" placeholder="To">
+                      <input type="date" class="form-control" id="untilDate" name="untilDate" placeholder="To" disabled required>
                       <label for="untilDate">To</label>
                     </div>
                   </div>

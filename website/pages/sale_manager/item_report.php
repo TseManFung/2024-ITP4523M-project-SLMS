@@ -29,12 +29,16 @@ if(isset($_SESSION['expire'])){
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/common.css" />
   <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.css">
+
   <!-- /css -->
 
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
+
   <!-- /js -->
 </head>
 
@@ -84,34 +88,21 @@ if(isset($_SESSION['expire'])){
           <h2 class="row__title">Spare Part Report (2)</h2>
           # this report genarate at [2024-01-01 00:00:00]
         </div>
-        <div class="col-md-4 position-relative">
-          <div class="form-floating position-absolute bottom-0 end-0" style="padding-right: 12px">
-            <select class="form-select" id="sort">
-              <option value="ID">ID</option>
-              <option value="OLH">Order Number: Low to High</option>
-              <option value="OHL">Order Number: High to Low</option>
-              <option value="QLH">Sale Quantity: Low to High</option>
-              <option value="QHL">Sale Quantity: High to Low</option>
-              <option value="ALH">Sale Amount: Low to High</option>
-              <option value="AHL">Sale Amount: High to Low</option>
-            </select>
-            <label for="sort">Sort</label>
-          </div>
-        </div>
+        
 
       </div>
       <br />
       <!-- table-->
-      <table id="item-report" class="table table-striped table-hover">
+      <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
         <!-- table header -->
         <thead class="table-light table-header">
           <tr>
-            <th scope="col" style="width: 10%;">ID</th>
-            <th scope="col" style="width: 40%;">Name</th>
+            <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
+            <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
             <th scope="col" style="width: 20%;text-align:center;">photo</th>
-            <th scope="col" style="width: 10%;">Total order number</th>
-            <th scope="col" style="width: 10%;">Total sale quantity</th>
-            <th scope="col" style="width: 10%;">Total sale amount</th>
+            <th scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
+            <th scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
+            <th scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
           </tr>
         </thead>
         <!-- /table header -->

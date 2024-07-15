@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -44,8 +44,7 @@ if(isset($_SESSION['expire'])){
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid justify-content-center">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse nav-wrap" id="navbarSupportedContent">
@@ -110,8 +109,7 @@ if(isset($_SESSION['expire'])){
                   <div class="col">
 
                     <div class="form-floating">
-                      <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number"
-                             disabled>
+                      <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number" disabled>
                       <label for="SpacePartNumber">Space Part Number</label>
                     </div>
                   </div>
@@ -135,19 +133,19 @@ if(isset($_SESSION['expire'])){
               <div class="col">
                 <h4>Category</h4>
                 <div class="form-check">
-                  <input id="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked>
+                  <input id="A" name="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked>
                   <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
                 </div>
                 <div class="form-check">
-                  <input id="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked>
+                  <input id="B" name="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked>
                   <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
                 </div>
                 <div class="form-check">
-                  <input id="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked>
+                  <input id="C" name="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked>
                   <label for="C" class="cursor-pointer form-check-label">Light Components</label>
                 </div>
                 <div class="form-check">
-                  <input id="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked>
+                  <input id="D" name="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked>
                   <label for="D" class="cursor-pointer form-check-label">Accessories</label>
                 </div>
               </div>
@@ -165,7 +163,7 @@ if(isset($_SESSION['expire'])){
                 <div class="row">
                   <div class="col">
                     <div class="form-floating">
-                      <input type="date" class="form-control" id="startDate" placeholder="From">
+                      <input type="date" class="form-control" id="startDate" name="startDate" placeholder="From" disabled required>
                       <label for="startDate">From</label>
                     </div>
                   </div>
@@ -173,7 +171,7 @@ if(isset($_SESSION['expire'])){
                 <div class="row">
                   <div class="col">
                     <div class="form-floating">
-                      <input type="date" class="form-control" id="untilDate" placeholder="To">
+                      <input type="date" class="form-control" id="untilDate" name="untilDate" placeholder="To" disabled required>
                       <label for="untilDate">To</label>
                     </div>
                   </div>
@@ -211,7 +209,7 @@ if(isset($_SESSION['expire'])){
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

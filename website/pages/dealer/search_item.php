@@ -191,15 +191,15 @@ if (isset($_SESSION['expire'])) {
             <br />
             <h4>Price</h4>
             <div class="row">
-              <div class="col-4">
+              <div class="col">
                 <!-- use js to set placeholder and min and max and value of minPrice and maxPrice -->
-                <input id="minPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo $spareMinPrice; ?>" value="<?php if (isset($_GET["minPrice"])) {
+                <input id="minPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo floor($spareMinPrice); ?>" value="<?php if (isset($_GET["minPrice"])) {
                                                                                                                                                                                                                         echo $_GET["minPrice"];
                                                                                                                                                                                                                       } ?>" />
               </div>
               <div class="col-1 text-center">-</div>
-              <div class="col-4">
-                <input id="maxPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo $spareMaxPrice; ?>" value="<?php if (isset($_GET["maxPrice"])) {
+              <div class="col">
+                <input id="maxPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo ceil($spareMaxPrice); ?>" value="<?php if (isset($_GET["maxPrice"])) {
                                                                                                                                                                                                                         echo $_GET["maxPrice"];
                                                                                                                                                                                                                       } ?>" />
               </div>
