@@ -34,9 +34,6 @@
   }, false);
 }());
 
-$(function () {
-  $('#datepicker').datepicker();
-});
 
 function get_delivery_cost(weight, quantity) {
   return new Promise((resolve, reject) => {
@@ -159,7 +156,7 @@ function checkout(id, qty) {
     const TotalAmount = parseFloat(document.getElementById('Order-Amount').value.replace('$', ''));
     const shipCost = parseFloat(document.getElementById('Delivery-Fee').value.replace('$', ''));
     const time = getCurrentFormattedTime();
-    
+
     if (isNaN(TotalAmount) || isNaN(shipCost)) {
       showmyModal("Fail", "Total Amount and Shipping Cost must be valid numbers");
       return;

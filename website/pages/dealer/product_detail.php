@@ -131,7 +131,7 @@ if (isset($_SESSION['expire'])) {
                   <input type="number" class="form-control" value="1" id="quantityInput" min="1" max="<?php echo $detail['stockItemQty']; ?>" required>
                 </div>
                 <div class="col-12">
-                  <button class="btn btn-primary" id="addToCartBtn" onclick="addToCartqty() " >
+                  <button class="btn btn-primary" id="addToCartBtn" onclick="addToCartqty('<?php echo $detail['sparePartNum']; ?>') " >
                     <span class="fa-solid fa-cart-shopping"></span> Add to Cart
                   </button>
                   <a href="./search_item.php" class="btn btn-primary">Back</a>

@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  function addToCartqty() {
-    const itemID = "<?php echo $detail['sparePartNum']; ?>";
+  function addToCartqty(id) {
+    const itemID = id;
     const Qty = document.getElementById('quantityInput').value;
     $.ajax({
       type: "POST",
-      url: "./addToCart.php",
+      url: "./product_detail_add.php",
       data: {
         sparePartNum: itemID,
         qty: Qty

@@ -40,6 +40,13 @@ try {
     $deliveryDateStr = $order['deliveryDate'];
     $state = $order['state'];
 
+    // 如果 state 为 'U'，直接返回
+    if ($state === 'U') {
+        $response['error'] = 'Order is already cancelled!';
+        echo json_encode($response);
+        exit();
+    }
+
     // 如果 deliveryDate 为 null，直接更新订单状态为 'U'
     if ($deliveryDateStr === null) {
         $sql = sprintf("UPDATE `order` SET state = 'U' WHERE orderID = %d", $orderID);

@@ -185,7 +185,7 @@ if (isset($_SESSION['expire'])) {
                   $itemTotalPrice = $row['qty'] * $row['price'];
                   $subTotal += $itemTotalPrice;
                   $totalWeight += $row['qty'] * $row['weight'];
-                  $subTotalFormatted = number_format($subTotal, 2);
+                  $subTotalFormatted = number_format($subTotal, 2, '.', '');
                 }
               }
               ?>

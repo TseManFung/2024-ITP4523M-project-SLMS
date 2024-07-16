@@ -12,7 +12,7 @@ function showmyModal(tTitle, tbody, redirectUrl = null) {
     document.getElementById("modal-body").innerHTML = tbody;
 
     if (redirectUrl) {
-        $('#myModal').on('hidden.bs.modal', function() {
+        $('#myModal').on('hidden.bs.modal', function () {
             window.location.href = redirectUrl;
         });
     } else {

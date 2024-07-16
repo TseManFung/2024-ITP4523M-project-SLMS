@@ -26,13 +26,13 @@ if ($result) {
 
 // 插入订单
 $sql = sprintf(
-    "INSERT INTO `order` (deliveryAddress, orderDateTime, dealerID, orderItemNumber, TotalAmount, shipCost) VALUES ('%s', '%s', %d, %d, %f, %f)",
+    "INSERT INTO `order` (deliveryAddress, orderDateTime, dealerID, orderItemNumber, TotalAmount, shipCost) VALUES ('%s', '%s', %d, %d, %d, %d)",
     mysqli_real_escape_string($conn, $_POST['deliveryAddre']),
     mysqli_real_escape_string($conn, $_POST['Time']),
     intval($_POST['dealerID']),
     intval($_POST['orderItemNumber']),
-    floatval($_POST['TotalAmount']),
-    floatval($_POST['shipCost'])
+    $_POST['TotalAmount'],
+    $_POST['shipCost']
 );
 
 if (mysqli_query($conn, $sql)) {

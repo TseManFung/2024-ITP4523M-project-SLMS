@@ -34,7 +34,7 @@ if (isset($_SESSION['expire'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/add_item.js"></script> <!-- Corrected filename -->
+  <script src="../../js/add_item.js"></script>
   <script src="../../js/dealer/dealer_API_GET.js"></script>
   <!-- /js -->
 </head>
@@ -106,7 +106,7 @@ if (isset($_SESSION['expire'])) {
                     <table class="table">
                       <thead>
                         <tr>
-                          <th scope="col" class="h5">Cart (<?php echo $cart['total_quantity']; ?> Items) <?php echo $cart['NID']; ?> (types)</th>
+                          <th scope="col" class="h5">Cart (<?php echo $cart['total_quantity']; ?> Items)<br><?php echo $cart['NID']; ?> (types)</th>
                           <th scope="col">ID</th>
                           <th scope="col">Price</th>
                           <th scope="col">Quantity</th>
@@ -116,10 +116,11 @@ if (isset($_SESSION['expire'])) {
                       </thead>
                       <tbody>
                         <?php
-                        $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum ,spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
-                                                        FROM cart 
-                                                        JOIN spare ON cart.sparePartNum = spare.sparePartNum 
-                                                        WHERE cart.userID = $userID;";
+                        $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state, spareqty.stockItemQty
+                        FROM cart
+                        JOIN spare ON cart.sparePartNum = spare.sparePartNum
+                        JOIN spareqty ON spare.sparePartNum = spareqty.sparePartNum
+                        WHERE cart.userID = $userID;";
                         $result = mysqli_query($conn, $sql);
                         $totalWeight = 0;
                         $subTotal = 0;
@@ -132,54 +133,60 @@ if (isset($_SESSION['expire'])) {
                             $totalWeight += $row['qty'] * $row['weight'];
                             printf(
                               '
-                                                            <tr>
-                                                                <th scope="row">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
-                                                                    </div>
-                                                                </th>
-                                                                <td class="align-middle">
-                                                                    <p class="mb-0" style="font-weight: 500">%s</p>
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <p class="mb-0" style="font-weight: 500">$%.2f</p>
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <div class="d-flex flex-row">
-                                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="decreaseQuantity(%s)">
-                                                                            <i class="fas fa-minus"></i>
-                                                                        </button>
-                                                                        <input id="form1%s" min="1" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
-                                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="increaseQuantity(%s)">
-                                                                            <i class="fas fa-plus"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <p class="mb-0" style="font-weight: 500;">$%.2f</p>
-                                                                </td>
-                                                                <td class="align-middle">
-                                                                    <p class="mb-0" style="font-weight: 500;"><i class="fa-solid fa-xmark"></i></p>
-                                                                </td>
-                                                            </tr>',
+                        <tr>
+                            <th scope="row">
+                                <div class="d-flex align-items-center">
+                                    <img src="%s" class="img-fluid rounded-3" style="width: 120px;" alt="%s">
+                                </div>
+                            </th>
+                            <td class="align-middle">
+                                <p class="mb-0" style="font-weight: 500">%s</p>
+                            </td>
+                            <td class="align-middle">
+                                <p class="mb-0" style="font-weight: 500">$%.2f</p>
+                            </td>
+                            <td class="align-middle">
+                                <div class="d-flex flex-row">
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="decreaseQuantity(%s)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input id="form1%s" min="1" max="%d" name="quantity" value="%d" type="number" class="form-control form-control-sm" style="width: 50px;" />
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2" onclick="increaseQuantity(%s)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <p class="mb-0" style="font-weight: 500;">$%.2f</p>
+                            </td>
+                            <td class="align-middle">
+                                <p class="mb-0" style="font-weight: 500;">
+                                    <button style="background: none; border: none; padding: 0; cursor: pointer;" onclick="deleteitem(%s)">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </p>
+                            </td>
+                        </tr>',
                               $row['sparePartImage'],
                               $row['sparePartName'],
                               $row['sparePartName'],
                               $row['price'],
                               $row['sparePartNum'],
                               $row['sparePartNum'],
+                              $row['stockItemQty'],  // Set max to spareqty
                               $row['qty'],
                               $row['sparePartNum'],
-                              $itemTotalPrice
+                              $itemTotalPrice,
+                              $row['sparePartNum']
                             );
                           }
                         } else {
                           echo '
-                                                    <tr>
-                                                        <td colspan="6" class="text-center align-middle">
-                                                            <p class="mb-0" style="font-weight: 500;">Your cart is empty.</p>
-                                                        </td>
-                                                    </tr>';
+                    <tr>
+                        <td colspan="6" class="text-center align-middle">
+                            <p class="mb-0" style="font-weight: 500;">Your cart is empty.</p>
+                        </td>
+                    </tr>';
                         }
                         ?>
                       </tbody>
@@ -207,14 +214,17 @@ if (isset($_SESSION['expire'])) {
                     <p class="mb-2">Total</p>
                     <p class="mb-2" id="Total-SAD" subtotal-method="<?php echo $subTotal; ?>"></p>
                   </div>
+                  <?php
+                  $sql = "SELECT SUM(qty)AS qtyq FROM `cart` WHERE userID= $userID";
+                  $result = mysqli_query($conn, $sql);
+                  $qtyq = mysqli_fetch_array($result);
+                  ?>
                   <div class="d-grid gap-2 d-md-block">
-                    <a href="./checkout.php">
-                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
-                        <div class="d-flex justify-content-between">
-                          <span>Checkout</span>
-                        </div>
-                      </button>
-                    </a>
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg" onclick="checkoutTest(<?php echo $totalWeight ?>, <?php echo $qtyq['qtyq'] ?>)">
+                      <div class="d-flex justify-content-between">
+                        <span>Checkout</span>
+                      </div>
+                    </button>
                     <a href="./search_item.php">
                       <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
                         <div class="d-flex justify-content-between">
@@ -233,7 +243,23 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <!-- /content -->
-
+  <!-- message box-->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        </div>
+        <div class="modal-body" id="modal-body">
+          ...
+        </div>
+        <div class="modal-footer" id="modal-footer">
+          <button type="button" id="showModalButton" class="btn btn-secondary" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /message box -->
   <footer>
     <!-- link -->
     <ul class="sns">
