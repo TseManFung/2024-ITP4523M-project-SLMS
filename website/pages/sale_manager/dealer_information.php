@@ -122,8 +122,8 @@ if(isset($_SESSION['expire'])){
               </div>
             </div>
             <div class="mt-5 text-center">
-              <a href="./dealer_report_condition.php">
-                <button class="btn btn-primary profile-button" type="button">
+              <a href="./item_report_condition.php?DID=<?php echo $_GET['DID'];?>">
+                <button class="btn btn-primary profile-button" type="button" >
                   Report
                 </button>
               </a>

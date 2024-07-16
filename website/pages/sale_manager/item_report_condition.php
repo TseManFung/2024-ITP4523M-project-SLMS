@@ -83,73 +83,108 @@ if (isset($_SESSION['expire'])) {
       <div>
         <form name="item_report" method="get" action="item_report.php">
           <div class="row">
-            <h1 class="center-LR" style="width: fit-content;">Generate Item Report<h1>
+            <h1 class="center-LR" style="width: fit-content;">Generate Report<h1>
           </div>
 
           <hr>
 
           <div class="g-10">
-            <div class="row d-none" id="spec_item_row">
-              <div class="col">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating ">
-                      <select class="form-select" id="category" disabled>
-                        <option value="A">A - Sheet Metal</option>
-                        <option value="B">B - Major Asssemblies</option>
-                        <option value="C">C - Light Components</option>
-                        <option value="D">D - Accessories</option>
-                      </select>
-                      <label for="category">Category</label>
+            <?php
+            $row;
+            if (isset($_GET["DID"])) { ?>
+              <div class="row" id="spec_dealer_row">
+                <div class="col">
+                  <div class="cell">
+                    <div class="form-floating">
+                      <input type="hidden" class="form-control" id="DID" name="DID" placeholder="Dealer ID" readonly value="<?php echo $_GET["DID"] ?>">
                     </div>
                   </div>
+
                 </div>
                 <br>
                 <div class="row">
                   <div class="col">
-
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="SpacePartNumber" placeholder="Space Part Number" disabled>
-                      <label for="SpacePartNumber">Space Part Number</label>
+                    <div class="cell">
+                      <div class="form-floating">
+                        <?php $sql = "SELECT dealerName FROM dealer where dealerID = {$_GET["DID"]};";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_fetch_assoc($result);
+                        ?>
+                        <input type="text" class="form-control" id="name" placeholder="Name" disabled value="<?php if ($row) {
+                                                                                                                echo $row["dealerName"];
+                                                                                                              } else {
+                                                                                                                echo "Dealer not found";
+                                                                                                              } ?>">
+                        <label for="name">Dealer Name</label>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <br>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="name" placeholder="Name" disabled>
-                      <label for="name">Name</label>
+              </div>
+            <?php } elseif (isset($_GET["spnum"])) { ?>
+              <div class="row" id="spec_item_row">
+                <div class="col">
+                  <div class="row">
+                    <div class="col">
+
+                      <div class="form-floating">
+                        <input type="hidden" class="form-control" id="SpacePartNumber" placeholder="Space Part Number" name="spnum" readonly value="<?php echo $_GET["spnum"] ?>">
+                      </div>
+                    </div>
+                  </div>
+                  <?php
+                  $sql = "SELECT sparePartName,sparePartImage FROM spare where sparePartNum =  {$_GET["spnum"]};";
+                  $result = mysqli_query($conn, $sql);
+                  $row = mysqli_fetch_assoc($result);
+                  ?>
+                  <br>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="name" placeholder="Name" disabled value="<?php if ($row) {
+                                                                                                                echo $row["sparePartName"];
+                                                                                                              } else {
+                                                                                                                echo "Spare not found";
+                                                                                                              } ?>">
+                        <label for="name">Name</label>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col child-center-flex">
-                <img id="item-img" class="item-img" src="../../images/item/100001.jpg">
-              </div>
-            </div>
-            <div class="row" id="all_item_row">
-              <div class="col">
-                <h4>Category</h4>
-                <div class="form-check">
-                  <input id="A" name="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked>
-                  <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
-                </div>
-                <div class="form-check">
-                  <input id="B" name="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked>
-                  <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
-                </div>
-                <div class="form-check">
-                  <input id="C" name="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked>
-                  <label for="C" class="cursor-pointer form-check-label">Light Components</label>
-                </div>
-                <div class="form-check">
-                  <input id="D" name="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked>
-                  <label for="D" class="cursor-pointer form-check-label">Accessories</label>
+                <div class="col child-center-flex">
+                  <img id="item-img" class="item-img" src="<?php if ($row) {
+                                                              echo $row["sparePartImage"];
+                                                            } else {
+                                                              echo "../../images/common/image_not_found.jpg";
+                                                            } ?>">
                 </div>
               </div>
-            </div>
+            <?php } else { ?>
+              <div class="row" id="all_item_row">
+                <div class="col">
+                  <h4>Category</h4>
+                  <div class="form-check">
+                    <input id="A" name="A" class="form-check-input cursor-pointer" type="checkbox" value="A" checked>
+                    <label for="A" class="cursor-pointer form-check-label">Sheet Metal</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="B" name="B" class="form-check-input cursor-pointer" type="checkbox" value="B" checked>
+                    <label for="B" class="cursor-pointer form-check-label">Major Assemblies</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="C" name="C" class="form-check-input cursor-pointer" type="checkbox" value="C" checked>
+                    <label for="C" class="cursor-pointer form-check-label">Light Components</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="D" name="D" class="form-check-input cursor-pointer" type="checkbox" value="D" checked>
+                    <label for="D" class="cursor-pointer form-check-label">Accessories</label>
+                  </div>
+                </div>
+              </div>
+            <?php } ?>
+
+
             <br>
             <div class="row">
               <div class="col-4">
@@ -184,7 +219,10 @@ if (isset($_SESSION['expire'])) {
 
             <div class="row">
               <div class="col">
-                <button type="submit" class="btn btn-primary">Generate</button>
+                <?php
+                if (empty($_GET) || isset($row)) { ?>
+                  <button type="submit" class="btn btn-primary">Generate</button>
+                <?php } ?>
                 <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
               </div>
             </div>
