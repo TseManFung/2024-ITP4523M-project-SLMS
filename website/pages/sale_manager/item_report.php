@@ -3,15 +3,15 @@
 <?php
 session_start();
 
-if(isset($_SESSION['expire'])){
-  if($_SESSION['expire'] < time()){
+if (isset($_SESSION['expire'])) {
+  if ($_SESSION['expire'] < time()) {
     session_destroy();
     header('Location: ../../index.php');
-  }else{
+  } else {
     $_SESSION['expire'] = time() + (30 * 60);
     require_once '../db/dbconnect.php';
   }
-}else{
+} else {
   session_destroy();
   header('Location: ../../index.php');
 }
@@ -21,7 +21,23 @@ if(isset($_SESSION['expire'])){
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <title>Spare Part Report</title>
+  <title><?php
+          if (isset($_POST['DID'])) {
+            $sql = "SELECT dealerName FROM dealer where dealerID = {$_POST["DID"]};";
+            $result = mysqli_query($conn, $sql);
+            $dealerName = mysqli_fetch_assoc($result)["dealerName"];
+
+            echo $dealerName . "'s ";
+          } elseif (isset($_POST['spnum'])) {
+            $sql = "SELECT sparePartName FROM spare where sparePartNum = {$_POST["spnum"]};";
+            $result = mysqli_query($conn, $sql);
+            $sparePartName = mysqli_fetch_assoc($result)["sparePartName"];
+
+            echo $sparePartName . "'s ";
+          } else {
+            echo "Spare Part ";
+          }
+          ?> Report</title>
 
   <!-- css -->
   <!-- icon -->
@@ -41,6 +57,82 @@ if(isset($_SESSION['expire'])){
 
   <!-- /js -->
 </head>
+<?php
+$sql;
+$condition = "where ";
+if (isset($_POST['startDate'])) {
+  $startDate = $_POST['startDate'];
+  $untilDate = $_POST['untilDate'];
+  $condition .= " o.orderDateTime BETWEEN '$startDate' AND '$untilDate' and ";
+}
+
+if (isset($_POST['DID'])) {
+  $condition .= " o.dealerID = " . $_POST['DID'] . " ";
+  $sql = "SELECT
+o.orderID 'Order ID',
+o.orderDateTime 'Order Date & Time',
+SUM(os.orderQty) 'Total Item Quantity',
+SUM(os.orderQty * s.weight) 'Total Item Weight',
+o.TotalAmount 'Total Order Amount',
+o.state 'Status'
+FROM `order` o
+INNER JOIN orderSpare os ON o.orderID = os.orderID
+INNER JOIN spare s ON os.sparePartNum = s.sparePartNum
+$condition
+GROUP BY o.orderID";
+} elseif (isset($_POST['spnum'])) {
+  $condition .= " os.sparePartNum = " . $_POST['spnum'] . " ";
+  $sql = "SELECT 
+  s.sparePartNum AS 'ID',
+  s.sparePartName AS 'Name', 
+  s.sparePartImage AS 'photo',
+  COUNT(*) AS 'Total order number',
+  SUM(os.orderQty) AS 'Total sale quantity',
+  SUM(os.sparePartOrderPrice*os.orderQty) AS 'Total sale amount'
+ FROM orderSpare os 
+ INNER JOIN spare s ON s.sparePartNum = os.sparePartNum
+ INNER JOIN `order` o ON o.orderID = os.orderID
+ $condition
+ GROUP BY s.sparePartNum;";
+} else {
+  $category = "";
+  if (isset($_POST['A'])) {
+    $category .= "A";
+  }
+  if (isset($_POST['B'])) {
+    $category .= "B";
+  }
+  if (isset($_POST['C'])) {
+    $category .= "C";
+  }
+  if (isset($_POST['D'])) {
+    $category .= "D";
+  }
+
+  $condition .= " '$category' like concat('%',category,'%') ";
+  $sql = "SELECT 
+  s.sparePartNum AS 'ID',
+  s.sparePartName AS 'Name', 
+  s.sparePartImage AS 'photo',
+  COUNT(*) AS 'Total order number',
+  SUM(os.orderQty) AS 'Total sale quantity',
+  SUM(os.sparePartOrderPrice*os.orderQty) AS 'Total sale amount'
+ FROM orderSpare os 
+ INNER JOIN spare s ON s.sparePartNum = os.sparePartNum
+ INNER JOIN `order` o ON o.orderID = os.orderID
+ $condition
+ GROUP BY s.sparePartNum;";
+}
+try {
+  $result = mysqli_query($conn, $sql);
+} catch (Exception $e) {
+  echo $sql;
+}
+$all_row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$row_count = mysqli_num_rows($result);
+
+?>
+
 
 <body>
   <div class="fixed-top">
@@ -85,10 +177,18 @@ if(isset($_SESSION['expire'])){
       <br />
       <div class="row row--top-40">
         <div class="col-md-8">
-          <h2 class="row__title">Spare Part Report (2)</h2>
-          # this report genarate at [2024-01-01 00:00:00]
+          <h2 class="row__title"><?php
+                                  if (isset($_POST['DID'])) {
+                                    echo $dealerName . "'s ";
+                                  } elseif (isset($_POST['spnum'])) {
+                                    echo $sparePartName . "'s ";
+                                  } else {
+                                    echo "Spare Part ";
+                                  }
+                                  ?> Report (<?php echo $row_count; ?>)</h2>
+          # this report generated at <?php echo gmdate('Y-m-d H:i:s', time() + 8 * 3600); ?>
         </div>
-        
+
 
       </div>
       <br />
@@ -97,54 +197,61 @@ if(isset($_SESSION['expire'])){
         <!-- table header -->
         <thead class="table-light table-header">
           <tr>
-            <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
-            <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
-            <th scope="col" style="width: 20%;text-align:center;">photo</th>
-            <th scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
-            <th scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
-            <th scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
+            <?php if (isset($_POST['DID'])) { ?>
+              <th scope="col" data-sortable="true">Order ID</th>
+              <th scope="col" data-sortable="true">Order Date & Time</th>
+              <th class="text-end" scope="col" data-sortable="true">Total Item Quantity</th>
+              <th class="text-end" scope="col" data-sortable="true">Total Item Weight</th>
+              <th class="text-end" scope="col" data-sortable="true">Total Order Amount</th>
+              <th scope="col" data-sortable="true">Status</th>
+            <?php } else { ?>
+              <th scope="col" style="width: 10%;" data-sortable="true">Spare ID</th>
+              <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
+              <th scope="col" style="width: 20%;text-align:center;">photo</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
+            <?php } ?>
           </tr>
         </thead>
         <!-- /table header -->
         <!-- table body -->
         <tbody>
-          <!-- record -->
-          <tr>
-            <th scope="row">100001</th>
-            <td>idk</td>
-            <td>
-              <div class="table-img-box center-LR center-TB">
-                <img class="table-img" src="../../images/item/100001.jpg" />
-              </div>
-            </td>
-            <td>12</td>
-            <td>1200</td>
-            <td>$123456</td>
-          </tr>
-          <!-- /record -->
-          <!-- record -->
-          <tr>
-            <th scope="row">200002</th>
-            <td>a long long long long long long long long long long long ng long long long long long long ng long long
-              long long long long ng long long long long long long ng long long long long long long ng long long long
-              long long long ng long long long long long long ng long long long long long long ng long long long long
-              long long ng long long long long long long ng long long long long long long ng long long long long long
-              long ng long long long long long long ng long long long long long long ng long long long long long long ng
-              long long long long long long ng long long long long long long ng long long long long long long ng long
-              long long long long long ng long long long long long long long long long long long long longg long long
-              long long long long long long long long long long long lon long long long long long long long long long
-              long long long long long long long long long long long long long long long long long long long long long
-              name</td>
-            <td>
-              <div class="table-img-box center-LR center-TB">
-                <img class="table-img" src="../../images/item/200002.jpg" />
-              </div>
-            </td>
-            <td>150</td>
-            <td>150</td>
-            <td>$123456</td>
-          </tr>
-          <!-- /record -->
+          <?php if (isset($_POST['DID'])) {
+            foreach ($all_row as $row) { ?>
+
+              <!-- record -->
+              <tr>
+                <th scope="row"><?php echo $row['Order ID']; ?></th>
+                <td><?php echo $row['Order Date & Time']; ?></td>
+                <td class="text-end"><?php echo $row['Total Item Quantity']; ?></td>
+                <td class="text-end"><?php echo $row['Total Item Weight']; ?> KG</td>
+                <td class="text-end">$ <?php echo $row['Total Order Amount']; ?></td>
+                <td><?php echo $stateConvert[$row['Status']]; ?></td>
+              </tr>
+              <!-- /record -->
+
+            <?php }
+          } else {
+            foreach ($all_row as $row) { ?>
+              <!-- record -->
+              <tr>
+                <th scope="row"><?php echo $row['ID']; ?></th>
+                <td><?php echo $row['Name']; ?></td>
+                <td>
+                  <div class="table-img-box center-LR center-TB">
+                    <img class="table-img" src="../../images/item/<?php echo $row['photo']; ?>" />
+                  </div>
+                </td>
+                <td class="text-end"><?php echo $row['Total order number']; ?></td>
+                <td class="text-end"><?php echo $row['Total sale quantity']; ?></td>
+                <td class="text-end">$ <?php echo $row['Total sale amount']; ?></td>
+              </tr>
+              <!-- /record -->
+          <?php }
+          } ?>
+
+
         </tbody>
         <!-- table body -->
       </table>
@@ -168,7 +275,7 @@ if(isset($_SESSION['expire'])){
     </ul>
 
     <!-- /link -->
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+    <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 
