@@ -81,7 +81,7 @@ if (isset($_SESSION['expire'])) {
     <div class="container content-wrap">
       <br>
       <div>
-        <form name="item_report" method="get" action="item_report.php">
+        <form name="item_report" method="post" action="item_report.php">
           <div class="row">
             <h1 class="center-LR" style="width: fit-content;">Generate Report<h1>
           </div>
