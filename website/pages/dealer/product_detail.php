@@ -34,6 +34,7 @@ if (isset($_SESSION['expire'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/dealer/product_detail.js"></script>
+  <script src="../../js/common.js"></script>
   <!-- /js -->
 </head>
 <body>
@@ -134,7 +135,7 @@ if (isset($_SESSION['expire'])) {
                   <button class="btn btn-primary" id="addToCartBtn" onclick="addToCartqty('<?php echo $detail['sparePartNum']; ?>') " >
                     <span class="fa-solid fa-cart-shopping"></span> Add to Cart
                   </button>
-                  <a href="./search_item.php" class="btn btn-primary">Back</a>
+                  <button class="btn btn-primary" onclick="goBack()">Back</button>
                 </div>
               </div>
             </div>

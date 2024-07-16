@@ -286,9 +286,9 @@ $orderDetail = mysqli_fetch_assoc($result);
                   <div class="row mb-2" style="color: white;">
                     <h2>Payment Details</h2>
                     <div class="col">
-                      <div class="cell"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"]; ?></div>
-                      <div class="cell"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
-                      <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
+                      <div class="cell text-end"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"]; ?></div>
+                      <div class="cell text-end"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
+                      <div class="cell text-end" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
                   </div>
                 </div>

@@ -36,8 +36,7 @@ if (isset($_SESSION['expire'])) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/dealer/dealer_template_resetpasswd.js"></script>
-  <!-- /css -->
-  <!-- js -->
+  <script src="../../js/common.js"></script>
   <!-- /js -->
 </head>
 
@@ -121,11 +120,11 @@ if (isset($_SESSION['expire'])) {
             </div>
             <div class="row mt-3">
               <div class="col-md-6 ">
-                <a href="dealer_information_update.php">
-                  <button class="btn btn-primary profile-button" type="button">
+
+                  <button class="btn btn-primary profile-button" type="button" onclick="goBack()">
                     Return
                   </button>
-                </a>
+                
               </div>
               <div class="col-md-6 ">
                 <button class="btn btn-primary profile-button" onclick=" ResetPS(<?php echo $_SESSION['userID']; ?>)" type="button">

@@ -96,8 +96,7 @@ if (isset($_SESSION['expire'])) {
   ?>
   <div class="content-bg">
     <div class="container">
-      <section class="h-100 h-custom">
-        <div class="container h-100 py-5">
+
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col">
               <div class="card mb-5">
@@ -106,7 +105,7 @@ if (isset($_SESSION['expire'])) {
                     <table class="table">
                       <thead>
                         <tr>
-                          <th scope="col" class="h5">Cart (<?php echo $cart['total_quantity']; ?> Items)<br><?php echo $cart['NID']; ?> (types)</th>
+                          <th scope="col" class="h5">Cart<br>(<?php echo $cart['total_quantity']; ?> Items)<br>(<?php echo $cart['NID']; ?> types)</th>
                           <th scope="col">ID</th>
                           <th scope="col">Price</th>
                           <th scope="col">Quantity</th>
@@ -237,11 +236,11 @@ if (isset($_SESSION['expire'])) {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+
       <br><br>
     </div>
   </div>
+  
   <!-- /content -->
   <!-- message box-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
