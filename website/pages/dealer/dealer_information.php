@@ -34,6 +34,8 @@ if (isset($_SESSION['expire'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/dealer/dealer_information.js"></script>
+  <script src="../../js/common.js"></script>
+
   <!-- /js -->
 </head>
 
@@ -82,82 +84,89 @@ if (isset($_SESSION['expire'])) {
     </nav>
     <!-- /navbar -->
   </div>
-  <br>
-  <hr style="border: rgb(103, 149, 255) 10px solid;" class="content">
-  <?php
-  $userID = $_SESSION['userID'];
-  $sql = "SELECT d.* FROM dealer d INNER JOIN user u ON d.dealerID = u.dealerID WHERE u.userID = $userID";
-  $result = mysqli_query($conn, $sql);
-  $dealer = mysqli_fetch_array($result);
-  $dealerIDFormatted = sprintf('%06d', $dealer['dealerID']);
-  mysqli_close($conn);
-  ?>
-  <div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-      <div class="col-md-3 border-right child-center-TB">
-        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-          <span class="font-weight-bold rounded-circle mt-5"><?php echo $dealer['dealerName']; ?></span>
-          <span class="text-black-50"><?php echo $dealerIDFormatted; ?></span>
-        </div>
-      </div>
-      <div class="col-md-5 border-right">
-        <div class="p-3 py-5">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="text-right">Your Information</h4>
-          </div>
-          <div class="row mt-2">
-            <div class="col-md-12">
-              <label class="labels">Name</label>
-              <input type="text" class="form-control" placeholder="Dealer name" value="<?php echo $dealer['dealerName']; ?>" disabled>
+
+  <!-- header -->
+  <div style="height: calc(0lvh + 56px)" id="header"></div>
+  <!-- /header -->
+
+  <!-- content -->
+  <div class="d-flex position-relative content-bg justify-content-center">
+    <div class="container content-wrap">
+      <br />
+      <?php
+      $userID = $_SESSION['userID'];
+      $sql = "SELECT d.* FROM dealer d INNER JOIN user u ON d.dealerID = u.dealerID WHERE u.userID = $userID";
+      $result = mysqli_query($conn, $sql);
+      $dealer = mysqli_fetch_array($result);
+      $dealerIDFormatted = sprintf('%06d', $dealer['dealerID']);
+      mysqli_close($conn);
+      ?>
+      <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+          <div class="col-md-3 border-right child-center-TB">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+              <span class="font-weight-bold rounded-circle mt-5"><?php echo $dealer['dealerName']; ?></span>
+              <span class="text-black-50"><?php echo $dealerIDFormatted; ?></span>
             </div>
           </div>
-          <div class="row mt-3">
-            <div class="col-md-12">
-              <label class="labels">Contact Name</label>
-              <input type="text" class="form-control" value="<?php echo $dealer['contactName']; ?>" disabled>
+          <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="text-right">Your Information</h4>
+              </div>
+              <div class="row mt-2">
+                <div class="col-md-12">
+                  <label class="labels">Name</label>
+                  <input type="text" class="form-control" placeholder="Dealer name" value="<?php echo $dealer['dealerName']; ?>" disabled>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <label class="labels">Contact Name</label>
+                  <input type="text" class="form-control" value="<?php echo $dealer['contactName']; ?>" disabled>
+                </div>
+                <div class="col-md-12">
+                  <label class="labels">Contact Number</label>
+                  <input type="text" class="form-control" value="<?php echo $dealer['contactNumber']; ?>" disabled>
+                </div>
+                <div class="col-md-12">
+                  <label class="labels">Fax Number</label>
+                  <input type="text" class="form-control" value="<?php echo $dealer['faxNumber']; ?>" disabled>
+                </div>
+                <div class="col-md-12">
+                  <label class="labels">Delivery Address</label>
+                  <input type="text" class="form-control" placeholder="come from database" value="<?php echo $dealer['deliveryAddress']; ?>" disabled>
+                </div>
+              </div>
+              <div class="mt-5 text-center">
+                <a href="dealer_information_update.php">
+                  <button class="btn btn-primary profile-button" type="button">
+                    Edit Your Information
+                  </button>
+                </a>
+              </div>
             </div>
-            <div class="col-md-12">
-              <label class="labels">Contact Number</label>
-              <input type="text" class="form-control" value="<?php echo $dealer['contactNumber']; ?>" disabled>
-            </div>
-            <div class="col-md-12">
-              <label class="labels">Fax Number</label>
-              <input type="text" class="form-control" value="<?php echo $dealer['faxNumber']; ?>" disabled>
-            </div>
-            <div class="col-md-12">
-              <label class="labels">Delivery Address</label>
-              <input type="text" class="form-control" placeholder="come from database" value="<?php echo $dealer['deliveryAddress']; ?>" disabled>
-            </div>
-          </div>
-          <div class="mt-5 text-center">
-            <a href="dealer_information_update.php">
-              <button class="btn btn-primary profile-button" type="button">
-                Edit Your Information
-              </button>
-            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- /content -->
+
   <footer>
-
     <!-- link -->
-
     <ul class="sns">
       <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-                    <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
+        <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
     </ul>
-
     <!-- /link -->
     <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
   </footer>
-  <!-- return top -->
 
+  <!-- return top -->
   <div id="page-top" style="">
     <a href="#header"><img src="../../images/common/returan-top.png" /></a>
   </div>
-
   <!-- /return top -->
 </body>
 

@@ -11,8 +11,7 @@ function confirmEdition(CName, CNumber, FNumber, DAddress, dealerID) {
         },
         success: function (response) {
             console.log("Success:", response);
-            alert("Edition Success!");
-            window.location.href = "./dealer_information_update.php";
+            showmyModal("Success!", "Edition Success!", "./dealer_information_update.php");
         },
         error: function (xhr, status, error) {
             console.error("Error:", status, error);
@@ -20,3 +19,17 @@ function confirmEdition(CName, CNumber, FNumber, DAddress, dealerID) {
     });
 }
 
+function showmyModal(tTitle, tbody, redirectUrl = null) {
+    document.getElementById("exampleModalLongTitle").innerHTML = tTitle;
+    document.getElementById("modal-body").innerHTML = tbody;
+  
+    if (redirectUrl) {
+      $('#myModal').on('hidden.bs.modal', function () {
+        window.location.href = redirectUrl;
+      });
+    } else {
+      $('#myModal').off('hidden.bs.modal');
+    }
+  
+    $('#myModal').modal('show');
+  }

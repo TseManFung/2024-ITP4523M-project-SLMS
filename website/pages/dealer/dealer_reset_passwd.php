@@ -35,8 +35,10 @@ if (isset($_SESSION['expire'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/dealer/dealer_template_resetpasswd.js"></script>
   <script src="../../js/common.js"></script>
+  <script src="../../js/dealer/dealer_template_resetpasswd.js"></script>
+  <!-- /css -->
+  <!-- js -->
   <!-- /js -->
 </head>
 
@@ -86,75 +88,88 @@ if (isset($_SESSION['expire'])) {
     <!-- /navbar -->
   </div>
   <br>
-  <hr style="border: rgb(103, 149, 255) 10px solid;" class="content">
-
-  <div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-      <div class="col-md-3 border-right">
-        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-          <span class="font-weight-bold rounded-circle mt-5">(dealer name)</span><span class="text-black-50">
-            (dealer
-            ID)
-          </span><span> </span>
-        </div>
-      </div>
-      <div class="col-md-5 border-right">
-        <div class="p-3 py-5">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="text-right">Reset Password</h4>
-          </div>
-          <div class="col-md-12">
-            <label class="labels">Current Password: </label><input type="password" id="ShowCurrentPW" class="form-control" value="">
-            <input type="checkbox" onclick="ShowCurrentPassword()">Show Password
-          </div>
-          <div class="row mt-3">
-            <div class="col-md-12">
-              <label class="labels">New Password: </label><input type="password" id="ShowNewPW" class="form-control" value="">
-              <input type="checkbox" onclick="ShowNewPassword()">Show Password
+  <?php
+  $userID = $_SESSION['userID'];
+  $sql = "SELECT d.* FROM dealer d INNER JOIN user u ON d.dealerID = u.dealerID WHERE u.userID = $userID";
+  $result = mysqli_query($conn, $sql);
+  $dealer = mysqli_fetch_array($result);
+  $dealerIDFormatted = sprintf('%06d', $dealer['dealerID']);
+  mysqli_close($conn);
+  ?>
+  <div class="d-flex position-relative content-bg justify-content-center">
+    <div class="container content-wrap">
+      <br>
+      <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+          <div class="col-md-3 border-right child-center-TB">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+              <span class="font-weight-bold rounded-circle mt-5"><?php echo $dealer['dealerName']; ?></span>
+              <span class="text-black-50"><?php echo $dealerIDFormatted; ?></span>
             </div>
-            <div class="row mt-3">
+          </div>
+          <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="text-right">Reset Password</h4>
+              </div>
               <div class="col-md-12">
-                <label class="labels">Confirm Password: </label><input type="password" id="ShowConfirmPW" class="form-control" value="">
-                <input type="checkbox" onclick="ShowConfirmPassword()">Show Password
+                <label class="labels">Current Password: </label><input type="password" id="ShowCurrentPW" class="form-control" value="">
+                <input type="checkbox" onclick="ShowCurrentPassword()">Show Password
               </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-md-6 ">
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <label class="labels">New Password: </label><input type="password" id="ShowNewPW" class="form-control" value="">
+                  <input type="checkbox" onclick="ShowNewPassword()">Show Password
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-12">
+                    <label class="labels">Confirm Password: </label><input type="password" id="ShowConfirmPW" class="form-control" value="">
+                    <input type="checkbox" onclick="ShowConfirmPassword()">Show Password
+                  </div>
+                </div>
+                <div class="row mt-3">
 
-                  <button class="btn btn-primary profile-button" type="button" onclick="goBack()">
-                    Return
-                  </button>
-                
-              </div>
-              <div class="col-md-6 ">
-                <button class="btn btn-primary profile-button" onclick=" ResetPS(<?php echo $_SESSION['userID']; ?>)" type="button">
-                  Reset
-                </button>
+                  <div class="col-md-6 d-flex child-center-LR">
+                    <a href="dealer_information_update.php">
+                      <button class="btn btn-primary profile-button me-2" type="button">
+                        Return
+                      </button>
+                    </a>
+                  </div>
+
+                  <div class="col-md-6 d-flex child-center-LR">
+                    <button class="btn btn-primary profile-button" onclick="ResetPS(<?php echo $_SESSION['userID']; ?>)" type="button">
+                      Reset
+                    </button>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        </div>
-        <div class="modal-body" id="modal-body">
-          ...
-        </div>
-        <div class="modal-footer" id="modal-footer">
-          <button type="button" id="showModalButton" class="btn btn-secondary" onclick="$('#myModal').modal('hide');">Close</button>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          </div>
+          <div class="modal-body" id="modal-body">
+            ...
+          </div>
+          <div class="modal-footer " id="modal-footer">
+            <button type="button" id="showModalButton" class="btn btn-secondary " onclick="$('#myModal').modal('hide');">Close</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
   <footer>
-    <p>© <?php echo date("Y");?> Smart & Luxury Motor Spares inc.</p>
+  <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
   <!-- return top -->
 

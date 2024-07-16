@@ -74,8 +74,9 @@ $(document).ready(function () {
 
 function decreaseQuantity(id) {
   const input = document.getElementById('form1' + id);
-  if (input.value > 1) {
-    input.stepDown();
+  let currentValue = parseInt(input.value, 10);
+  if (currentValue > 1) {
+    input.value = currentValue - 1;
     update_qty(id, input.value);
   }
 }
@@ -84,13 +85,14 @@ function increaseQuantity(id) {
   const input = document.getElementById('form1' + id);
   const max = parseInt(input.max, 10);
   let currentValue = parseInt(input.value, 10);
+
   if (currentValue < max) {
-    input.stepUp();
-    update_qty(id, input.value);
+    input.value = currentValue + 1;
   } else {
     input.value = max;
-    update_qty(id, max);
   }
+
+  update_qty(id, input.value);
 }
 
 function update_qty(spnum, qty) {
@@ -108,13 +110,18 @@ function update_qty(spnum, qty) {
 }
 
 $(document).ready(function () {
-  $('input[type="number"]').on('input', function () {
+  $('input[type="number"]').on('blur', function () {
     const id = $(this).attr('id').replace('form1', '');
-    let qty = $(this).val();
-    if (qty < 1) {
+    let qty = parseInt($(this).val(), 10);
+    const max = parseInt($(this).attr('max'), 10);
+
+    if (isNaN(qty) || qty < 1) {
       qty = 1;
-      $(this).val(qty);
+    } else if (qty > max) {
+      qty = max;
     }
+
+    $(this).val(qty);
     update_qty(id, qty);
   });
 });
