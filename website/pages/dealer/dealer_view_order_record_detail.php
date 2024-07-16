@@ -39,8 +39,7 @@ if (isset($_SESSION['expire'])) {
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="../../js/add_itemm.js"></script>
-  <script src="../../js/dealer_view_orderrecord_token.js"></script>
-  <script src="../../js/view_order_record.js"></script>
+  <script src="../../js/dealer/dealer_view_order_record_detai.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
 </head>
@@ -121,7 +120,6 @@ $orderDetail = mysqli_fetch_assoc($result);
                             <polyline points="8 1 12 5 8 9"></polyline>
                           </svg>
                         </button>
-
                       </div>
                     </div>
                   </div>
@@ -292,7 +290,6 @@ $orderDetail = mysqli_fetch_assoc($result);
                       <div class="cell"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
                       <div class="cell" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
-
                   </div>
                 </div>
               </div>
