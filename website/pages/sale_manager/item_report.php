@@ -109,19 +109,21 @@ GROUP BY o.orderID";
     $category .= "D";
   }
 
-  $condition .= " '$category' like concat('%',category,'%') ";
-  $sql = "SELECT 
+  $condition .= " '$category' like concat('%',category,'%') and s.state = 'N' ";
+  $sql = "SELECT
   s.sparePartNum AS 'ID',
-  s.sparePartName AS 'Name', 
+  s.sparePartName AS 'Name',
   s.sparePartImage AS 'photo',
-  COUNT(*) AS 'Total order number',
-  SUM(os.orderQty) AS 'Total sale quantity',
-  SUM(os.sparePartOrderPrice*os.orderQty) AS 'Total sale amount'
- FROM orderSpare os 
- INNER JOIN spare s ON s.sparePartNum = os.sparePartNum
- INNER JOIN `order` o ON o.orderID = os.orderID
- $condition
- GROUP BY s.sparePartNum;";
+  sq.stockItemQty as 'Stock number',
+  COUNT(*) AS 'Total order number', 
+  ifnull(SUM(os.orderQty),0) AS 'Total sale quantity',
+  ifnull(SUM(os.sparePartOrderPrice*os.orderQty),0) AS 'Total sale amount'
+FROM spare s
+left JOIN orderSpare os ON s.sparePartNum = os.sparePartNum
+left JOIN `order` o ON o.orderID = os.orderID
+INNER JOIN spareQty sq ON sq.sparePartNum = s.sparePartNum
+$condition
+GROUP BY s.sparePartNum;";
 }
 try {
   $result = mysqli_query($conn, $sql);
@@ -204,14 +206,22 @@ $row_count = mysqli_num_rows($result);
               <th class="text-end" scope="col" data-sortable="true">Total Item Weight</th>
               <th class="text-end" scope="col" data-sortable="true">Total Order Amount</th>
               <th scope="col" data-sortable="true">Status</th>
-            <?php } else { ?>
+            <?php } elseif (isset($_POST['spnum'])) { ?>
               <th scope="col" style="width: 10%;" data-sortable="true">Spare ID</th>
               <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
               <th scope="col" style="width: 20%;text-align:center;">photo</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
-            <?php } ?>
+            <?php }else{ ?>
+              <th scope="col" style="width: 10%;" data-sortable="true">Spare ID</th>
+              <th scope="col" style="width: 30%;" data-sortable="true">Name</th>
+              <th scope="col" style="width: 20%;text-align:center;">photo</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Stock number</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
+              <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
+              <?php }?>
           </tr>
         </thead>
         <!-- /table header -->
@@ -243,6 +253,9 @@ $row_count = mysqli_num_rows($result);
                     <img class="table-img" src="../../images/item/<?php echo $row['photo']; ?>" />
                   </div>
                 </td>
+                <?php if (!isset($_POST['spnum'])) { ?>
+                  <td class="text-end"><?php echo $row['Stock number']; ?></td>
+                  <?php } ?>
                 <td class="text-end"><?php echo $row['Total order number']; ?></td>
                 <td class="text-end"><?php echo $row['Total sale quantity']; ?></td>
                 <td class="text-end">$ <?php echo $row['Total sale amount']; ?></td>
@@ -256,6 +269,8 @@ $row_count = mysqli_num_rows($result);
         <!-- table body -->
       </table>
       <!-- /table -->
+      <br />
+
     </div>
 
     <br />

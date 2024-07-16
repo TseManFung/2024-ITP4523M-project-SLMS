@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-
+from math import ceil
 app = Flask(__name__)
 CORS(app)
 
@@ -14,7 +14,7 @@ def calculate_shipping_cost(mode, value):
         if value <= 1:
             cost = 300  # Initial cost for first 1 kg
         else:
-            cost = 300 + 50 * (value - 1)  # $50 for each additional kg after the first
+            cost = 300 + 50 * ceil(value - 1)  # $50 for each additional kg after the first
     elif mode == "quantity":
         if value <= 0:
             return "rejected", "Invalid quantity"
@@ -23,7 +23,7 @@ def calculate_shipping_cost(mode, value):
         if value == 1:
             cost = 300  # Initial cost for first unit
         else:
-            cost = 300 + 60 * (value - 1)  # $60 for each additional unit after the first
+            cost = 300 + 60 * ceil(value - 1)  # $60 for each additional unit after the first
     else:
         return "rejected", "Error : mode must be 'quantity' or 'weight'"
 

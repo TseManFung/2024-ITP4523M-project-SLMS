@@ -130,11 +130,11 @@ if (isset($_SESSION['expire'])) {
                 <div class="row mt-3">
 
                   <div class="col-md-6 d-flex child-center-LR">
-                    <a href="dealer_information_update.php">
-                      <button class="btn btn-primary profile-button me-2" type="button">
+
+                      <button class="btn btn-primary profile-button me-2" type="button" onclick="goBack()">
                         Return
                       </button>
-                    </a>
+
                   </div>
 
                   <div class="col-md-6 d-flex child-center-LR">

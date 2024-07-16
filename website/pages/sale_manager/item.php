@@ -62,6 +62,7 @@ if (isset($_POST["sparePartNum"])) {
     }
     $sql = "UPDATE `spare`
         SET
+        `sparePartName` = '" . $_POST['sparePartName'] . "',
         `sparePartDescription` = '" . $_POST['sparePartDescription'] . "',
         `weight` = " . $_POST['weight'] . ",
         `price` = " . $_POST['price'] . "
