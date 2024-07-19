@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 
 $response = [];
 
+    // Ensure the request method is POST
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Invalid request method');
@@ -15,12 +16,11 @@ try {
     if (!isset($orderID)) {
         throw new Exception("Order ID is required");
     }
-
+    //Get CurrentTime
     $currentDateTime = new DateTime();
 
-    // 使用 printf 格式化 SQL 语句
     $sql = sprintf("SELECT state, deliveryDate FROM `order` WHERE orderID = %d", $orderID);
-    error_log($sql);
+    //error_log($sql);
 
     if (!$stmt = $conn->prepare($sql)) {
         throw new Exception("Database prepare error: " . $conn->error);
@@ -29,49 +29,40 @@ try {
     if (!$stmt->execute()) {
         throw new Exception("Database execute error: " . $stmt->error);
     }
-
+    //like $result = $conn->query($sql); $result = mysqli_query($conn, $sql);
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
         throw new Exception("Order not found");
     }
 
-    $order = $result->fetch_assoc();
+    //$order = $result->fetch_assoc();
+    $order = mysqli_fetch_assoc($result); 
+
     $deliveryDateStr = $order['deliveryDate'];
     $state = $order['state'];
 
-    // 如果 state 为 'U'，直接返回
     if ($state === 'U') {
         $response['error'] = 'Order is already cancelled!';
         echo json_encode($response);
         exit();
     }
 
-    // 如果 deliveryDate 为 null，直接更新订单状态为 'U'
     if ($deliveryDateStr === null) {
-        $sql = sprintf("UPDATE `order` SET state = 'U' WHERE orderID = %d", $orderID);
-        error_log($sql);
-
-        if (!$stmt = $conn->prepare($sql)) {
-            throw new Exception("Database prepare error: " . $conn->error);
-        }
-
-        if (!$stmt->execute()) {
-            throw new Exception("Database execute error: " . $stmt->error);
-        }
-
-        // 恢复库存数量
-        restoreStockQuantity($conn, $orderID);
-
-        $response['success'] = 'Order cancelled due to null delivery date';
+        //function
+        restore($conn, $orderID);
+        //function
+        deleteOrderAndorderspare($conn, $orderID);
+        $response['success'] = 'Order deleted due to null delivery date';
         echo json_encode($response);
         exit();
     }
 
     $deliveryDate = new DateTime($deliveryDateStr);
-
-    // 检查 deliveryDate 是否在未来 48 小时内
+    //Calls the diff method of object $deliveryDate, passing one argument $currentDateTime
+    //Transfer parameters $interval
     $interval = $deliveryDate->diff($currentDateTime);
+
     $hoursUntilDelivery = ($interval->days * 24) + $interval->h;
 
     if ($hoursUntilDelivery <= 48) {
@@ -80,25 +71,16 @@ try {
         throw new Exception("Cannot cancel the order as its state is either T or F");
     }
 
-    // 更新订单状态为 'U'（不可用）
-    $sql = sprintf("UPDATE `order` SET state = 'U' WHERE orderID = %d", $orderID);
-    error_log($sql);
+    restore($conn, $orderID);
 
-    if (!$stmt = $conn->prepare($sql)) {
-        throw new Exception("Database prepare error: " . $conn->error);
-    }
+    deleteOrderAndorderspare($conn, $orderID);
 
-    if (!$stmt->execute()) {
-        throw new Exception("Database execute error: " . $stmt->error);
-    }
-
-    // 恢复库存数量
-    restoreStockQuantity($conn, $orderID);
-
-    $response['success'] = 'Order cancelled and stock quantities restored successfully';
+    $response['success'] = 'Order deleted and stock quantities restored successfully';
     echo json_encode($response);
 } catch (Exception $e) {
+    //Call the getMessage method of the Exception object $e.
     error_log($e->getMessage());
+    //Stored in the ‘error’ key of the $response array.
     $response['error'] = $e->getMessage();
     echo json_encode($response);
 } finally {
@@ -109,17 +91,8 @@ try {
     exit();
 }
 
-/**
- * 恢复库存数量的函数
- *
- * @param mysqli $conn 数据库连接
- * @param int $orderID 订单ID
- * @throws Exception 如果操作失败
- */
-function restoreStockQuantity($conn, $orderID) {
-    // 开始事务
-    $conn->begin_transaction();
 
+function restore($conn, $orderID) {
     try {
         $sql = sprintf("SELECT sparePartNum, orderQty FROM orderSpare WHERE orderID = %d", $orderID);
         error_log($sql);
@@ -149,11 +122,45 @@ function restoreStockQuantity($conn, $orderID) {
                 throw new Exception("Database execute error: " . $stmt->error);
             }
         }
+    } catch (Exception $e) {
+        throw $e;
+    } finally {
+        if (isset($stmt)) {
+            $stmt->close();
+        }
+    }
+}
 
-        // 提交事务
+
+function deleteOrderAndorderspare($conn, $orderID) {
+
+    $conn->begin_transaction();
+
+    try {
+        $sql = sprintf("DELETE FROM orderSpare WHERE orderID = %d", $orderID);
+        error_log($sql);
+
+        if (!$stmt = $conn->prepare($sql)) {
+            throw new Exception("Database prepare error: " . $conn->error);
+        }
+
+        if (!$stmt->execute()) {
+            throw new Exception("Database execute error: " . $stmt->error);
+        }
+
+        $sql = sprintf("DELETE FROM `order` WHERE orderID = %d", $orderID);
+        error_log($sql);
+
+        if (!$stmt = $conn->prepare($sql)) {
+            throw new Exception("Database prepare error: " . $conn->error);
+        }
+
+        if (!$stmt->execute()) {
+            throw new Exception("Database execute error: " . $stmt->error);
+        }
+
         $conn->commit();
     } catch (Exception $e) {
-        // 回滚事务 Restore the status quo before the event
         $conn->rollback();
         throw $e;
     } finally {

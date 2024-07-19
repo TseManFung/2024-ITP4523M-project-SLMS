@@ -94,44 +94,43 @@ if (isset($_SESSION['expire'])) {
   $result = mysqli_query($conn, $sql);
   $cart = mysqli_fetch_array($result);
   ?>
-  <div class="content-bg">
-    <div class="container">
-
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col">
-              <div class="card mb-5">
-                <div class="card-body p-4">
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col" class="h5">Cart<br>(<?php echo $cart['total_quantity']; ?> Items)<br>(<?php echo $cart['NID']; ?> types)</th>
-                          <th scope="col">ID</th>
-                          <th scope="col">Price</th>
-                          <th scope="col">Quantity</th>
-                          <th scope="col">Price</th>
-                          <th scope="col"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                        $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state, spareqty.stockItemQty
+  <div class="d-flex position-relative content-bg justify-content-center">
+    <div class="container content-wrap">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+          <div class="card mb-5">
+            <div class="card-body p-4">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="h5">Cart<br>(<?php echo $cart['total_quantity']; ?> Items)<br>(<?php echo $cart['NID']; ?> types)</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state, spareqty.stockItemQty
                         FROM cart
                         JOIN spare ON cart.sparePartNum = spare.sparePartNum
                         JOIN spareqty ON spare.sparePartNum = spareqty.sparePartNum
                         WHERE cart.userID = $userID;";
-                        $result = mysqli_query($conn, $sql);
-                        $totalWeight = 0;
-                        $subTotal = 0;
-                        $itemTotalqty = 0;
-                        if (mysqli_num_rows($result) > 0) {
-                          while ($row = mysqli_fetch_array($result)) {
-                            $itemTotalqty += $row['qty'];
-                            $itemTotalPrice = $row['qty'] * $row['price'];
-                            $subTotal += $itemTotalPrice;
-                            $totalWeight += $row['qty'] * $row['weight'];
-                            printf(
-                              '
+                    $result = mysqli_query($conn, $sql);
+                    $totalWeight = 0;
+                    $subTotal = 0;
+                    $itemTotalqty = 0;
+                    if (mysqli_num_rows($result) > 0) {
+                      while ($row = mysqli_fetch_array($result)) {
+                        $itemTotalqty += $row['qty'];
+                        $itemTotalPrice = $row['qty'] * $row['price'];
+                        $subTotal += $itemTotalPrice;
+                        $totalWeight += $row['qty'] * $row['weight'];
+                        printf(
+                          '
                         <tr>
                             <th scope="row">
                                 <div class="d-flex align-items-center">
@@ -166,81 +165,80 @@ if (isset($_SESSION['expire'])) {
                                 </p>
                             </td>
                         </tr>',
-                              $row['sparePartImage'],
-                              $row['sparePartName'],
-                              $row['sparePartName'],
-                              $row['price'],
-                              $row['sparePartNum'],
-                              $row['sparePartNum'],
-                              $row['stockItemQty'],  // Set max to spareqty
-                              $row['qty'],
-                              $row['sparePartNum'],
-                              $itemTotalPrice,
-                              $row['sparePartNum']
-                            );
-                          }
-                        } else {
-                          echo '
+                          $row['sparePartImage'],
+                          $row['sparePartName'],
+                          $row['sparePartName'],
+                          $row['price'],
+                          $row['sparePartNum'],
+                          $row['sparePartNum'],
+                          $row['stockItemQty'],  // Set max to spareqty
+                          $row['qty'],
+                          $row['sparePartNum'],
+                          $itemTotalPrice,
+                          $row['sparePartNum']
+                        );
+                      }
+                    } else {
+                      echo '
                     <tr>
                         <td colspan="6" class="text-center align-middle">
                             <p class="mb-0" style="font-weight: 500;">Your cart is empty.</p>
                         </td>
                     </tr>';
-                        }
-                        ?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
-                <div class="card-body p-4">
-                  <div class="d-flex justify-content-between" style="font-weight: 500;">
-                    <p class="mb-2">Delivery fee</p>
-                    <p class="mb-2" id="delivery" value="0" total-qty="<?php echo $itemTotalqty; ?>"></p>
-                  </div>
-                  <div class="d-flex justify-content-between" style="font-weight: 500;">
-                    <p class="mb-2">Total weight</p>
-                    <p class="mb-2" id="totalWeight" total-weight="<?php echo $totalWeight; ?>"><?php echo $totalWeight; ?> kg</p>
-                  </div>
-                  <div class="d-flex justify-content-between" style="font-weight: 500;">
-                    <p class="mb-0">Subtotal</p>
-                    <p class="mb-0">$<?php echo number_format($subTotal, 2); ?></p>
-                  </div>
-                  <hr class="my-4">
-                  <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
-                    <p class="mb-2">Total</p>
-                    <p class="mb-2" id="Total-SAD" subtotal-method="<?php echo $subTotal; ?>"></p>
-                  </div>
-                  <?php
-                  $sql = "SELECT SUM(qty)AS qtyq FROM `cart` WHERE userID= $userID";
-                  $result = mysqli_query($conn, $sql);
-                  $qtyq = mysqli_fetch_array($result);
-                  ?>
-                  <div class="d-grid gap-2 d-md-block">
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg" onclick="checkoutTest(<?php echo $totalWeight ?>, <?php echo $qtyq['qtyq'] ?>)">
-                      <div class="d-flex justify-content-between">
-                        <span>Checkout</span>
-                      </div>
-                    </button>
-                    <a href="./search_item.php">
-                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
-                        <div class="d-flex justify-content-between">
-                          <span>Back to view item</span>
-                        </div>
-                      </button>
-                    </a>
-                  </div>
-                </div>
+                    }
+                    ?>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
+          <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between" style="font-weight: 500;">
+                <p class="mb-2">Delivery fee</p>
+                <p class="mb-2" id="delivery" value="0" total-qty="<?php echo $itemTotalqty; ?>"></p>
+              </div>
+              <div class="d-flex justify-content-between" style="font-weight: 500;">
+                <p class="mb-2">Total weight</p>
+                <p class="mb-2" id="totalWeight" total-weight="<?php echo $totalWeight; ?>"><?php echo $totalWeight; ?> kg</p>
+              </div>
+              <div class="d-flex justify-content-between" style="font-weight: 500;">
+                <p class="mb-0">Subtotal</p>
+                <p class="mb-0">$<?php echo number_format($subTotal, 2); ?></p>
+              </div>
+              <hr class="my-4">
+              <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                <p class="mb-2">Total</p>
+                <p class="mb-2" id="Total-SAD" subtotal-method="<?php echo $subTotal; ?>"></p>
+              </div>
+              <?php
+              $sql = "SELECT SUM(qty)AS qtyq FROM `cart` WHERE userID= $userID";
+              $result = mysqli_query($conn, $sql);
+              $qtyq = mysqli_fetch_array($result);
+              ?>
+              <div class="d-grid gap-2 d-md-block">
+                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg" onclick="checkoutTest(<?php echo $totalWeight ?>, <?php echo $qtyq['qtyq'] ?>)">
+                  <div class="d-flex justify-content-between">
+                    <span>Checkout</span>
+                  </div>
+                </button>
+                <a href="./search_item.php">
+                  <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                    <div class="d-flex justify-content-between">
+                      <span>Back to view item</span>
+                    </div>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <br><br>
     </div>
   </div>
-  
+
   <!-- /content -->
   <!-- message box-->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
