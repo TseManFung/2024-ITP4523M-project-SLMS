@@ -286,7 +286,11 @@ if (isset($_SESSION['expire'])) {
           </div>
           <hr />
           <div class="row">
-            <div id="item" class="item-wrap cell">
+            <div id="item" class="item-wrap <?php if (isset($_COOKIE["DisplayMode"])) {
+                                              echo $_COOKIE["DisplayMode"];
+                                            } else {
+                                              echo "cell";
+                                            } ?>">
               <?php
               $sql = sprintf("SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty
                FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum 

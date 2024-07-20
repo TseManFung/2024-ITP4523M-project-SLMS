@@ -194,14 +194,14 @@ if (isset($_SESSION['expire'])) {
               <div class="col">
                 <!-- use js to set placeholder and min and max and value of minPrice and maxPrice -->
                 <input id="minPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo floor($spareMinPrice); ?>" value="<?php if (isset($_GET["minPrice"])) {
-                                                                                                                                                                                                                        echo $_GET["minPrice"];
-                                                                                                                                                                                                                      } ?>" />
+                                                                                                                                                                                                                              echo $_GET["minPrice"];
+                                                                                                                                                                                                                            } ?>" />
               </div>
               <div class="col-1 text-center">-</div>
               <div class="col">
                 <input id="maxPrice" name="PriceRange" class="form-control" type="number" min="<?php echo $spareMinPrice; ?>" max="<?php echo $spareMaxPrice; ?>" placeholder="<?php echo ceil($spareMaxPrice); ?>" value="<?php if (isset($_GET["maxPrice"])) {
-                                                                                                                                                                                                                        echo $_GET["maxPrice"];
-                                                                                                                                                                                                                      } ?>" />
+                                                                                                                                                                                                                              echo $_GET["maxPrice"];
+                                                                                                                                                                                                                            } ?>" />
               </div>
             </div>
             <br />
@@ -293,7 +293,11 @@ if (isset($_SESSION['expire'])) {
           </div>
           <hr />
           <div class="row">
-            <div id="item" class="item-wrap cell">
+            <div id="item" class="item-wrap <?php if (isset($_COOKIE["DisplayMode"])) {
+                                              echo $_COOKIE["DisplayMode"];
+                                            } else {
+                                              echo "cell";
+                                            } ?>">
               <?php
               $sql = sprintf("SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty
                FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum 

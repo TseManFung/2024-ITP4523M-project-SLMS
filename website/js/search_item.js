@@ -8,6 +8,7 @@ $(document).ready(function () {
       if (item.hasClass(Display_class[i ^ 1])) {
         item.removeClass(Display_class[i ^ 1]);
         item.addClass(Display_class[i]);
+        document.cookie = "DisplayMode="+Display_class[i];
       }
     });
   }
