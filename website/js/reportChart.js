@@ -15,32 +15,29 @@ $(document).ready(function () {
 
 // chart.js
 
-function removeDollorSign(s){
-    return s.replace("$", "").trim();
-    
+function removeDollorSign(s) {
+  return s.replace("$", "").trim();
 }
 
 async function BarChartForTop10SparePart(c) {
-jsonData = getData();
+  jsonData = getData();
 
-
-// Sort jsonData
-jsonData.sort((a, b) => {
+  // Sort jsonData
+  jsonData.sort((a, b) => {
     const valueA = parseInt(removeDollorSign(a[6]));
     const valueB = parseInt(removeDollorSign(b[6]));
     return valueB - valueA;
-});
+  });
 
-jsonData = jsonData.slice(0, 10);
+  jsonData = jsonData.slice(0, 10);
 
-
-const labels = jsonData.map((item) => {
+  const labels = jsonData.map((item) => {
     let label = item[1];
     if (label.length > 50) {
-        label = label.substring(0, 47) + "...";
+      label = label.substring(0, 47) + "...";
     }
     return label;
-});
+  });
   const data = {
     labels: labels,
     datasets: [
@@ -49,7 +46,6 @@ const labels = jsonData.map((item) => {
         label: "Sales ($)",
         data: jsonData.map((item) => removeDollorSign(item[6])),
         fill: false,
-
         borderWidth: 1,
       },
     ],
@@ -59,6 +55,15 @@ const labels = jsonData.map((item) => {
     data,
     options: {
       indexAxis: "y",
+      plugins: {
+        title: {
+          display: true,
+          text: "Top 10 best selling spare parts",
+          font: {
+            size: 36,
+          },
+        },
+      },
     },
   };
   new Chart(c[0], config);
