@@ -101,7 +101,7 @@ if (isset($_SESSION['expire'])) {
         <div class="card" style="padding:2rem;">
           <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
-  <!--             <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <!--             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted">Your cart</span>
                 <span class="badge badge-secondary badge-pill">3</span>
               </h4> -->
@@ -146,25 +146,14 @@ if (isset($_SESSION['expire'])) {
                 $result = mysqli_query($conn, $sql);
                 $cart = mysqli_fetch_array($result);
                 ?>
-                <li class="list-group-item d-flex justify-content-between">
-                  <div class="d-grid gap-2 d-md-block">
-                    <a href="./dealer_cart.php">
-                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
-                        <div class="d-flex justify-content-between">
-                          <span>View your cart</span>
-                        </div>
-                      </button>
-                    </a>
-                  </div>
-                </li>
               </ul>
             </div>
             <div class="col-md-8 order-md-1">
               <h4 class="mb-3">Order information:</h4>
               <div class="row">
                 <div class="mb-3">
-                  <label for="address"> Order Date & Time:</label>
-                  <input type="text" class="form-control" id="Order-D-T" value="" disabled>
+                  <!-- <label for="address"> Order Date & Time:</label> -->
+                  <input type="hidden" class="form-control" id="Order-D-T" value="" disabled>
                 </div>
               </div>
               <div class="mb-3">
@@ -211,9 +200,9 @@ if (isset($_SESSION['expire'])) {
             </div>
           </div>
         </div>
+        <br>
         <h4 class="mb-3">Please enter delivery address</h4>
         <?php
-
         $sql = "SELECT SUM(cart.qty) AS total_quantity, d.dealerID, d.deliveryAddress FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum JOIN `user` u ON cart.userID = u.userID JOIN dealer d ON u.dealerID = d.dealerID WHERE cart.userID = $userID";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($result);
@@ -222,12 +211,25 @@ if (isset($_SESSION['expire'])) {
         <div class="mb-3">
           <label for="address">Delivery Address </label>
           <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="<?php echo $row['deliveryAddress']; ?>" required>
-          <div class="invalid-feedback"> Please enter your shipping address. </div>
         </div>
-        <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>)">Continue to checkout</button>
 
 
+        <div class="row mt-3">
+          <div class="col-md-6 d-flex child-center-R">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>)">Continue to checkout</button>
+          </div>
+          <div class="col-md-6 d-flex child-center-R">
+            <div class="d-grid gap-2 d-md-block">
+              <a href="./dealer_cart.php">
+                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                  <div class="d-flex justify-content-between">
+                    <span>View your cart</span>
+                  </div>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
         <ul class="list-inline">
         </ul>
       </div>
