@@ -94,35 +94,36 @@ if (isset($_SESSION['expire'])) {
   <div class="d-flex position-relative content-bg justify-content-center">
     <div class="container content-wrap">
       <br />
-      <div class="container">
+      <div>
         <div class="py-5 text-center">
           <h2>Checkout</h2>
         </div>
-        <div class="row">
-          <div class="col-md-4 order-md-2 mb-4">
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-muted">Your cart</span>
-              <span class="badge badge-secondary badge-pill">3</span>
-            </h4>
-            <ul class="list-group mb-3 sticky-top">
-              <?php
-              $userID = $_SESSION['userID'];
-              $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.weight, spare.state 
+        <div class="card" style="padding:2rem;">
+          <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+  <!--             <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Your cart</span>
+                <span class="badge badge-secondary badge-pill">3</span>
+              </h4> -->
+              <ul class="list-group mb-3 sticky-top">
+                <?php
+                $userID = $_SESSION['userID'];
+                $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.weight, spare.state 
               FROM cart 
               JOIN spare ON cart.sparePartNum = spare.sparePartNum 
               WHERE cart.userID = $userID;";
-              $result = mysqli_query($conn, $sql);
-              $totalWeight = 0;
-              $subTotal = 0;
-              $itemTotalqty = 0;
-              $Qty=0;
-              if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_array($result)) {
-                  $itemTotalqty += $row['qty'];
-                  $itemTotalPrice = $row['qty'] * $row['price'];
-                  $subTotal += $itemTotalPrice;
-                  printf(
-                    '<li class="list-group-item d-flex justify-content-between lh-condensed">
+                $result = mysqli_query($conn, $sql);
+                $totalWeight = 0;
+                $subTotal = 0;
+                $itemTotalqty = 0;
+                $Qty = 0;
+                if (mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_array($result)) {
+                    $itemTotalqty += $row['qty'];
+                    $itemTotalPrice = $row['qty'] * $row['price'];
+                    $subTotal += $itemTotalPrice;
+                    printf(
+                      '<li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div class="order-img">
                       <img class="order-abs-img img-100" src="%s" />
                     </div>
@@ -132,34 +133,34 @@ if (isset($_SESSION['expire'])) {
                     </div>
                     <span class="text-muted">$%d</span>
                   </li>',
-                    $row['sparePartImage'],
-                    $row['sparePartName'],
-                    $row['qty'],
-                    $itemTotalPrice
-                  );
+                      $row['sparePartImage'],
+                      $row['sparePartName'],
+                      $row['qty'],
+                      $itemTotalPrice
+                    );
+                  }
                 }
-              }
-              ?>
-              <?php
-              $sql = "SELECT SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
-              $result = mysqli_query($conn, $sql);
-              $cart = mysqli_fetch_array($result);
-              ?>
-              <li class="list-group-item d-flex justify-content-between">
-                <div class="d-grid gap-2 d-md-block">
-                  <a href="./dealer_cart.php">
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
-                      <div class="d-flex justify-content-between">
-                        <span>View your cart</span>
-                      </div>
-                    </button>
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-8 order-md-1">
-            <h4 class="mb-3">Your order information:</h4>
+                ?>
+                <?php
+                $sql = "SELECT SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
+                $result = mysqli_query($conn, $sql);
+                $cart = mysqli_fetch_array($result);
+                ?>
+                <li class="list-group-item d-flex justify-content-between">
+                  <div class="d-grid gap-2 d-md-block">
+                    <a href="./dealer_cart.php">
+                      <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block btn-lg">
+                        <div class="d-flex justify-content-between">
+                          <span>View your cart</span>
+                        </div>
+                      </button>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-8 order-md-1">
+              <h4 class="mb-3">Order information:</h4>
               <div class="row">
                 <div class="mb-3">
                   <label for="address"> Order Date & Time:</label>
@@ -207,23 +208,26 @@ if (isset($_SESSION['expire'])) {
                   <input type="text" class="form-control" value="$11234" id="Total-Order-Amount" placeholder="" disabled>
                 </div>
               </div>
-              <h4 class="mb-3">Please enter delivery address</h4>
-              <?php
-              
-              $sql = "SELECT SUM(cart.qty) AS total_quantity, d.dealerID, d.deliveryAddress FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum JOIN `user` u ON cart.userID = u.userID JOIN dealer d ON u.dealerID = d.dealerID WHERE cart.userID = $userID";
-              $result = mysqli_query($conn, $sql);
-              $row = mysqli_fetch_array($result);
-              mysqli_close($conn);
-              ?>
-              <div class="mb-3">
-                <label for="address">Delivery Address </label>
-                <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="<?php echo $row['deliveryAddress']; ?>" required>
-                <div class="invalid-feedback"> Please enter your shipping address. </div>
-              </div>
-              <hr class="mb-4">
-              <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>)">Continue to checkout</button>
+            </div>
           </div>
         </div>
+        <h4 class="mb-3">Please enter delivery address</h4>
+        <?php
+
+        $sql = "SELECT SUM(cart.qty) AS total_quantity, d.dealerID, d.deliveryAddress FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum JOIN `user` u ON cart.userID = u.userID JOIN dealer d ON u.dealerID = d.dealerID WHERE cart.userID = $userID";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_array($result);
+        mysqli_close($conn);
+        ?>
+        <div class="mb-3">
+          <label for="address">Delivery Address </label>
+          <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="<?php echo $row['deliveryAddress']; ?>" required>
+          <div class="invalid-feedback"> Please enter your shipping address. </div>
+        </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>)">Continue to checkout</button>
+
+
         <ul class="list-inline">
         </ul>
       </div>
@@ -241,8 +245,8 @@ if (isset($_SESSION['expire'])) {
           ...
         </div>
         <div class="modal-footer" id="modal-footer">
-        <button type="button" id="showModalButton" class="btn btn-secondary" onclick="closeModal()">Close</button>
-      </div>
+          <button type="button" id="showModalButton" class="btn btn-secondary" onclick="closeModal()">Close</button>
+        </div>
       </div>
     </div>
   </div>

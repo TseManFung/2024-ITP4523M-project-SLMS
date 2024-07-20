@@ -54,7 +54,8 @@ if (isset($_SESSION['expire'])) {
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../../js/reportChart.js"></script>
   <!-- /js -->
 </head>
 <?php
@@ -132,7 +133,6 @@ try {
 }
 $all_row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $row_count = mysqli_num_rows($result);
-
 ?>
 
 
@@ -194,6 +194,10 @@ $row_count = mysqli_num_rows($result);
 
       </div>
       <br />
+      <div>
+        <canvas id="Chart" aria-label="Chart" role="img" data-type="<?php if (isset($_POST['DID'])) {echo "D"; } elseif (isset($_POST['spnum'])) {echo "S"; } else { echo "N";}?>"></canvas>
+      </div>
+      <br />
       <!-- table-->
       <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">
         <!-- table header -->
@@ -213,7 +217,7 @@ $row_count = mysqli_num_rows($result);
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
-            <?php }else{ ?>
+            <?php } else { ?>
               <th scope="col" style="width: 10%;" data-sortable="true">Spare ID</th>
               <th scope="col" style="width: 30%;" data-sortable="true">Name</th>
               <th scope="col" style="width: 20%;text-align:center;">photo</th>
@@ -221,7 +225,7 @@ $row_count = mysqli_num_rows($result);
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total order number</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale quantity</th>
               <th class="text-end" scope="col" style="width: 10%;" data-sortable="true">Total sale amount</th>
-              <?php }?>
+            <?php } ?>
           </tr>
         </thead>
         <!-- /table header -->
@@ -255,7 +259,7 @@ $row_count = mysqli_num_rows($result);
                 </td>
                 <?php if (!isset($_POST['spnum'])) { ?>
                   <td class="text-end"><?php echo $row['Stock number']; ?></td>
-                  <?php } ?>
+                <?php } ?>
                 <td class="text-end"><?php echo $row['Total order number']; ?></td>
                 <td class="text-end"><?php echo $row['Total sale quantity']; ?></td>
                 <td class="text-end">$ <?php echo $row['Total sale amount']; ?></td>
