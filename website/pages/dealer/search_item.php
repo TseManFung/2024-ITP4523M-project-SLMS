@@ -123,15 +123,6 @@ if (isset($_SESSION['expire'])) {
   if (isset($_GET["maxPrice"])) {
     $condition = "$condition and price <= " . $_GET["maxPrice"] . " ";
   }
-  if (isset($_GET["sort"])) {
-    if ($_GET["sort"] == "NA") {
-      $condition = "$condition order by s.sparePartNum desc ";
-    } else if ($_GET["sort"] == "PLH") {
-      $condition = "$condition order by price ";
-    } else if ($_GET["sort"] == "PHL") {
-      $condition = "$condition order by price desc ";
-    }
-  }
 
   $sql  = "SELECT count(*) as spareCount,ifnull(max(price),0) as SpareMaxPrice,ifnull(min(price),0) as SpareMinPrice FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum where state = 'N' and stockItemQty > 0 " . $condition . ";";
   $result = mysqli_query($conn, $sql);
@@ -145,6 +136,17 @@ if (isset($_SESSION['expire'])) {
   } else {
     $currentPage = 1;
   };
+
+  $condition .= " group by s.sparePartNum ";
+  if (!isset($_GET["sort"]) || $_GET["sort"] == "R") {
+    $condition .= " order by sum(orderQty) desc ";
+  }elseif ($_GET["sort"] == "NA") {
+    $condition = "$condition order by s.sparePartNum%10000 desc ";
+  } else if ($_GET["sort"] == "PLH") {
+    $condition = "$condition order by price ";
+  } else if ($_GET["sort"] == "PHL") {
+    $condition = "$condition order by price desc ";
+  }
   ?>
 
 
@@ -300,7 +302,7 @@ if (isset($_SESSION['expire'])) {
                                             } ?>">
               <?php
               $sql = sprintf("SELECT s.sparePartNum as spnum,sparePartImage,sparePartName,sparePartDescription,price,stockItemQty
-               FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum 
+               FROM spare s inner join spareqty q on s.sparePartNum = q.sparePartNum left join orderspare os on s.sparePartNum = os.sparePartNum
                where state = 'N' and stockItemQty > 0 %s 
                limit %d,12;", $condition, ($currentPage - 1) * 12);
               $result = mysqli_query($conn, $sql);
