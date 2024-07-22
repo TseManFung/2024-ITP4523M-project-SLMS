@@ -94,7 +94,8 @@ function setState(orderID, state) {
       FROM orderSpare
       WHERE orderID = ${orderID}) o
       ON s.sparePartNum = o.sparePartNum
-      SET s.stockItemQty = s.stockItemQty + o.orderQty;`;
+      SET s.stockItemQty = s.stockItemQty + o.orderQty;
+      UPDATE \`order\` SET \`isPaid\` = 0, \`receipt\` = NULL WHERE (\`orderID\` = ${orderID});`;
 
     $.ajax({
       url: "../db/query.php",

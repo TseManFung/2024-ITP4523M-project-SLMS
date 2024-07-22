@@ -42,7 +42,7 @@ if (isset($_SESSION['expire'])) {
   <!-- /js -->
 </head>
 <?php
-$sql = "SELECT o.orderDateTime, o.deliveryAddress, o.deliveryDate, o.salesManagerID, o.dealerID, o.orderItemNumber, o.TotalAmount, o.shipCost, o.state, d.dealerName, d.contactNumber FROM `order` o inner join dealer d on o.dealerID = d.dealerID where orderID = {$_POST["orderID"]};";
+$sql = "SELECT o.orderDateTime,o.isPaid,o.receipt, o.deliveryAddress, o.deliveryDate, o.salesManagerID, o.dealerID, o.orderItemNumber, o.TotalAmount, o.shipCost, o.state, d.dealerName, d.contactNumber FROM `order` o inner join dealer d on o.dealerID = d.dealerID where orderID = {$_POST["orderID"]};";
 $result = mysqli_query($conn, $sql);
 $orderDetail = mysqli_fetch_assoc($result);
 // orderID, orderDateTime, deliveryAddress, deliveryDate, salesManagerID, dealerID, orderItemNumber, TotalAmount, shipCost, state
@@ -161,12 +161,12 @@ $orderDetail = mysqli_fetch_assoc($result);
                             <p class="text-muted mt-1 mb-0 small ">In Transmit</p>
                           <?php } ?>
                           <p class="text-muted mt-1 mb-0 small ">this order is <?php if ($orderDetail["state"] == "R") {
-                                                                                        echo "rejected";
-                                                                                      } elseif ($orderDetail["state"] == "U") {
-                                                                                        echo "unavailable";
-                                                                                      } else {
-                                                                                        echo "finished";
-                                                                                      } ?> </p>
+                                                                                  echo "rejected";
+                                                                                } elseif ($orderDetail["state"] == "U") {
+                                                                                  echo "unavailable";
+                                                                                } else {
+                                                                                  echo "finished";
+                                                                                } ?> </p>
                         </div>
                       </div>
                     </div>
@@ -228,7 +228,13 @@ $orderDetail = mysqli_fetch_assoc($result);
                   <div class="row mb-2">
                     <h2>Payment Details</h2>
                     <div class="col">
-                      <div class="cell text-end"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"]; ?></div>
+                      <div class="cell"><b>payment status: </b><?php echo $orderDetail["isPaid"]?"paid":"arrearage"; ?></div>
+                      <?php if ($orderDetail["isPaid"]) { ?>
+                        <div class="cell"><b>Receipt: </b><a href="../../images/receipt/<?php echo $orderDetail["receipt"]; ?>" target="_blank">View Receipt</a></div>
+                        <?php } ?>
+                    </div>
+                    <div class="col">
+                      <div class="cell text-end"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"] ?></div>
                       <div class="cell text-end"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
                       <div class="cell text-end" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
@@ -257,27 +263,35 @@ $orderDetail = mysqli_fetch_assoc($result);
           <?php } ?>
         </div>
         <br>
-        <div class="alert alert-secondary position-relative" role="alert" id="edit_status">
-          <div class="form-floating">
-            <select class="form-select" id="status_selecter">
-                <option value="T" <?php if ($orderDetail["state"]== "T") {
-                                    echo "selected";
-                                  } ?>>In Transmit</option>
+        <?php if ($orderDetail["state"] == "A" || $orderDetail["state"] == "T") { ?>
+          <div class="alert alert-secondary position-relative" role="alert" id="edit_status">
+            <div class="form-floating">
+              <select class="form-select" id="status_selecter">
+                <?php if ($orderDetail["state"] == "A") { ?>
+                  <option value="T" <?php if ($orderDetail["state"] == "T") {
+                                      echo "selected";
+                                    } ?>>In Transmit</option>
+                <?php } ?>
                 <option value="U" <?php if ($orderDetail["state"] == "U") {
                                     echo "selected";
                                   } ?>>Unavailable</option>
-                <option value="F" <?php if ($orderDetail["state"] == "F") {
-                                    echo "selected";
-                                  } ?>>Finished</option>
-            </select>
-            <label for="status_selecter">Status</label>
-          </div><br><br>
-          <div class="position-absolute bottom-0 end-0 m-2">
-            <button type="button" class="btn btn-primary" onclick="setState(<?php echo $_POST['orderID'];?>,$('#status_selecter').val())">Save</button>
-            <button type="button" class="btn btn-secondary" onclick="Cancel()">Cancel</button>
-          </div>
+                <?php if ($orderDetail["state"] == "T" && $orderDetail["isPaid"] == 1) { ?>
+                  <option value="F" <?php if ($orderDetail["state"] == "F") {
+                                      echo "selected";
+                                    } ?>>Finished</option>
+                <?php } ?>
+              </select>
+              <label for="status_selecter">Status</label>
+            </div>
 
-        </div>
+            <br><br>
+            <div class="position-absolute bottom-0 end-0 m-2">
+              <button type="button" class="btn btn-primary" onclick="setState(<?php echo $_POST['orderID']; ?>,$('#status_selecter').val())">Save</button>
+              <button type="button" class="btn btn-secondary" onclick="Cancel()">Cancel</button>
+            </div>
+
+          </div>
+        <?php } ?>
       </div>
     </div>
 

@@ -29,7 +29,6 @@ if (isset($_SESSION['expire'])) {
   <link rel="stylesheet" href="../../css/reset.css">
   <link rel="stylesheet" href="../../css/common.css">
   <link rel="stylesheet" href="../../css/bs/bootstrap.css">
-  <link rel="stylesheet" href="../../css/dealer_view_orderrecord_token.css">
   <link rel="stylesheet" href="../../css/dealer_view_orderrecord.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.css">
   <!-- /css -->
@@ -38,13 +37,15 @@ if (isset($_SESSION['expire'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
   <script src="../../js/bs/bootstrap.bundle.js"></script>
-  <script src="../../js/add_itemm.js"></script>
+  <script src="../../js/add_item.js"></script>
   <script src="../../js/dealer/dealer_view_order_record_detai.js"></script>
+  <script src="../../js/FPS.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.0/dist/bootstrap-table.min.js"></script>
   <!-- /js -->
 </head>
 <?php
-$sql = "SELECT o.orderDateTime, o.deliveryAddress, o.deliveryDate, o.salesManagerID, o.orderItemNumber, o.TotalAmount, o.shipCost, o.state, d.dealerName FROM `order` o inner join dealer d on o.dealerID = d.dealerID where orderID = {$_POST["orderID"]};";
+$sql = "SELECT o.orderDateTime,o.isPaid,o.receipt, o.deliveryAddress, o.deliveryDate, o.salesManagerID, o.orderItemNumber, o.TotalAmount, o.shipCost, o.state, d.dealerName FROM `order` o inner join dealer d on o.dealerID = d.dealerID where orderID = {$_POST["orderID"]};";
 $result = mysqli_query($conn, $sql);
 $orderDetail = mysqli_fetch_assoc($result);
 // orderID, orderDateTime, deliveryAddress, deliveryDate, salesManagerID, dealerID, orderItemNumber, TotalAmount, shipCost, state
@@ -259,10 +260,10 @@ $orderDetail = mysqli_fetch_assoc($result);
                                                                                     } else {
                                                                                       echo "10";
                                                                                     } ?>%;--bs-progress-bar-bg:<?php if ($orderDetail["state"] == "R" || $orderDetail["state"] == "U") {
-                                                                                                                    echo "red";
-                                                                                                                  } else {
-                                                                                                                    echo "cornflowerblue";
-                                                                                                                  } ?>;"></div>
+                                                                                                                  echo "red";
+                                                                                                                } else {
+                                                                                                                  echo "cornflowerblue";
+                                                                                                                } ?>;"></div>
                       </div>
                       <div class="d-flex justify-content-between mb-1">
                         <p class="text-muted mt-1 mb-0 small ">Create Order</p>
@@ -286,16 +287,32 @@ $orderDetail = mysqli_fetch_assoc($result);
                   <div class="row mb-2" style="color: white;">
                     <h2>Payment Details</h2>
                     <div class="col">
+                      <h4>payment status: <?php echo $orderDetail["isPaid"] ? "paid" : "arrearage"; ?></h4>
+                      <?php if ($orderDetail["isPaid"]) { ?>
+                        <div class="cell"><b>Receipt: </b><a href="../../images/receipt/<?php echo $orderDetail["receipt"]; ?>" target="_blank">View Receipt</a></div>
+                      <?php } ?>
+                    </div>
+                    <div class="col">
                       <div class="cell text-end"><b>Subtotal: </b> $<?php echo $orderDetail["TotalAmount"]; ?></div>
                       <div class="cell text-end"><b>Delivery Fee: </b> $<?php echo $orderDetail["shipCost"]; ?></div>
                       <div class="cell text-end" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
                   </div>
+                  <?php if (!$orderDetail["isPaid"] && $orderDetail["state"] != "R" && $orderDetail["state"] != "U") { ?>
+                    <div class="row mb-2" style="color: white;">
+
+                      <div class="col"> <label for="item-img-input" class="form-label">Please scan the FPS QR-code on the right to pay, then select or drop the receipt below</label>
+                        <input class="form-control" type="file" name="fileToUpload" id="item-img-input">
+                      </div>
+                      <div class="col">
+                        <div id="qrcode" data-price="<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?>"></div>
+                      </div>
+                    </div>
+                  <?php } ?>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </section>
     </div>
   </div>

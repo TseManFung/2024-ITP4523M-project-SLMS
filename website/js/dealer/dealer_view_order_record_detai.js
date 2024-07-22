@@ -4,4 +4,7 @@ $(document).ready(function () {
         orderID: $(this).attr("data-order-id"),
       });
     });
+
+    generateQRCode(256, 256)
+
   });

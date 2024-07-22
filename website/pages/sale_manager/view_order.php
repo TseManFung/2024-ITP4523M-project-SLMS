@@ -50,6 +50,10 @@ if (isset($_GET["show"])) {
     $condition = "$condition 'ATF' like concat('%',o.state,'%') and salesManagerID = " . $_SESSION['salesManagerID'] . " ";
   } else if ($_GET["show"] == "R") {
     $condition = "$condition 'RU' like concat('%',o.state,'%') and salesManagerID = " . $_SESSION['salesManagerID'] . " ";
+  }elseif ($_GET["show"] == "NP") {
+    $condition = "$condition 'CRU' like concat('%',o.state,'%') and salesManagerID = {$_SESSION['salesManagerID']} and isPaid = 0 ";
+  }elseif ($_GET["show"] == "ALL"){
+    $condition = "$condition (salesManagerID = {$_SESSION['salesManagerID']} or o.state = 'C') ";
   }
 } else {
   $condition = "$condition o.state = 'C' ";
@@ -103,7 +107,7 @@ $sql = "SELECT
   ifnull(o.deliveryAddress,'') AS deliveryAddress, 
   SUM(os.orderQty) AS orderQuantity,
   o.TotalAmount + o.shipCost as TA,
-  o.state AS orderStatus
+  o.state
 FROM `order` o
 INNER JOIN orderSpare os ON o.orderID = os.orderID  
 $condition Limit " . ($currentPage - 1) * 10 . ", 10;";
@@ -217,6 +221,9 @@ $result = mysqli_query($conn, $sql);
             <div class="form-floating" style="padding-right: 12px">
 
               <select class="form-select" id="show">
+                <option value="ALL" <?php if (isset($_GET["show"]) && $_GET["show"] == "ALL") {
+                                      echo "selected";
+                                    } else  ?>>All Order</option>
                 <option value="N" <?php if (!isset($_GET["show"]) || $_GET["show"] == "N") {
                                     echo "selected";
                                   } else ?>>Not Assigned</option>
@@ -226,6 +233,9 @@ $result = mysqli_query($conn, $sql);
                 <option value="R" <?php if (isset($_GET["show"]) && $_GET["show"] == "R") {
                                     echo "selected";
                                   } ?>>Rejected</option>
+                <option value="NP" <?php if (isset($_GET["show"]) && $_GET["show"] == "NP") {
+                                    echo "selected";
+                                  } ?>>Arrearage</option>
               </select>
               <label for="show">Show</label>
             </div>
@@ -290,7 +300,7 @@ $result = mysqli_query($conn, $sql);
                   </address>
                   <div class="col" style="width: 10%"><?php echo $row["orderQuantity"] ?></div>
                   <div class="col" style="width: 10%">$<?php echo $row["TA"] ?></div>
-                  <div class="col" style="width: 10%"><?php echo $stateConvert[$row["orderStatus"]] ?></div>
+                  <div class="col" style="word-wrap: normal;width: 10%"><?php echo $stateConvert[$row["state"]] ?></div>
 
                 </div>
                 <div class="d-flex">
@@ -311,11 +321,11 @@ $result = mysqli_query($conn, $sql);
                   <button type="button" class="btn btn-primary" data-order-id="<?php echo $row["orderID"]; ?>">
                     Order Detail
                   </button>
-                  <?php if (!isset($_GET["show"]) || $_GET["show"] != "A") { ?>
+                  <?php if ($row["state"] == "C" || $row["state"] == "R" || $row["state"] == "U") { ?>
                     <br />
                     <button type="button" class="btn btn-success" data-order-id="<?php echo $row["orderID"]; ?>">Accept</button>
                   <?php } ?>
-                  <?php if (!isset($_GET["show"]) || ($_GET["show"] != "R" && $_GET["show"] != "A")) { ?>
+                  <?php if ($row["state"] == "C" ) { ?>
                     <br>
                     <button type="button" class="btn btn-danger" data-order-id="<?php echo $row["orderID"]; ?>">Reject</button>
                   <?php } ?>

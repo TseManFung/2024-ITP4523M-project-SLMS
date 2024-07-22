@@ -7,7 +7,7 @@ if (!isset($_POST['query'])) {
 }
 $sql = $_POST['query'];
 try {
-    mysqli_query($conn, $sql);
+    mysqli_multi_query($conn, $sql);
 } catch (Exception $e) {
     echo "sql error";
 }

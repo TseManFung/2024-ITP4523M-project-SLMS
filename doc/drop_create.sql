@@ -66,8 +66,10 @@ CREATE TABLE
     `salesManagerID` integer (10),
     `dealerID` integer (10) NOT NULL,
     `orderItemNumber` integer (10) NOT NULL,
-    `TotalAmount` decimal(10,2) NOT NULL,
-    `shipCost` decimal(10,2) NOT NULL,
+    `TotalAmount` decimal(10, 2) NOT NULL,
+    `shipCost` decimal(10, 2) NOT NULL,
+    `isPaid` Bit (1) NOT NULL DEFAULT 0,
+    `receipt` varchar(100) default NULL,
     `state` char(1) NOT NULL DEFAULT 'C'
   ) ENGINE = InnoDB;
 
@@ -79,7 +81,7 @@ CREATE TABLE
     `sparePartImage` varchar(100) NOT NULL,
     `sparePartDescription` text NOT NULL,
     `weight` double NOT NULL,
-    `price` decimal(10,2) NOT NULL,
+    `price` decimal(10, 2) NOT NULL,
     `state` char(1) NOT NULL DEFAULT 'N'
   ) ENGINE = InnoDB;
 
@@ -94,7 +96,7 @@ CREATE TABLE
     `sparePartNum` char(6),
     `orderID` integer (10),
     `orderQty` integer (10) NOT NULL,
-    `sparePartOrderPrice` decimal(10,2) NOT NULL,
+    `sparePartOrderPrice` decimal(10, 2) NOT NULL,
     PRIMARY KEY (`sparePartNum`, `orderID`)
   ) ENGINE = InnoDB;
 
