@@ -39,10 +39,12 @@ function ResetPS(USID) {
         showmyModal("Fail!","All fields are required.");
         return false;
     }
-
+    if (currentPWElement.value === newPWElement.value) {
+        //alert("All fields are required.");
+        showmyModal("Fail!","This is the same as the current password.");
+        return false;
+    }
     var CPS = currentPWElement.value;  // 獲取用戶輸入的當前密碼
-    var hashedCPS = CryptoJS.SHA256(CPS).toString();  // 將密碼進行 SHA-256 哈希
-    hashedCPS = "0" + hashedCPS;
 
     //alert(hashedCPS);  // 顯示哈希後的密碼
 
@@ -51,7 +53,7 @@ function ResetPS(USID) {
         type: 'POST',
         data: {
             UserID: USID,
-            Password: hashedCPS  // 發送哈希後的密碼
+            Password: CPS  // 發送哈希後的密碼
         },
         success: function (result) {
             if (result.password) {
@@ -59,15 +61,13 @@ function ResetPS(USID) {
                 var NPW = newPWElement.value;
                 var CfPW = confirmPWElement.value;
                 if (NPW === CfPW) {
-                    var hashedNPW = CryptoJS.SHA256(NPW).toString();  // 將密碼進行 SHA-256 哈希
-                    hashedNPW = "0" + hashedNPW;
                     //alert("Passwords match.");
                     $.ajax({
                         type: "POST",
                         url: "./reset_password.php",
                         data: {
                             UserID: USID,
-                            hashedNewPW: hashedNPW,
+                            hashedNewPW: NPW,
                         },
                         success: function (response) {
                             console.log("Success:", response);
