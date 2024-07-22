@@ -41,7 +41,7 @@ function ResetPS(USID) {
     }
     if (currentPWElement.value === newPWElement.value) {
         //alert("All fields are required.");
-        showmyModal("Fail!","This is the same as the current password.");
+        showmyModal("Fail!","This is a invalid password.");
         return false;
     }
     var CPS = currentPWElement.value;  // 獲取用戶輸入的當前密碼
