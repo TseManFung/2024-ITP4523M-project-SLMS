@@ -11,7 +11,7 @@
       ('0' + now.getHours()).slice(-2) + ':' +
       ('0' + now.getMinutes()).slice(-2) + ':' +
       ('0' + now.getSeconds()).slice(-2);
-    document.getElementById('Order-D-T').value = formattedDateTime;
+    // document.getElementById('Order-D-T').value = formattedDateTime;
   }
 
   window.addEventListener('load', function () {
@@ -35,7 +35,7 @@
 }());
 
 
-function get_delivery_cost(weight, quantity) {
+async function get_delivery_cost(weight, quantity) {
   return new Promise((resolve, reject) => {
     try {
       $.ajax({
@@ -92,47 +92,71 @@ function getCurrentFormattedTime() {
 }
 
 
-$(document).ready(function () {
-  let TW = parseFloat($("#Order-Weight").attr("total-weight"));
-  let TQ = parseInt($("#Order-Quantity").attr("total-qty"), 10);
-  let ST = parseFloat($("#Order-Amount").attr("total-amount"));
-  get_delivery_cost(TW, TQ)
-    .then(result => {
-      console.log('Delivery cost:', result);
-      if (result === "Error") {
-        document.getElementById("delivery").innerHTML = "Order Rejected, too heavy or too many items";
-        document.getElementById("delivery").value = result;
-        document.getElementById("Total-SAD").innerHTML = "Rejected";
-      } else {
-        // Convert result to a number
-        let deliveryCost = parseFloat(result);
-        document.getElementById("Delivery-Fee").value = "$" + deliveryCost.toFixed(2);
+$(document).ready(async function () {
+  let index = 1;
+  while (true) {
+    // Select order elements by index
+    let weightElement = document.getElementById(`Order-Weight-${index}`);
+    let quantityElement = document.getElementById(`Order-Quantity-${index}`);
+    let amountElement = document.getElementById(`Order-Amount-${index}`);
 
-        // Ensure ST is a number and add deliveryCost to it
+    // Exit loop if any element is not found
+    if (!weightElement || !quantityElement || !amountElement) {
+      break;
+    }
 
-        ST += deliveryCost;
+    // Clean and parse initial values
+    let TW = parseFloat(weightElement.value.replace(/[^0-9.]/g, '')) || 0;
+    let TQ = parseFloat(quantityElement.value.replace(/[^0-9.]/g, '')) || 0;
+    let ST = parseFloat(amountElement.value.replace(/[^0-9.]/g, '')) || 0;
 
-        document.getElementById("Total-Order-Amount").value = "$" + ST.toFixed(2);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    // Get delivery cost
+    result = await get_delivery_cost(TW, TQ)
+/*       .then(result => { */
+        console.log('Delivery cost:', result);
+
+        let deliveryFeeElement = document.getElementById(`Delivery-Fee-${index}`);
+        if (result === "Error") {
+          deliveryFeeElement
+          deliveryFeeElement.innerHTML = "Rejected orders, excessive weight, excessive quantity or no available items";
+          deliveryFeeElement.value = result;
+        } else {
+          let deliveryCost = parseFloat(result);
+          if (isNaN(deliveryCost)) {
+            console.error('Invalid delivery cost');
+            return;
+          }
+          deliveryFeeElement.value = "$" + result.toFixed(2);
+          ST += deliveryCost;
+          let totalOrderAmountElement = document.getElementById(`Total-Order-Amount-${index}`);
+          if (totalOrderAmountElement) {
+            totalOrderAmountElement.value = "$" + ST.toFixed(2);
+          }
+        }
+/*       })
+      .catch(error => {
+        console.error('Error fetching delivery cost:', error);
+      }); */
+
+    index++;
+  }
 });
+
+
 
 
 function showmyModal(tTitle, tbody, redirectUrl = null) {
   document.getElementById("exampleModalLongTitle").innerHTML = tTitle;
   document.getElementById("modal-body").innerHTML = tbody;
-  
+
   if (redirectUrl) {
-    $('#myModal').on('hidden.bs.modal', function() {
+    $('#myModal').on('hidden.bs.modal', function () {
       window.location.href = redirectUrl;
     });
   } else {
     $('#myModal').off('hidden.bs.modal'); // 移除以前的重定向绑定
   }
-  
+
   $('#myModal').modal('show');
 }
 

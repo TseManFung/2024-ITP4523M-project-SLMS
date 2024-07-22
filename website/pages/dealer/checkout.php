@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <?php
 session_start();
 if (isset($_SESSION['expire'])) {
@@ -19,18 +20,16 @@ if (isset($_SESSION['expire'])) {
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-
   <title>Check Out</title>
 
   <!-- css -->
-  <!-- icon -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="../../css/reset.css" />
   <link rel="stylesheet" href="../../css/common.css" />
   <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
   <link rel="stylesheet" href="../../css/checkout.css" />
-
   <!-- /css -->
+  
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
@@ -98,109 +97,161 @@ if (isset($_SESSION['expire'])) {
         <div class="py-5 text-center">
           <h2>Checkout</h2>
         </div>
-        <div class="card" style="padding:2rem;">
+        <?php
+        $userID = $_SESSION['userID'];
+        $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.weight, spare.state 
+                FROM cart 
+                JOIN spare ON cart.sparePartNum = spare.sparePartNum 
+                WHERE cart.userID = $userID;";
+        $result = mysqli_query($conn, $sql);
+        $items = [];
+
+        if (mysqli_num_rows($result) > 0) {
+          while ($row = mysqli_fetch_array($result)) {
+            $items[] = [
+              'userID' => $row['userID'],
+              'qty' => $row['qty'],
+              'sparePartNum' => $row['sparePartNum'],
+              'sparePartName' => $row['sparePartName'],
+              'category' => $row['category'],
+              'price' => $row['price'],
+              'sparePartImage' => $row['sparePartImage'],
+              'weight' => $row['weight'],
+              'state' => $row['state']
+            ];
+          }
+        }
+
+        function splitOrders($items, $maxWeight, $maxQty) {
+          $orders = [];
+          $currentOrder = [];
+          $currentWeight = 0;
+          $currentQty = 0;
+
+          foreach ($items as $item) {
+            while ($item['qty'] > 0) {
+              $itemWeight = $item['weight'];
+              $itemQty = 1;
+
+              if (($currentWeight + $itemWeight > $maxWeight) || ($currentQty + $itemQty > $maxQty)) {
+                $orders[] = $currentOrder;
+                $currentOrder = [];
+                $currentWeight = 0;
+                $currentQty = 0;
+              }
+
+              $currentOrder[] = [
+                'userID' => $item['userID'],
+                'qty' => 1,
+                'sparePartNum' => $item['sparePartNum'],
+                'sparePartName' => $item['sparePartName'],
+                'category' => $item['category'],
+                'price' => $item['price'],
+                'sparePartImage' => $item['sparePartImage'],
+                'weight' => $item['weight'],
+                'state' => $item['state']
+              ];
+
+              $currentWeight += $itemWeight;
+              $currentQty += $itemQty;
+              $item['qty']--;
+            }
+          }
+
+          if (!empty($currentOrder)) {
+            $orders[] = $currentOrder;
+          }
+
+          return $orders;
+        }
+
+        $orders = splitOrders($items, 70, 30);
+        $orderCounter = 1;
+
+        echo '<h4 class="mb-4">Total Orders: ' . count($orders) . '</h4>';
+
+        foreach ($orders as $order) {
+          $orderTotalWeight = 0;
+          $orderSubTotal = 0;
+          $orderTotalQty = 0;
+
+          // Group items by sparePartNum
+          $groupedItems = [];
+          foreach ($order as $item) {
+            if (!isset($groupedItems[$item['sparePartNum']])) {
+              $groupedItems[$item['sparePartNum']] = $item;
+              $groupedItems[$item['sparePartNum']]['totalQty'] = $item['qty'];
+            } else {
+              $groupedItems[$item['sparePartNum']]['totalQty'] += $item['qty'];
+            }
+          }
+        ?>
+        <div class="card mb-4" style="padding:2rem;">
           <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
-              <!--             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Your cart</span>
-                <span class="badge badge-secondary badge-pill">3</span>
-              </h4> -->
               <ul class="list-group mb-3 sticky-top">
                 <?php
-                $userID = $_SESSION['userID'];
-                $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum, spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.weight, spare.state 
-              FROM cart 
-              JOIN spare ON cart.sparePartNum = spare.sparePartNum 
-              WHERE cart.userID = $userID;";
-                $result = mysqli_query($conn, $sql);
-                $totalWeight = 0;
-                $subTotal = 0;
-                $itemTotalqty = 0;
-                $Qty = 0;
-                if (mysqli_num_rows($result) > 0) {
-                  while ($row = mysqli_fetch_array($result)) {
-                    $itemTotalqty += $row['qty'];
-                    $itemTotalPrice = $row['qty'] * $row['price'];
-                    $subTotal += $itemTotalPrice;
-                    printf(
-                      '<li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div class="order-img">
-                      <img class="order-abs-img img-100" src="%s" />
-                    </div>
-                    <div>
-                      <h6 class="my-0">%s</h6>
-                      <small class="text-muted">Quantity:%d</small>
-                    </div>
-                    <span class="text-muted">$%d</span>
-                  </li>',
-                      $row['sparePartImage'],
-                      $row['sparePartName'],
-                      $row['qty'],
-                      $itemTotalPrice
-                    );
-                  }
+                foreach ($groupedItems as $item) {
+                  $itemTotalPrice = $item['totalQty'] * $item['price'];
+                  $orderSubTotal += $itemTotalPrice;
+                  $orderTotalWeight += $item['totalQty'] * $item['weight'];
+                  $orderTotalQty += $item['totalQty'];
+                  printf(
+                    '<li class="list-group-item d-flex justify-content-between lh-condensed">
+                      <div class="order-img">
+                        <img class="order-abs-img img-100" src="%s" />
+                      </div>
+                      <div>
+                        <h6 class="my-0">%s</h6>
+                        <small class="text-muted">Quantity: %d</small>
+                      </div>
+                      <span class="text-muted">$%d</span>
+                    </li>',
+                    $item['sparePartImage'],
+                    $item['sparePartName'],
+                    $item['totalQty'],
+                    $itemTotalPrice
+                  );
                 }
-                ?>
-                <?php
-                $sql = "SELECT SUM(cart.qty) AS total_quantity, GROUP_CONCAT(spare.sparePartName) AS sparePartNames, GROUP_CONCAT(spare.category) AS categories, GROUP_CONCAT(spare.price) AS prices FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum WHERE cart.userID = $userID";
-                $result = mysqli_query($conn, $sql);
-                $cart = mysqli_fetch_array($result);
                 ?>
               </ul>
             </div>
             <div class="col-md-8 order-md-1">
-              <h4 class="mb-3">Order information:</h4>
+              <h4 class="mb-3">Order information (Order <?php echo $orderCounter; ?>):</h4>
               <div class="row">
                 <div class="mb-3">
-                  <!-- <label for="address"> Order Date & Time:</label> -->
-                  <input type="hidden" class="form-control" id="Order-D-T" value="" disabled>
+                  <input type="hidden" class="form-control" id="Order-D-T-<?php echo $orderCounter; ?>" value="" disabled>
                 </div>
               </div>
               <div class="mb-3">
-                <label for="address"> Order Item Quantity:</label>
-                <input type="text" class="form-control" id="Order-Quantity" value="<?php echo $cart['total_quantity']; ?>" total-qty="<?php echo $cart['total_quantity']; ?>" disabled>
-              </div>
-              <?php
-              $sql = "SELECT cart.userID, cart.qty, cart.sparePartNum ,spare.sparePartName, spare.category, spare.price, spare.sparePartImage, spare.sparePartDescription, spare.weight, spare.state 
-                                                        FROM cart 
-                                                        JOIN spare ON cart.sparePartNum = spare.sparePartNum 
-                                                        WHERE cart.userID = $userID;";
-              $result = mysqli_query($conn, $sql);
-              $totalWeight = 0;
-              $subTotal = 0;
-              $itemTotalqty = 0;
-              if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_array($result)) {
-                  $itemTotalqty += $row['qty'];
-                  $itemTotalPrice = $row['qty'] * $row['price'];
-                  $subTotal += $itemTotalPrice;
-                  $totalWeight += $row['qty'] * $row['weight'];
-                  $subTotalFormatted = number_format($subTotal, 2, '.', '');
-                }
-              }
-              ?>
-              <div class="mb-3">
-                <label for="address">Total Weight:</label>
-                <input type="text" class="form-control" id="Order-Weight" value="<?php echo $totalWeight; ?> KG" total-weight=<?php echo $totalWeight; ?> disabled>
+                <label for="Order-Quantity-<?php echo $orderCounter; ?>"> Order Item Quantity:</label>
+                <input type="text" class="form-control" id="Order-Quantity-<?php echo $orderCounter; ?>" value="<?php echo $orderTotalQty; ?>" disabled>
               </div>
               <div class="mb-3">
-                <label for="address">Total Item Amount:</label>
-                <input type="text" class="form-control" id="Order-Amount" value="$<?php echo $subTotalFormatted; ?>" total-amount="<?php echo $subTotal; ?>.toFixed(2)" disabled>
+                <label for="Order-Weight-<?php echo $orderCounter; ?>">Total Weight:</label>
+                <input type="text" class="form-control" id="Order-Weight-<?php echo $orderCounter; ?>" value="<?php echo $orderTotalWeight; ?> KG" disabled>
               </div>
               <div class="mb-3">
-                <label for="address">Delivery Fee:</label>
-                <input type="text" class="form-control" id="Delivery-Fee" value="" disabled>
+                <label for="Order-Amount-<?php echo $orderCounter; ?>">Total Item Amount:</label>
+                <input type="text" class="form-control" id="Order-Amount-<?php echo $orderCounter; ?>" value="$<?php echo number_format($orderSubTotal, 2, '.', ''); ?>" disabled>
+              </div>
+              <div class="mb-3">
+                <label for="Delivery-Fee-<?php echo $orderCounter; ?>">Delivery Fee:</label>
+                <input type="text" class="form-control" id="Delivery-Fee-<?php echo $orderCounter; ?>" value="" disabled>
               </div>
               <div class="row">
                 <div class=" mb-3">
-                  <label for="zip">Total Order Amount:</label>
-                  <input type="text" class="form-control" value="$11234" id="Total-Order-Amount" placeholder="" disabled>
+                  <label for="Total-Order-Amount-<?php echo $orderCounter; ?>">Total Order Amount:</label>
+                  <input type="text" class="form-control" value="$<?php echo number_format($orderSubTotal, 2, '.', ''); ?>" id="Total-Order-Amount-<?php echo $orderCounter; ?>" placeholder="" disabled>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <br>
+        <?php
+          $orderCounter++;
+        }
+        ?>
         <h4 class="mb-3">Please enter delivery address</h4>
         <?php
         $sql = "SELECT SUM(cart.qty) AS total_quantity, d.dealerID, d.deliveryAddress FROM cart JOIN spare ON cart.sparePartNum = spare.sparePartNum JOIN `user` u ON cart.userID = u.userID JOIN dealer d ON u.dealerID = d.dealerID WHERE cart.userID = $userID";
@@ -212,7 +263,6 @@ if (isset($_SESSION['expire'])) {
           <label for="address">Delivery Address </label>
           <input type="text" class="form-control" id="address" placeholder="Delivery Address" value="<?php echo $row['deliveryAddress']; ?>" required>
         </div>
-
 
         <div class="row mt-3">
           <div class="col-md-6 d-flex child-center-R">
@@ -230,8 +280,7 @@ if (isset($_SESSION['expire'])) {
             </div>
           </div>
         </div>
-        <ul class="list-inline">
-        </ul>
+        <ul class="list-inline"></ul>
       </div>
     </div>
   </div>
@@ -243,9 +292,7 @@ if (isset($_SESSION['expire'])) {
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
         </div>
-        <div class="modal-body" id="modal-body">
-          ...
-        </div>
+        <div class="modal-body" id="modal-body">...</div>
         <div class="modal-footer" id="modal-footer">
           <button type="button" id="showModalButton" class="btn btn-secondary" onclick="closeModal()">Close</button>
         </div>
@@ -253,27 +300,18 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <!-- /message box -->
-  <!-- <img src="../../images/menu/chisato.png"> -->
-  <!-- /content -->
 
   <footer>
     <!-- link -->
-
-    <ul class="sns">
-      <!--         <li><a href="https://twitter.com/lycoris_recoil" target="_blank"><img src="images/common/icon_x.png" alt="twitter/X"></a></li>
-        <li><a href="https://www.pixiv.net/users/83515809" target="_blank"><img src="images/common/icon_pixiv.png" alt="pixiv"></a></li> -->
-    </ul>
-
+    <ul class="sns"></ul>
     <!-- /link -->
     <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
 
   <!-- return top -->
-
   <div id="page-top">
     <a href="#header"><img src="../../images/common/returan-top.png" /></a>
   </div>
-
   <!-- /return top -->
 </body>
 
