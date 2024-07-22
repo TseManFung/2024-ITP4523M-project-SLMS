@@ -133,6 +133,7 @@ try {
 }
 $all_row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $row_count = mysqli_num_rows($result);
+$dataHTML = '%s" data-%s = "%s';
 ?>
 
 
@@ -195,8 +196,7 @@ $row_count = mysqli_num_rows($result);
       </div>
       <br />
       <div>
-        <canvas id="Chart" aria-label="Chart" role="img" data-type="<?php if (isset($_POST['DID'])) {echo "D"; } elseif (isset($_POST['spnum'])) {echo "S"; } else { echo "N";}?>"></canvas>
-      </div>
+      <canvas id="Chart" data-type="<?php if (isset($_POST['DID'])) {printf($dataHTML,"D","D",$_POST['DID']); } elseif (isset($_POST['spnum'])) {printf($dataHTML,"S","S",$_POST['spnum']); } else { echo "N";}?>"></canvas>      </div>
       <br />
       <!-- table-->
       <table id="item-report" class="table table-striped table-hover" data-toggle="table" data-flat="true" data-search="true">

@@ -58,7 +58,7 @@ async function BarChartForTop10SparePart(c) {
       plugins: {
         title: {
           display: true,
-          text: "Top 10 best selling spare parts",
+          text: "Top 10 selling spare parts",
           font: {
             size: 36,
           },
@@ -71,25 +71,72 @@ async function BarChartForTop10SparePart(c) {
 
 async function LineChartForASparePart(c, sparePartNum) {
   //最近一年的每个月的销售量
-  /* new Chart(c[0],{
-    type: 'line',
-    data: {
-        labels: "123",
-        datasets: [{
-          label: 'My First Dataset',
-          data: getData(),
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
+  jsonData = await getDatabyID(1, sparePartNum);
+  const labels = jsonData.map((item) => item["Month/Year"]);
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Sales Quantity",
+        data: jsonData.map((item) => item.Quantity),
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
       },
-  }) */
-  /* const config = 
-  const labels = Utils.months({count: 12});
-const  */
+    ],
+  };
+  const config = {
+    type: "line",
+    data,
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Sales volume per month in the past year",
+          font: {
+            size: 36,
+          },
+        },
+      },
+    },
+  };
+  new Chart(c[0], config);
 }
 
-async function MultiLineChartForDealer(c, dealerID) {}
+async function MultiLineChartForDealer(c, dealerID) {
+  //最近一年的每个月的order數量
+  jsonData = await getDatabyID(2, dealerID);
+
+  const labels = jsonData.map((item) => item["Month/Year"]);
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Order Count",
+        data: jsonData.map((item) => item.Quantity),
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        tension: 0.1,
+      },
+    ],
+  };
+  const config = {
+    type: "line",
+    data,
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Number of orders per month in the last year",
+          font: {
+            size: 36,
+          },
+        },
+      },
+    },
+  };
+  new Chart(c[0], config);
+}
 
 function getData() {
   var data = $("#item-report").bootstrapTable("getData", {
@@ -97,4 +144,53 @@ function getData() {
   });
   //return JSON.stringify(data);
   return data;
+}
+async function getDatabyID(mode, id) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: "./report_data.php",
+      type: "POST",
+      data: {
+        mode: mode,
+        ID: id,
+      },
+      success: function (data) {
+        const obj = JSON.parse(data);
+
+        const currentDate = new Date();
+        const startDate = new Date();
+        startDate.setFullYear(startDate.getFullYear() - 1);
+        startDate.setMonth(startDate.getMonth() + 1);
+
+        let allMonths = {};
+        let current = new Date(startDate);
+        while (current <= currentDate) {
+          const monthYear =
+            (current.getMonth() + 1).toString().padStart(2, "0") +
+            "/" +
+            current.getFullYear();
+          allMonths[monthYear] = 0;
+          current.setMonth(current.getMonth() + 1);
+        }
+
+        obj.forEach((item) => {
+          if (item.hasOwnProperty("SalesQuantity")) {
+            allMonths[item["Month/Year"]] = parseInt(item["SalesQuantity"], 10);
+          } else if (item.hasOwnProperty("OrderCount")) {
+            allMonths[item["Month/Year"]] = parseInt(item["OrderCount"], 10);
+          }
+        });
+
+        const result = Object.keys(allMonths).map((key) => ({
+          "Month/Year": key,
+          Quantity: allMonths[key],
+        }));
+
+        resolve(result);
+      },
+      error: function (xhr, status, error) {
+        reject(error);
+      },
+    });
+  });
 }
