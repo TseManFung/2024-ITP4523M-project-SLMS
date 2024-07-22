@@ -129,25 +129,32 @@ $(document).ready(function () {
 function checkoutTest(totalWeight, qty) {
   var totalWeight = totalWeight;
   var qty = qty;
-  if (totalWeight <= 0) {
-    showmyModal('Fail', 'There are no items in the shopping cart.');
-    return;
-  }
 
-  if (totalWeight > 70) {
-    showmyModal('Fail', 'The weight must be less than or equal to 70kg.');
-    return;
-  }
+  var delivery = document.getElementById("delivery").innerHTML;
 
-  if (qty <= 0) {
-    showmyModal('Fail', 'There are no items in the shopping cart.');
+  if (delivery === "$NaN"||delivery === "") {
+    showmyModal('Fail', 'API connect error.');
     return;
   }
+  // if (totalWeight <= 0) {
+  //   showmyModal('Fail', 'There are no items in the shopping cart.');
+  //   return;
+  // }
 
-  if (qty > 30) {
-    showmyModal('Fail', 'The quantity must be less than or equal to 30.');
-    return;
-  }
+  // if (totalWeight > 70) {
+  //   showmyModal('Fail', 'The weight must be less than or equal to 70kg.');
+  //   return;
+  // }
+
+  // if (qty <= 0) {
+  //   showmyModal('Fail', 'There are no items in the shopping cart.');
+  //   return;
+  // }
+
+  // if (qty > 30) {
+  //   showmyModal('Fail', 'The quantity must be less than or equal to 30.');
+  //   return;
+  // }
   window.location.href = './checkout.php';
   return;
 }

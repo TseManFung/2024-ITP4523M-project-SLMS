@@ -80,7 +80,6 @@ function get_delivery_cost(weight, quantity) {
 }
 function getCurrentFormattedTime() {
   const now = new Date();
-
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
@@ -155,13 +154,13 @@ function checkout(id, qty) {
     const orderItemNumber = qty;
     const TotalAmount = parseFloat(document.getElementById('Order-Amount').value.replace('$', ''));
     const shipCost = parseFloat(document.getElementById('Delivery-Fee').value.replace('$', ''));
-    const time = getCurrentFormattedTime();
+    const time = getCurrentFormattedTime(); // get newest time
 
     if (isNaN(TotalAmount) || isNaN(shipCost)) {
       showmyModal("Fail", "Total Amount and Shipping Cost must be valid numbers");
       return;
     }
-    
+
     $.ajax({
       type: "POST",
       url: "./create_order.php",
@@ -171,7 +170,7 @@ function checkout(id, qty) {
         orderItemNumber: orderItemNumber,
         TotalAmount: TotalAmount,
         shipCost: shipCost,
-        Time: time
+        Time: time // use newest time
       },
       success: function (data) {
         try {
