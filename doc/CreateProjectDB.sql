@@ -21,8 +21,9 @@ SET time_zone = "+00:00";
 --
 -- 資料庫： `projectdb`
 --
-CREATE DATABASE IF NOT EXISTS `projectdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `projectdb`;
+DROP DATABASE IF EXISTS `projectDB`;
+CREATE DATABASE IF NOT EXISTS `projectDB` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `projectDB`;
 
 -- --------------------------------------------------------
 
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `qty` int DEFAULT NULL,
   PRIMARY KEY (`userID`,`sparePartNum`),
   KEY `sparePartNum` (`sparePartNum`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `cart`
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `dealer` (
   `deliveryAddress` varchar(255) NOT NULL,
   PRIMARY KEY (`dealerID`),
   UNIQUE KEY `dealerName` (`dealerName`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `dealer`
@@ -103,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   KEY `idx_salesManagerID` (`salesManagerID`),
   KEY `idx_orderID` (`orderID`),
   KEY `idx_state_order` (`state`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `order`
@@ -135,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `orderspare` (
   PRIMARY KEY (`sparePartNum`,`orderID`),
   KEY `idx_sparePartNum_orderSpare` (`sparePartNum`),
   KEY `idx_orderID_orderSpare` (`orderID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `orderspare`
@@ -190,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `salemanager` (
   `contactNumber` varchar(30) NOT NULL,
   PRIMARY KEY (`salesManagerID`),
   UNIQUE KEY `managerName` (`managerName`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `salemanager`
@@ -225,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `spare` (
   `price` decimal(10,2) NOT NULL,
   `state` char(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`sparePartNum`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `spare`
@@ -270,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `spareqty` (
   `stockItemQty` int NOT NULL,
   PRIMARY KEY (`sparePartNum`),
   KEY `idx_sparePartNum_spareQty` (`sparePartNum`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `spareqty`
@@ -320,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `LoginName` (`LoginName`),
   KEY `idx_salesManagerID_user` (`salesManagerID`),
   KEY `idx_dealerID_user` (`dealerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 --
 -- 資料表新增資料前，先清除舊資料 `user`

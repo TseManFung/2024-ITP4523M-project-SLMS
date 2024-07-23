@@ -239,7 +239,7 @@ $dataHTML = '%s" data-%s = "%s';
                 <th scope="row"><?php echo $row['Order ID']; ?></th>
                 <td><?php echo $row['Order Date & Time']; ?></td>
                 <td class="text-end"><?php echo $row['Total Item Quantity']; ?></td>
-                <td class="text-end"><?php echo $row['Total Item Weight']; ?> KG</td>
+                <td class="text-end"><?php echo number_format($row['Total Item Weight'],2); ?> KG</td>
                 <td class="text-end">$ <?php echo $row['Total Order Amount']; ?></td>
                 <td><?php echo $stateConvert[$row['Status']]; ?></td>
               </tr>
