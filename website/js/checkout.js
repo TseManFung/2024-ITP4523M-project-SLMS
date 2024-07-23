@@ -156,6 +156,9 @@ function closeModal() {
 async function checkout(dealerID, totalQuantity, ordersData) {
 
   const addressInput = document.getElementById('address');
+
+  showmyModal("Please Wait", `<div class="loader"></div>`);
+
   // Parses ordersData into JSON and initialises orders.
   let orders;
   try {
