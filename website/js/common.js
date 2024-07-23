@@ -55,7 +55,6 @@ function goBack() {
         location.reload();
       }
     });
-    
   }
   
   function addToCart(itemID, quantity) {

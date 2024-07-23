@@ -1,8 +1,7 @@
-// JavaScript 代码
 (function () {
   'use strict';
 
-  // 设置当前日期和时间
+  // Setting the current date and time
   function setCurrentDateTime() {
     var now = new Date();
     var formattedDateTime = now.getFullYear() + '/' +
@@ -15,13 +14,13 @@
   }
 
   window.addEventListener('load', function () {
-    // 设置当前日期和时间
+    // Setting the current date and time
     setCurrentDateTime();
 
-    // 获取需要验证的表单
+    
     var forms = document.getElementsByClassName('needs-validation');
 
-    // 遍历这些表单并阻止提交
+    
     Array.prototype.filter.call(forms, function (form) {
       form.addEventListener('submit', function (event) {
         if (form.checkValidity() === false) {
@@ -78,6 +77,7 @@ async function get_delivery_cost(weight, quantity) {
     }
   });
 }
+
 function getCurrentFormattedTime() {
   const now = new Date();
   const year = now.getFullYear();
@@ -90,7 +90,6 @@ function getCurrentFormattedTime() {
   const formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   return formattedTime;
 }
-
 
 $(document).ready(async function () {
   let index = 1;
@@ -111,39 +110,26 @@ $(document).ready(async function () {
     let ST = parseFloat(amountElement.value.replace(/[^0-9.]/g, '')) || 0;
 
     // Get delivery cost
-    result = await get_delivery_cost(TW, TQ)
-/*       .then(result => { */
-        console.log('Delivery cost:', result);
-
-        let deliveryFeeElement = document.getElementById(`Delivery-Fee-${index}`);
-        if (result === "Error") {
-          deliveryFeeElement
-          deliveryFeeElement.innerHTML = "Rejected orders, excessive weight, excessive quantity or no available items";
-          deliveryFeeElement.value = result;
-        } else {
-          let deliveryCost = parseFloat(result);
-          if (isNaN(deliveryCost)) {
-            console.error('Invalid delivery cost');
-            return;
-          }
-          deliveryFeeElement.value = "$" + result.toFixed(2);
-          ST += deliveryCost;
-          let totalOrderAmountElement = document.getElementById(`Total-Order-Amount-${index}`);
-          if (totalOrderAmountElement) {
-            totalOrderAmountElement.value = "$" + ST.toFixed(2);
-          }
-        }
-/*       })
-      .catch(error => {
-        console.error('Error fetching delivery cost:', error);
-      }); */
-
+    result = await get_delivery_cost(TW, TQ);
+    let deliveryFeeElement = document.getElementById(`Delivery-Fee-${index}`);
+    if (result === "Error") {
+      deliveryFeeElement.innerHTML = "Rejected orders, excessive weight, excessive quantity or no available items";
+      deliveryFeeElement.value = result;
+    } else {
+      let deliveryCost = parseFloat(result);
+      if (isNaN(deliveryCost)) {
+        return;
+      }
+      deliveryFeeElement.value = "$" + result.toFixed(2);
+      ST += deliveryCost;
+      let totalOrderAmountElement = document.getElementById(`Total-Order-Amount-${index}`);
+      if (totalOrderAmountElement) {
+        totalOrderAmountElement.value = "$" + ST.toFixed(2);
+      }
+    }
     index++;
   }
 });
-
-
-
 
 function showmyModal(tTitle, tbody, redirectUrl = null) {
   document.getElementById("exampleModalLongTitle").innerHTML = tTitle;
@@ -154,7 +140,7 @@ function showmyModal(tTitle, tbody, redirectUrl = null) {
       window.location.href = redirectUrl;
     });
   } else {
-    $('#myModal').off('hidden.bs.modal'); // 移除以前的重定向绑定
+    $('#myModal').off('hidden.bs.modal');
   }
 
   $('#myModal').modal('show');
@@ -164,20 +150,80 @@ function closeModal() {
   $('#myModal').modal('hide');
 }
 
+async function checkout(dealerID, totalQuantity, ordersData) {
+  const addressInput = document.getElementById('address');
 
-
-function checkout(id, qty) {
-  var addressInput = document.getElementById("address");
-  if (!addressInput.value.trim()) {
-    showmyModal("Fail", "Delivery Address cannot be empty");
-    addressInput.focus();
+  // Parses ordersData into JSON and initialises orders.
+  let orders;
+  try {
+    if (typeof ordersData === 'string') {
+      orders = JSON.parse(ordersData);
+    } else {
+      orders = ordersData;
+    }
+  } catch (e) {
+    showmyModal("Error", "Invalid order data format.");
     return;
-  } else {
+  }
+
+
+  let result = [];
+
+  for (let i = 0; i < orders.length; i++) {
+    let sparePartMap = {};
+
+
+    for (let j = 0; j < orders[i].length; j++) {
+      let sparePartNum = orders[i][j].sparePartNum;
+      let qty = orders[i][j].qty;
+
+
+      if (sparePartMap[sparePartNum]) {
+        sparePartMap[sparePartNum] += qty;
+      } else {
+        sparePartMap[sparePartNum] = qty;
+      }
+    }
+
+    result.push(Object.keys(sparePartMap).map(sparePartNum => ({
+      sparePartNum: sparePartNum,
+      qty: sparePartMap[sparePartNum]
+    })));
+  }
+
+  const stockCheckPassed = await checkStock(result);
+  if (!stockCheckPassed) {
+    showmyModal("Error", "Insufficient stock for one or more items.","../../pages/dealer/search_item.php");
+    return; 
+  }
+
+  if (!Array.isArray(orders) || orders.length === 0) {
+    showmyModal("Error", "No valid orders to process.");
+    return;
+  }
+
+  let index = 1;
+  const finalOrders = [];
+
+  while (true) {
+    // Select order elements by index
+    let totalAmountElement = document.getElementById(`Order-Amount-${index}`);
+    let deliveryFeeElement = document.getElementById(`Delivery-Fee-${index}`);
+
+    // Exit loop if any element is not found
+    if (!totalAmountElement || !deliveryFeeElement) {
+      break;
+    }
+
+    if (!addressInput.value.trim()) {
+      showmyModal("Fail", "Delivery Address cannot be empty");
+      addressInput.focus();
+      return;
+    }
+
     const deliveryAddress = addressInput.value;
-    const dealerID = id;
-    const orderItemNumber = qty;
-    const TotalAmount = parseFloat(document.getElementById('Order-Amount').value.replace('$', ''));
-    const shipCost = parseFloat(document.getElementById('Delivery-Fee').value.replace('$', ''));
+    const TotalAmount = parseFloat(totalAmountElement.value.replace('$', ''));
+    const shipCost = parseFloat(deliveryFeeElement.value.replace('$', ''));
     const time = getCurrentFormattedTime(); // get newest time
 
     if (isNaN(TotalAmount) || isNaN(shipCost)) {
@@ -185,36 +231,60 @@ function checkout(id, qty) {
       return;
     }
 
-    $.ajax({
+    // Get the part data of the current order and merge the same sparePartNum
+    const currentOrderParts = result[index - 1];
+    if (!currentOrderParts) {
+      break;
+    }
+
+    // Integration Orders
+    finalOrders.push({
+      deliveryAddress,
+      dealerID, 
+      TotalAmount,
+      shipCost,
+      time,
+      parts: currentOrderParts
+    });
+    index++;
+  }
+
+  if (finalOrders.length === 0) {
+    showmyModal("Error", "No valid orders to submit.");
+    return;
+  }
+
+  try {
+    const response = await $.ajax({
       type: "POST",
       url: "./create_order.php",
-      data: {
-        deliveryAddre: deliveryAddress,
-        dealerID: dealerID,
-        orderItemNumber: orderItemNumber,
-        TotalAmount: TotalAmount,
-        shipCost: shipCost,
-        Time: time // use newest time
-      },
-      success: function (data) {
-        try {
-          var response = data;
-          if (response.order && response.cart) {
-            showmyModal("Success", "Order placed and cart cleared successfully!", "../../pages/dealer/search_item.php");
-          } else {
-            showmyModal("Partial Success", "Order placed but there was an issue clearing the cart.");
-          }
-        } catch (error) {
-          console.error("Parsing error:", error);
-          console.error("Response data:", data);
-          showmyModal("Error", "An unexpected error occurred. Check console for details.");
-        }
-      },
-      error: function (xhr, status, error) {
-        showmyModal("Fail", "Failed to submit the form. Please try again.");
-      }
+      dataType: "json",
+      data: JSON.stringify(finalOrders),
+      contentType: "application/json"
     });
 
-    return true;
+    if (response.order) {
+      showmyModal("Success", "All orders placed and carts cleared successfully!", "../../pages/dealer/search_item.php");
+    } else {
+      showmyModal("Error", "Error");
+    }
+  } catch (error) {
+    showmyModal("Fail", error);
+  }
+}
+
+async function checkStock(result) {
+  try {
+    const response = await $.ajax({
+      type: "POST",
+      url: "./check_Stock.php",
+      dataType: "json",
+      data: JSON.stringify(result),
+      contentType: "application/json"
+    });
+
+    return response.success;
+  } catch (error) {
+    return false;
   }
 }
