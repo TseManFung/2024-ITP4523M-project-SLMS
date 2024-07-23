@@ -1,3 +1,4 @@
+
 (function () {
   'use strict';
 
@@ -17,10 +18,10 @@
     // Setting the current date and time
     setCurrentDateTime();
 
-    
+
     var forms = document.getElementsByClassName('needs-validation');
 
-    
+
     Array.prototype.filter.call(forms, function (form) {
       form.addEventListener('submit', function (event) {
         if (form.checkValidity() === false) {
@@ -131,7 +132,10 @@ $(document).ready(async function () {
   }
 });
 
+
+
 function showmyModal(tTitle, tbody, redirectUrl = null) {
+
   document.getElementById("exampleModalLongTitle").innerHTML = tTitle;
   document.getElementById("modal-body").innerHTML = tbody;
 
@@ -151,8 +155,17 @@ function closeModal() {
 }
 
 async function checkout(dealerID, totalQuantity, ordersData) {
-  const addressInput = document.getElementById('address');
+  $body = $("body");
 
+  function showLoading() {
+    $body.addClass("loading");
+  }
+  function hideLoading() {
+    $body.removeClass("loading");
+  }
+  hideLoading();
+
+  const addressInput = document.getElementById('address');
   // Parses ordersData into JSON and initialises orders.
   let orders;
   try {
@@ -162,17 +175,15 @@ async function checkout(dealerID, totalQuantity, ordersData) {
       orders = ordersData;
     }
   } catch (e) {
+    hideLoading()
     showmyModal("Error", "Invalid order data format.");
     return;
   }
-
 
   let result = [];
 
   for (let i = 0; i < orders.length; i++) {
     let sparePartMap = {};
-
-
     for (let j = 0; j < orders[i].length; j++) {
       let sparePartNum = orders[i][j].sparePartNum;
       let qty = orders[i][j].qty;
@@ -192,12 +203,14 @@ async function checkout(dealerID, totalQuantity, ordersData) {
   }
 
   const stockCheckPassed = await checkStock(result);
-  if (!stockCheckPassed) {
-    showmyModal("Error", "Insufficient stock for one or more items.","../../pages/dealer/search_item.php");
-    return; 
+  if (stockCheckPassed === false) {
+    hideLoading()
+    showmyModal("Error", "Insufficient stock for one or more items.", "../../pages/dealer/search_item.php");
+    return;
   }
 
   if (!Array.isArray(orders) || orders.length === 0) {
+    hideLoading()
     showmyModal("Error", "No valid orders to process.");
     return;
   }
@@ -216,6 +229,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     }
 
     if (!addressInput.value.trim()) {
+      hideLoading()
       showmyModal("Fail", "Delivery Address cannot be empty");
       addressInput.focus();
       return;
@@ -227,6 +241,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     const time = getCurrentFormattedTime(); // get newest time
 
     if (isNaN(TotalAmount) || isNaN(shipCost)) {
+      hideLoading()
       showmyModal("Fail", "Total Amount and Shipping Cost must be valid numbers");
       return;
     }
@@ -240,7 +255,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     // Integration Orders
     finalOrders.push({
       deliveryAddress,
-      dealerID, 
+      dealerID,
       TotalAmount,
       shipCost,
       time,
@@ -250,6 +265,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
   }
 
   if (finalOrders.length === 0) {
+    hideLoading()
     showmyModal("Error", "No valid orders to submit.");
     return;
   }
@@ -264,11 +280,14 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     });
 
     if (response.order) {
+      hideLoading()
       showmyModal("Success", "All orders placed and carts cleared successfully!", "../../pages/dealer/search_item.php");
     } else {
+      hideLoading()
       showmyModal("Error", "Error");
     }
   } catch (error) {
+    hideLoading()
     showmyModal("Fail", error);
   }
 }
@@ -277,14 +296,17 @@ async function checkStock(result) {
   try {
     const response = await $.ajax({
       type: "POST",
-      url: "./check_Stock.php",
+      url: "./checkStock.php",
       dataType: "json",
       data: JSON.stringify(result),
       contentType: "application/json"
     });
-
-    return response.success;
+    console.log("hi", response.orders)
+    return response.orders;
   } catch (error) {
+    console.log("error", error)
     return false;
   }
 }
+
+

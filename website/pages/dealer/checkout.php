@@ -29,7 +29,7 @@ if (isset($_SESSION['expire'])) {
   <link rel="stylesheet" href="../../css/bs/bootstrap.css" />
   <link rel="stylesheet" href="../../css/checkout.css" />
   <!-- /css -->
-  
+
   <!-- js -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="../../js/common.js"></script>
@@ -122,7 +122,8 @@ if (isset($_SESSION['expire'])) {
           }
         }
 
-        function splitOrders($items, $maxWeight, $maxQty) {
+        function splitOrders($items, $maxWeight, $maxQty)
+        {
           $orders = [];
           $currentOrder = [];
           $currentWeight = 0;
@@ -186,18 +187,18 @@ if (isset($_SESSION['expire'])) {
             }
           }
         ?>
-        <div class="card mb-4" style="padding:2rem;">
-          <div class="row">
-            <div class="col-md-4 order-md-2 mb-4">
-              <ul class="list-group mb-3 sticky-top">
-                <?php
-                foreach ($groupedItems as $item) {
-                  $itemTotalPrice = $item['totalQty'] * $item['price'];
-                  $orderSubTotal += $itemTotalPrice;
-                  $orderTotalWeight += $item['totalQty'] * $item['weight'];
-                  $orderTotalQty += $item['totalQty'];
-                  printf(
-                    '<li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div class="card mb-4" style="padding:2rem;">
+            <div class="row">
+              <div class="col-md-4 order-md-2 mb-4">
+                <ul class="list-group mb-3 sticky-top">
+                  <?php
+                  foreach ($groupedItems as $item) {
+                    $itemTotalPrice = $item['totalQty'] * $item['price'];
+                    $orderSubTotal += $itemTotalPrice;
+                    $orderTotalWeight += $item['totalQty'] * $item['weight'];
+                    $orderTotalQty += $item['totalQty'];
+                    printf(
+                      '<li class="list-group-item d-flex justify-content-between lh-condensed">
                       <div class="order-img">
                         <img class="order-abs-img img-100" src="%s" />
                       </div>
@@ -207,47 +208,47 @@ if (isset($_SESSION['expire'])) {
                       </div>
                       <span class="text-muted">$%d</span>
                     </li>',
-                    $item['sparePartImage'],
-                    $item['sparePartName'],
-                    $item['totalQty'],
-                    $itemTotalPrice
-                  );
-                }
-                ?>
-              </ul>
-            </div>
-            <div class="col-md-8 order-md-1">
-              <h4 class="mb-3">Order information (Order <?php echo $orderCounter; ?>):</h4>
-              <div class="row">
-                <div class="mb-3">
-                  <input type="hidden" class="form-control" id="Order-D-T-<?php echo $orderCounter; ?>" value="" disabled>
+                      $item['sparePartImage'],
+                      $item['sparePartName'],
+                      $item['totalQty'],
+                      $itemTotalPrice
+                    );
+                  }
+                  ?>
+                </ul>
+              </div>
+              <div class="col-md-8 order-md-1">
+                <h4 class="mb-3">Order information (Order <?php echo $orderCounter; ?>):</h4>
+                <div class="row">
+                  <div class="mb-3">
+                    <input type="hidden" class="form-control" id="Order-D-T-<?php echo $orderCounter; ?>" value="" disabled>
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label for="Order-Quantity-<?php echo $orderCounter; ?>"> Order Item Quantity:</label>
-                <input type="text" class="form-control" id="Order-Quantity-<?php echo $orderCounter; ?>" value="<?php echo $orderTotalQty; ?>" disabled>
-              </div>
-              <div class="mb-3">
-                <label for="Order-Weight-<?php echo $orderCounter; ?>">Total Weight:</label>
-                <input type="text" class="form-control" id="Order-Weight-<?php echo $orderCounter; ?>" value="<?php echo $orderTotalWeight; ?> KG" disabled>
-              </div>
-              <div class="mb-3">
-                <label for="Order-Amount-<?php echo $orderCounter; ?>">Total Item Amount:</label>
-                <input type="text" class="form-control" id="Order-Amount-<?php echo $orderCounter; ?>" value="$<?php echo number_format($orderSubTotal, 2, '.', ''); ?>" disabled>
-              </div>
-              <div class="mb-3">
-                <label for="Delivery-Fee-<?php echo $orderCounter; ?>">Delivery Fee:</label>
-                <input type="text" class="form-control" id="Delivery-Fee-<?php echo $orderCounter; ?>" value="" disabled>
-              </div>
-              <div class="row">
-                <div class=" mb-3">
-                  <label for="Total-Order-Amount-<?php echo $orderCounter; ?>">Total Order Amount:</label>
-                  <input type="text" class="form-control" value="$<?php echo number_format($orderSubTotal, 2, '.', ''); ?>" id="Total-Order-Amount-<?php echo $orderCounter; ?>" placeholder="" disabled>
+                <div class="mb-3">
+                  <label for="Order-Quantity-<?php echo $orderCounter; ?>"> Order Item Quantity:</label>
+                  <input type="text" class="form-control" id="Order-Quantity-<?php echo $orderCounter; ?>" value="<?php echo $orderTotalQty; ?>" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="Order-Weight-<?php echo $orderCounter; ?>">Total Weight:</label>
+                  <input type="text" class="form-control" id="Order-Weight-<?php echo $orderCounter; ?>" value="<?php echo $orderTotalWeight; ?> KG" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="Order-Amount-<?php echo $orderCounter; ?>">Total Item Amount:</label>
+                  <input type="text" class="form-control" id="Order-Amount-<?php echo $orderCounter; ?>" value="$<?php echo number_format($orderSubTotal, 2, '.', ''); ?>" disabled>
+                </div>
+                <div class="mb-3">
+                  <label for="Delivery-Fee-<?php echo $orderCounter; ?>">Delivery Fee:</label>
+                  <input type="text" class="form-control" id="Delivery-Fee-<?php echo $orderCounter; ?>" value="" disabled>
+                </div>
+                <div class="row">
+                  <div class=" mb-3">
+                    <label for="Total-Order-Amount-<?php echo $orderCounter; ?>">Total Order Amount:</label>
+                    <input type="text" class="form-control" value="$<?php echo number_format($orderSubTotal, 2, '.', ''); ?>" id="Total-Order-Amount-<?php echo $orderCounter; ?>" placeholder="" disabled>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         <?php
           $orderCounter++;
         }
@@ -265,23 +266,22 @@ if (isset($_SESSION['expire'])) {
         </div>
 
         <div class="row mt-3">
-          <div class="col-md-6 d-flex child-center-R">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" 
-              onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>, 
-              <?php 
-                $formattedOrders = [];
-                foreach ($orders as $order) {
-                  $formattedOrder = [];
-                  foreach ($order as $item) {
-                    $formattedOrder[] = ['sparePartNum' => $item['sparePartNum'], 'qty' => $item['qty']];
-                  }
-                  $formattedOrders[] = $formattedOrder;
+          <div class="col-md-6 d-flex child-center-R ">
+              <button id="checkout" class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>, 
+              <?php
+              $formattedOrders = [];
+              foreach ($orders as $order) {
+                $formattedOrder = [];
+                foreach ($order as $item) {
+                  $formattedOrder[] = ['sparePartNum' => $item['sparePartNum'], 'qty' => $item['qty']];
                 }
-                echo htmlspecialchars(json_encode($formattedOrders), ENT_QUOTES, 'UTF-8'); 
+                $formattedOrders[] = $formattedOrder;
+              }
+              echo htmlspecialchars(json_encode($formattedOrders), ENT_QUOTES, 'UTF-8');
               ?>)">
-              Continue to checkout
-            </button>
-          </div>
+                Continue to checkout
+              </button>
+            </div>
           <div class="col-md-6 d-flex child-center-R">
             <div class="d-grid gap-2 d-md-block">
               <a href="./dealer_cart.php">
@@ -314,7 +314,7 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <!-- /message box -->
-
+  <div class="modal"><!-- Place at bottom of page --></div>
   <footer>
     <!-- link -->
     <ul class="sns"></ul>

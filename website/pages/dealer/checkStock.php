@@ -8,7 +8,6 @@ $response = [];
 
 $orderData = file_get_contents('php://input');
 $orders = json_decode($orderData, true);
-
 if (json_last_error() !== JSON_ERROR_NONE) {
     $response['success'] = false;
     echo json_encode($response);
@@ -16,28 +15,22 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 }
 
 // Used to store total requirements per part
-$totalPartsDemand = [];
-
+$totalPartsDemand = array();
 foreach ($orders as $order) {
-    $parts = $order['parts'];
-
     // Calculate the quantity required for each part
-    foreach ($parts as $item) {
-        $sparePartNum = $item['sparePartNum'];
-        $orderQty = (int)$item['qty'];
-
-        if (!isset($totalPartsDemand[$sparePartNum])) {
-            $totalPartsDemand[$sparePartNum] = 0;
-        }
-
-        $totalPartsDemand[$sparePartNum] += $orderQty;
+extract($order[0]);
+    if (!isset($totalPartsDemand[$sparePartNum])) {
+        $totalPartsDemand += [$sparePartNum => 0];
     }
+    $totalPartsDemand[$sparePartNum] += $qty;
+    
 }
 
 // Check that the total requirement for each part is met from stock
 foreach ($totalPartsDemand as $sparePartNum => $totalQty) {
     // Checking the adequacy of stock
     $sql = sprintf("SELECT stockItemQty FROM spareQty WHERE sparePartNum = '%s'", $sparePartNum);
+
     $result = mysqli_query($conn, $sql);
     if ($result) {
         $row = mysqli_fetch_assoc($result);
@@ -47,15 +40,9 @@ foreach ($totalPartsDemand as $sparePartNum => $totalQty) {
             mysqli_close($conn);
             exit;
         }
-    } else {
-        $response['success'] = false;
-        echo json_encode($response);
-        mysqli_close($conn);
-        exit;
     }
 }
 
-$response['success'] = true; 
+$response['success'] = true;
 echo json_encode($response);
 mysqli_close($conn);
-?>
