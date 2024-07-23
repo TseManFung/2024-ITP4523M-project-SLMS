@@ -266,7 +266,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     if (response.order) {
       showmyModal("Success", "All orders placed and carts cleared successfully!", "../../pages/dealer/search_item.php");
     } else {
-      showmyModal("Error", "An unexpected error occurred. Check console for details.");
+      showmyModal("Error", "Error");
     }
   } catch (error) {
     showmyModal("Fail", error);

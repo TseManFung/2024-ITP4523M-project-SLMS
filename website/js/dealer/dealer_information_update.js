@@ -10,11 +10,11 @@ function confirmEdition(CName, CNumber, FNumber, DAddress, dealerID) {
             dealerID: dealerID
         },
         success: function (response) {
-            console.log("Success:", response);
+            //console.log("Success:", response);
             showmyModal("Success!", "Edition Success!", "./dealer_information_update.php");
         },
         error: function (xhr, status, error) {
-            console.error("Error:", status, error);
+            //console.error("Error:", status, error);
         }
     });
 }

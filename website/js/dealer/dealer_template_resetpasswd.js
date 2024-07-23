@@ -85,13 +85,13 @@ function ResetPS(USID) {
                     return;
                 }
             } else {
-                //alert("Error from server: " + result.error);  // 顯示伺服器返回的錯誤信息
+                //alert("Error from server: " + result.error);
                 showmyModal("Fail!",result.error);
                 return;
             }
         },
         error: function (xhr, status, error) {
-            console.error("Failed to fetch password. Status:", status, "Error:", error);  // 顯示請求失敗的錯誤信息
+            //console.error("Failed to fetch password. Status:", status, "Error:", error);
         }
     });
 }

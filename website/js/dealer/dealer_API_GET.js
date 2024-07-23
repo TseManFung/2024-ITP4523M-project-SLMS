@@ -51,7 +51,7 @@ $(document).ready(function () {
   let ST = parseFloat($("#Total-SAD").attr("subtotal-method"));
   get_delivery_cost(TW, TQ)
     .then(result => {
-      console.log('Delivery cost:', result);
+      //console.log('Delivery cost:', result);
       if (result === "Error") {
         document.getElementById("delivery").innerHTML = "Please go to the next page for details";
         document.getElementById("delivery").value = result;
@@ -68,7 +68,7 @@ $(document).ready(function () {
       }
     })
     .catch(error => {
-      console.error('Error:', error);
+      //console.error('Error:', error);
     });
 });
 
