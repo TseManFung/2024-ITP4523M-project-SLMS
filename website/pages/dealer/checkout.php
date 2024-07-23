@@ -198,7 +198,7 @@ if (isset($_SESSION['expire'])) {
                     $orderTotalWeight += $item['totalQty'] * $item['weight'];
                     $orderTotalQty += $item['totalQty'];
                     printf(
-                      '<li class="list-group-item d-flex justify-content-between lh-condensed">
+                      '<li class="list-group-item justify-content-between lh-condensed">
                       <div class="order-img">
                         <img class="order-abs-img img-100" src="%s" />
                       </div>

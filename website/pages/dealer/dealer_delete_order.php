@@ -126,7 +126,7 @@ if (isset($_SESSION['expire'])) {
                             <?php while ($item = mysqli_fetch_array($result_items)) { 
                                 $totalPrice = $item['orderQty'] * $item['sparePartOrderPrice'];
                             ?>
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <li class="list-group-item justify-content-between lh-condensed">
                                     <div class="order-img">
                                         <img class="order-abs-img" src="../../images/item/<?php echo htmlspecialchars($item['sparePartImage']); ?>" alt="Item <?php echo htmlspecialchars($item['sparePartName']); ?>" />
                                     </div>
