@@ -90,20 +90,22 @@ if (isset($_SESSION['expire'])) {
   <?php
   $condition = "";
   if (isset($_GET["search"])) {
-    $condition = "$condition and (sparePartName like '%" . $_GET["search"] . "%') or (sparePartDescription like '%" . $_GET["search"] . "%') or (s.sparePartNum like '%" . $_GET["search"] . "%') ";
+    $condition = "$condition and ((sparePartName like '%" . $_GET["search"] . "%') or (sparePartDescription like '%" . $_GET["search"] . "%') or (s.sparePartNum like '%" . $_GET["search"] . "%')) ";
   }
+  $category = "";
   if (isset($_GET["A"])) {
-    $condition = "$condition and category != 'A' ";
+    $category .= "A";
   }
   if (isset($_GET["B"])) {
-    $condition = "$condition and category != 'B' ";
+    $category .= "B";
   }
   if (isset($_GET["C"])) {
-    $condition = "$condition and category != 'C' ";
+    $category .= "C";
   }
   if (isset($_GET["D"])) {
-    $condition = "$condition and category != 'D' ";
+    $category .= "D";
   }
+  $condition.= " and '$category' not like concat('%',s.category,'%') ";
   if (isset($_GET["minPrice"])) {
     $condition = "$condition and price >= " . $_GET["minPrice"] . " ";
   }
