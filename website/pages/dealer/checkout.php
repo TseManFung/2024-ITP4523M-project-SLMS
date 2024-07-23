@@ -314,7 +314,6 @@ if (isset($_SESSION['expire'])) {
     </div>
   </div>
   <!-- /message box -->
-  <div class="modal"><!-- Place at bottom of page --></div>
   <footer>
     <!-- link -->
     <ul class="sns"></ul>

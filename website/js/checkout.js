@@ -1,4 +1,3 @@
-
 (function () {
   'use strict';
 
@@ -155,15 +154,6 @@ function closeModal() {
 }
 
 async function checkout(dealerID, totalQuantity, ordersData) {
-  $body = $("body");
-
-  function showLoading() {
-    $body.addClass("loading");
-  }
-  function hideLoading() {
-    $body.removeClass("loading");
-  }
-  hideLoading();
 
   const addressInput = document.getElementById('address');
   // Parses ordersData into JSON and initialises orders.
@@ -175,7 +165,6 @@ async function checkout(dealerID, totalQuantity, ordersData) {
       orders = ordersData;
     }
   } catch (e) {
-    hideLoading()
     showmyModal("Error", "Invalid order data format.");
     return;
   }
@@ -204,13 +193,13 @@ async function checkout(dealerID, totalQuantity, ordersData) {
 
   const stockCheckPassed = await checkStock(result);
   if (stockCheckPassed === false) {
-    hideLoading()
+    
     showmyModal("Error", "Insufficient stock for one or more items.", "../../pages/dealer/search_item.php");
     return;
   }
 
   if (!Array.isArray(orders) || orders.length === 0) {
-    hideLoading()
+    
     showmyModal("Error", "No valid orders to process.");
     return;
   }
@@ -229,7 +218,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     }
 
     if (!addressInput.value.trim()) {
-      hideLoading()
+      
       showmyModal("Fail", "Delivery Address cannot be empty");
       addressInput.focus();
       return;
@@ -241,7 +230,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     const time = getCurrentFormattedTime(); // get newest time
 
     if (isNaN(TotalAmount) || isNaN(shipCost)) {
-      hideLoading()
+      
       showmyModal("Fail", "Total Amount and Shipping Cost must be valid numbers");
       return;
     }
@@ -265,7 +254,7 @@ async function checkout(dealerID, totalQuantity, ordersData) {
   }
 
   if (finalOrders.length === 0) {
-    hideLoading()
+    
     showmyModal("Error", "No valid orders to submit.");
     return;
   }
@@ -280,14 +269,14 @@ async function checkout(dealerID, totalQuantity, ordersData) {
     });
 
     if (response.order) {
-      hideLoading()
+      
       showmyModal("Success", "All orders placed and carts cleared successfully!", "../../pages/dealer/search_item.php");
     } else {
-      hideLoading()
+      
       showmyModal("Error", "Error");
     }
   } catch (error) {
-    hideLoading()
+    
     showmyModal("Fail", error);
   }
 }
