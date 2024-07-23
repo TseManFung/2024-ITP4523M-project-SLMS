@@ -266,7 +266,21 @@ if (isset($_SESSION['expire'])) {
 
         <div class="row mt-3">
           <div class="col-md-6 d-flex child-center-R">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>)">Continue to checkout</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" 
+              onclick="checkout(<?php echo $row['dealerID']; ?>,<?php echo $row['total_quantity']; ?>, 
+              <?php 
+                $formattedOrders = [];
+                foreach ($orders as $order) {
+                  $formattedOrder = [];
+                  foreach ($order as $item) {
+                    $formattedOrder[] = ['sparePartNum' => $item['sparePartNum'], 'qty' => $item['qty']];
+                  }
+                  $formattedOrders[] = $formattedOrder;
+                }
+                echo htmlspecialchars(json_encode($formattedOrders), ENT_QUOTES, 'UTF-8'); 
+              ?>)">
+              Continue to checkout
+            </button>
           </div>
           <div class="col-md-6 d-flex child-center-R">
             <div class="d-grid gap-2 d-md-block">
