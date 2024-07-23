@@ -36,16 +36,13 @@ function deleteOrder(USID, orderID) {
     }
 
     var PW = PWElement.value;  
-    var hashedPW = CryptoJS.SHA256(PW).toString();  
-    hashedPW = "0" + hashedPW;
-
     // check password
     $.ajax({
         url: './checkPassword.php',
         type: 'POST',
         data: {
             UserID: USID,
-            Password: hashedPW  // 
+            Password: PW  // 
         },
         dataType: 'json',
         success: function (result) {
