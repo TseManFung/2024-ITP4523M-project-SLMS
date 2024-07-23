@@ -35,7 +35,6 @@ $(document).ready(function () {
        ON s.sparePartNum = o.sparePartNum
   SET s.stockItemQty = s.stockItemQty - o.orderQty;`;
   
-    // 第一个 AJAX 请求，用于更新 spareQty 表
     $.ajax({
       url: "../db/query.php",
       type: "POST",
@@ -43,7 +42,6 @@ $(document).ready(function () {
         query: sql,
       },
       success: function (data) {
-        // 成功后执行第二个 AJAX 请求，用于更新 order 的状态
         $.ajax({
           url: "./update_order.php",
           type: "POST",
@@ -88,7 +86,6 @@ $(document).ready(function () {
 
 function setState(orderID, state) {
   if (state === "R" || state === "U") {
-    // 第一個 AJAX 請求，用於更新 spareQty 表
     let sql = `UPDATE spareQty s
       JOIN (SELECT sparePartNum, orderQty
       FROM orderSpare
@@ -104,7 +101,6 @@ function setState(orderID, state) {
         query: sql,
       },
       success: function (data) {
-        // 成功後執行第二個 AJAX 請求，用於更新 order 的狀態
         updateOrderState(orderID, state);
       },
       error: function (error) {
@@ -112,7 +108,6 @@ function setState(orderID, state) {
       },
     });
   } else {
-    // 如果 state 不是 "R" 或 "U"，直接執行第二個 AJAX 請求
     updateOrderState(orderID, state);
   }
 }

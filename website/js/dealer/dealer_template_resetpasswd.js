@@ -33,7 +33,7 @@ function ResetPS(USID) {
     var confirmPWElement = document.getElementById("ShowConfirmPW");
 
 
-    // 檢查三個輸入框是否都有值
+
     if (currentPWElement.value === "" || newPWElement.value === "" || confirmPWElement.value === "") {
         //alert("All fields are required.");
         showmyModal("Fail!","All fields are required.");
@@ -44,20 +44,20 @@ function ResetPS(USID) {
         showmyModal("Fail!","This is a invalid password.");
         return false;
     }
-    var CPS = currentPWElement.value;  // 獲取用戶輸入的當前密碼
+    var CPS = currentPWElement.value;  // get user intered passwd
 
-    //alert(hashedCPS);  // 顯示哈希後的密碼
+    //alert(hashedCPS);  // 
 
     $.ajax({
         url: './checkPassword.php',
         type: 'POST',
         data: {
             UserID: USID,
-            Password: CPS  // 發送哈希後的密碼
+            Password: CPS  // 
         },
         success: function (result) {
             if (result.password) {
-                //alert(result.password);  // 顯示獲取到的密碼
+                //alert(result.password);  
                 var NPW = newPWElement.value;
                 var CfPW = confirmPWElement.value;
                 if (NPW === CfPW) {
@@ -70,13 +70,13 @@ function ResetPS(USID) {
                             hashedNewPW: NPW,
                         },
                         success: function (response) {
-                            console.log("Success:", response);
+                            //console.log("Success:", response);
                             //alert("Edition Success!");
                             showmyModal("Success!","Edition Success!");
                             window.location.href = "../../index.php";
                         },
                         error: function (xhr, status, error) {
-                            console.error("Error:", status, error);
+                            //console.error("Error:", status, error);
                         }
                     });
                 } else {
@@ -95,23 +95,3 @@ function ResetPS(USID) {
         }
     });
 }
-// st=>start: 用戶觸發 ResetPS 函數
-// e=>end: 流程結束
-// op1=>operation: 發送 AJAX 請求
-// op2=>operation: 檢查 UserID
-// op3=>operation: 執行 SQL 查詢
-// op4=>operation: 返回查詢結果
-// op5=>operation: 顯示密碼或錯誤信息
-
-// cond1=>condition: 是否設置 UserID?
-// cond2=>condition: 查詢是否成功?
-// cond3=>condition: 是否查詢到密碼?
-
-// st->op1->op2->cond1
-// cond1(yes)->op3->cond2
-// cond1(no)->op4
-// cond2(yes)->cond3
-// cond2(no)->op4
-// cond3(yes)->op4
-// cond3(no)->op4
-// op4->op5->e

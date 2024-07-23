@@ -16,7 +16,7 @@ function showmyModal(tTitle, tbody, redirectUrl = null) {
             window.location.href = redirectUrl;
         });
     } else {
-        $('#myModal').off('hidden.bs.modal'); // 移除以前的重定向绑定
+        $('#myModal').off('hidden.bs.modal'); 
     }
 
     $('#myModal').modal('show');
@@ -29,46 +29,43 @@ function closeModal() {
 function deleteOrder(USID, orderID) {
     var PWElement = document.getElementById("Password_delete");
 
-    // 检查输入字段是否有值
+
     if (PWElement.value === "") {
         showmyModal("Fail!", "All fields are required.");
         return false;
     }
 
-    var PW = PWElement.value;  // 获取用户输入的当前密码
-    var hashedPW = CryptoJS.SHA256(PW).toString();  // 使用 SHA-256 哈希密码
+    var PW = PWElement.value;  
+    var hashedPW = CryptoJS.SHA256(PW).toString();  
     hashedPW = "0" + hashedPW;
 
-    // 验证密码
+    // check password
     $.ajax({
         url: './checkPassword.php',
         type: 'POST',
         data: {
             UserID: USID,
-            Password: hashedPW  // 发送哈希密码
+            Password: hashedPW  // 
         },
         dataType: 'json',
         success: function (result) {
             if (result.password) {
-                // 密码正确，继续删除订单
+                
                 $.ajax({
                     type: "POST",
                     url: "./delete_order.php",
                     data: {
-                        orderID: orderID  // 确保与 PHP 键匹配
+                        orderID: orderID  
                     },
                     dataType: 'json',
                     success: function (response) {
                         if (response.success) {
-                            console.log("Success:", response);
                             showmyModal("Successfully", "Order successfully cancelled!", "./search_item.php");
                         } else {
                             showmyModal("Fail!", response.error);
                         }
                     },
                     error: function (xhr, status, error) {
-                        console.error("Error:", status, error);
-                        console.log("Response:", xhr.responseText);
                         showmyModal("Fail!", "An error occurred while processing your request. Please try again later.");
                     }
                 });
@@ -77,7 +74,6 @@ function deleteOrder(USID, orderID) {
             }
         },
         error: function (xhr, status, error) {
-            console.error("Failed to fetch password. Status:", status, "Error:", error);
             showmyModal("Fail!", "An error occurred while fetching the password. Please try again later.");
         }
     });

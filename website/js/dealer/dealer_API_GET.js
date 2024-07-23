@@ -53,9 +53,9 @@ $(document).ready(function () {
     .then(result => {
       console.log('Delivery cost:', result);
       if (result === "Error") {
-        document.getElementById("delivery").innerHTML = "Order rejected, too heavy, too many items, or no items available";
+        document.getElementById("delivery").innerHTML = "Please go to the next page for details";
         document.getElementById("delivery").value = result;
-        document.getElementById("Total-SAD").innerHTML = "Rejected";
+        document.getElementById("Total-SAD").innerHTML = "Unavailable";
       } else {
         // Convert result to a number
         let deliveryCost = parseFloat(result);
@@ -136,20 +136,20 @@ function checkoutTest(totalWeight, qty) {
     showmyModal('Fail', 'API connect error.');
     return;
   }
-  // if (totalWeight <= 0) {
-  //   showmyModal('Fail', 'There are no items in the shopping cart.');
-  //   return;
-  // }
+  if (totalWeight <= 0) {
+    showmyModal('Fail', 'There are no items in the shopping cart.');
+    return;
+  }
 
   // if (totalWeight > 70) {
   //   showmyModal('Fail', 'The weight must be less than or equal to 70kg.');
   //   return;
   // }
 
-  // if (qty <= 0) {
-  //   showmyModal('Fail', 'There are no items in the shopping cart.');
-  //   return;
-  // }
+  if (qty <= 0) {
+    showmyModal('Fail', 'There are no items in the shopping cart.');
+    return;
+  }
 
   // if (qty > 30) {
   //   showmyModal('Fail', 'The quantity must be less than or equal to 30.');
