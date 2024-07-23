@@ -35,7 +35,8 @@ if (isset($_POST["sparePartNum"])) {
             return_error("File is not an image.");
         }
         // Check file size
-        if ($_FILES["fileToUpload"]["size"] > 5000000) {
+        define('MB', 1048576);
+        if ($_FILES["fileToUpload"]["size"] > 10 * MB) {
             return_error("Sorry, your file is too large.");
         }
         // Allow certain file formats

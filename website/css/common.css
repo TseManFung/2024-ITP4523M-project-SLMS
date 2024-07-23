@@ -402,12 +402,16 @@ footer ul.sns li img {
 }
 
 .image-dropping,
-#item-img-input:hover {
+input[type="file"]:hover {
   border: 4px dashed skyblue !important;
 }
 
 #item-img-input {
   border: 4px dashed rgba(255, 255, 255, 0);
+}
+
+#receipt-img-input{
+  border: 4px dashed rgba(0,0,0,0.3);
 }
 
 .table-header,
@@ -517,6 +521,13 @@ canvas {
   display: block;
   margin-left: auto;
   margin-top: 1rem;
+}
+
+.white-link{
+  color: white;
+}
+.white-link:hover{
+  color: lightgray;
 }
 
 /*phone*/

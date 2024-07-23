@@ -1,30 +1,39 @@
 $(document).ready(function () {
-  $("#item-img-input").bind("change drop", function () {
+  $('input[type="file"]').bind("change drop", function () {
     change_img();
   });
   function change_img() {
     const file_input_loc = document.querySelector("#item-img-input");
-    $("#item-img-input").removeClass("image-dropping");
-
-    if (file_input_loc.value === "") {
-      $("#item-img").attr("src", "");
-      return;
+    if ($('input[type="file"]').val() === "") {
+      $('input[type="file"]').removeClass("image-dropping");
+    }else{
+      $('input[type="file"]').addClass("image-dropping");
     }
-    if (file_input_loc.files && file_input_loc.files[0]) {
-      var reader = new FileReader();
+    if ($("#item-img").length) {
+      if (file_input_loc.value === "") {
+        $("#item-img").attr("src", "");
+        return;
+      }
+      if (file_input_loc.files && file_input_loc.files[0]) {
+        var reader = new FileReader();
 
-      reader.onload = function (e) {
-        $("#item-img").attr("src", e.target.result);
-      };
+        reader.onload = function (e) {
+          $("#item-img").attr("src", e.target.result);
+        };
 
-      reader.readAsDataURL(file_input_loc.files[0]);
+        reader.readAsDataURL(file_input_loc.files[0]);
+      }
     }
   }
-  $("#item-img-input").bind("dragover", function () {
-    $("#item-img-input").addClass("image-dropping");
+  $('input[type="file"]').bind("dragover", function () {
+    $('input[type="file"]').addClass("image-dropping");
   });
-  $("#item-img-input").bind("dragleave", function () {
-    $("#item-img-input").removeClass("image-dropping");
+  $('input[type="file"]').bind("dragleave", function () {
+    if ($('input[type="file"]').val() === "") {
+    $('input[type="file"]').removeClass("image-dropping");
+    }else{
+      $('input[type="file"]').addClass("image-dropping");
+    }
   });
 
   $("#uploadForm").on("submit", function (e) {
@@ -79,9 +88,9 @@ function Clear() {
   $(".alert").addClass("d-none");
   $("#item-img").attr("src", "");
   inputs = $(".form-control");
-    for (i = 0; i < inputs.length; i++) {
-      if (inputs[i].value === "") {
-        inputs[i].classList.remove("is-invalid");
-      }
+  for (i = 0; i < inputs.length; i++) {
+    if (inputs[i].value === "") {
+      inputs[i].classList.remove("is-invalid");
     }
+  }
 }

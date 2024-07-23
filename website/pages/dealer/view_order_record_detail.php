@@ -17,6 +17,25 @@ if (isset($_SESSION['expire'])) {
 }
 ?>
 
+<?php
+if (isset($_FILES['receiptUpload']) && file_exists($_FILES['receiptUpload']['tmp_name']) && is_uploaded_file($_FILES['receiptUpload']['tmp_name'])) {
+  $target_dir = "../../images/receipt/";
+  $target_file = sprintf("Order%010d-%s-%s", $_POST["orderID"], date("Y-m-d-H"), strtolower($_FILES["receiptUpload"]["name"]));
+  // if any file uploaded
+  $check = getimagesize($_FILES["receiptUpload"]["tmp_name"]);
+  if ($check) {
+    if (move_uploaded_file($_FILES["receiptUpload"]["tmp_name"], $target_dir . $target_file)) {
+      $sql = "UPDATE `order` SET `isPaid` = '1', `receipt` = '$target_file' WHERE `orderID` = {$_POST["orderID"]};";
+      $conn->query($sql);
+    }else{
+      echo "C";
+    }
+  }else{
+    echo "B";
+  }
+}
+?>
+
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -113,14 +132,15 @@ $orderDetail = mysqli_fetch_assoc($result);
                       <h5 class="text-muted mb-0">Thanks for your Order, <?php echo $orderDetail["dealerName"]; ?>!</h5>
                       <br />
                       <div class="col">
-
-                        <button class="cta" data-order-id="<?php echo $_POST["orderID"]; ?>">
-                          <span>Delete this Order</span>
-                          <svg width="15px" height="10px" viewBox="0 0 13 10">
-                            <path d="M1,5 L11,5"></path>
-                            <polyline points="8 1 12 5 8 9"></polyline>
-                          </svg>
-                        </button>
+                        <?php if ($orderDetail["state"] != "F" && $orderDetail["state"] != "U") { ?>
+                          <button class="cta" data-order-id="<?php echo $_POST["orderID"]; ?>">
+                            <span>Delete this Order</span>
+                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                              <path d="M1,5 L11,5"></path>
+                              <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                          </button>
+                        <?php } ?>
                       </div>
                     </div>
                   </div>
@@ -289,7 +309,9 @@ $orderDetail = mysqli_fetch_assoc($result);
                     <div class="col">
                       <h4>payment status: <?php echo $orderDetail["isPaid"] ? "paid" : "arrearage"; ?></h4>
                       <?php if ($orderDetail["isPaid"]) { ?>
-                        <div class="cell"><b>Receipt: </b><a href="../../images/receipt/<?php echo $orderDetail["receipt"]; ?>" target="_blank">View Receipt</a></div>
+                        <div class="cell"><b>Receipt: </b><a href="../../images/receipt/<?php echo $orderDetail["receipt"]; ?>" class="white-link" target="_blank">View Receipt</a></div>
+                      <?php } elseif (!$orderDetail["isPaid"] && $orderDetail["state"] != "R" && $orderDetail["state"] != "U") { ?>
+                        <button type="button" class="btn btn-warning" id="btnPayByFps">Pay by FPS</button>
                       <?php } ?>
                     </div>
                     <div class="col">
@@ -298,17 +320,6 @@ $orderDetail = mysqli_fetch_assoc($result);
                       <div class="cell text-end" style="font-size:2rem"><b>Total Payment: </b> <span class="double-bottom-line" style="border-bottom-color:white">$<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?></span></div>
                     </div>
                   </div>
-                  <?php if (!$orderDetail["isPaid"] && $orderDetail["state"] != "R" && $orderDetail["state"] != "U") { ?>
-                    <div class="row mb-2" style="color: white;">
-
-                      <div class="col"> <label for="item-img-input" class="form-label">Please scan the FPS QR-code on the right to pay, then select or drop the receipt below</label>
-                        <input class="form-control" type="file" name="fileToUpload" id="item-img-input">
-                      </div>
-                      <div class="col">
-                        <div id="qrcode" data-price="<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?>"></div>
-                      </div>
-                    </div>
-                  <?php } ?>
                 </div>
               </div>
             </div>
@@ -329,6 +340,39 @@ $orderDetail = mysqli_fetch_assoc($result);
     <!-- /link -->
     <p>© <?php echo date("Y"); ?> Smart & Luxury Motor Spares inc.</p>
   </footer>
+  <?php if (!$orderDetail["isPaid"] && $orderDetail["state"] != "R" && $orderDetail["state"] != "U") { ?>
+    <!-- pop up -->
+    <div class="modal" tabindex="-1" id="myModal">
+      <form method="post" name="receiptForm" id="receiptForm" enctype="multipart/form-data">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Use FPS to Pay</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row mb-2">
+                <label for="receipt-img-input" class="form-label">Please scan the FPS QR-code on the right to pay, then select or drop the receipt below</label>
+                <div class="col">
+                  <input type="hidden" name="orderID" value="<?php echo $_POST["orderID"] ?>">
+                  <input class="form-control" type="file" name="receiptUpload" id="receipt-img-input">
+                  <p style="color: red;" id="receipt-input-error"></p>
+                </div>
+                <div class="col">
+                  <div id="qrcode" data-price="<?php echo $orderDetail["TotalAmount"] + $orderDetail["shipCost"]; ?>"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Upload receipt</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- /pop up -->
+  <?php } ?>
   <!-- return top -->
 
   <div id="page-top" style="">
