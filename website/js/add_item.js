@@ -70,6 +70,7 @@ $(document).ready(function () {
         $("#successful").removeClass("d-none");
         $("#fail").addClass("d-none");
         document.uploadForm.reset();
+        $('input[type="file"]').removeClass("image-dropping");
         $("#item-img").attr("src", "");
       },
       error: function (jqXHR, textStatus, errorThrown) {
