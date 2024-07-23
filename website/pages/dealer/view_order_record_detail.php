@@ -18,7 +18,10 @@ if (isset($_SESSION['expire'])) {
 ?>
 
 <?php
-if (isset($_FILES['receiptUpload']) && file_exists($_FILES['receiptUpload']['tmp_name']) && is_uploaded_file($_FILES['receiptUpload']['tmp_name'])) {
+$sql = mysqli_query($conn,"SELECT isPaid FROM `order` where orderID = {$_POST["orderID"]};");
+$isPaid = mysqli_fetch_assoc($sql)["isPaid"];
+
+if (!$isPaid && isset($_FILES['receiptUpload']) && file_exists($_FILES['receiptUpload']['tmp_name']) && is_uploaded_file($_FILES['receiptUpload']['tmp_name'])) {
   $target_dir = "../../images/receipt/";
   $target_file = sprintf("Order%010d-%s-%s", $_POST["orderID"], date("Y-m-d-H"), strtolower($_FILES["receiptUpload"]["name"]));
   // if any file uploaded
@@ -27,11 +30,7 @@ if (isset($_FILES['receiptUpload']) && file_exists($_FILES['receiptUpload']['tmp
     if (move_uploaded_file($_FILES["receiptUpload"]["tmp_name"], $target_dir . $target_file)) {
       $sql = "UPDATE `order` SET `isPaid` = '1', `receipt` = '$target_file' WHERE `orderID` = {$_POST["orderID"]};";
       $conn->query($sql);
-    }else{
-      echo "C";
     }
-  }else{
-    echo "B";
   }
 }
 ?>
