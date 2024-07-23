@@ -27,12 +27,16 @@ if (!$isPaid && isset($_FILES['receiptUpload']) && file_exists($_FILES['receiptU
   // if any file uploaded
   $check = getimagesize($_FILES["receiptUpload"]["tmp_name"]);
   if ($check) {
+    if (!is_dir($target_dir)) {
+      mkdir($target_dir, 0777, true);
+    }
     if (move_uploaded_file($_FILES["receiptUpload"]["tmp_name"], $target_dir . $target_file)) {
       $sql = "UPDATE `order` SET `isPaid` = '1', `receipt` = '$target_file' WHERE `orderID` = {$_POST["orderID"]};";
       $conn->query($sql);
     }
   }
-}
+  }
+
 ?>
 
 <head>
