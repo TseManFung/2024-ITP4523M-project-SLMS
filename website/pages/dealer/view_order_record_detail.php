@@ -224,7 +224,7 @@ $orderDetail = mysqli_fetch_assoc($result);
                   </div>
                   <!-- table-->
                   <?php
-                  $sql = "SELECT os.sparePartNum, orderQty, sparePartOrderPrice,sparePartName,sparePartImage FROM orderspare os inner join spare s on os.sparePartNum =s.sparePartNum where orderID={$_POST["orderID"]};";
+                  $sql = "SELECT os.sparePartNum, orderQty,price, sparePartOrderPrice,sparePartName,sparePartImage FROM orderspare os inner join spare s on os.sparePartNum =s.sparePartNum where orderID={$_POST["orderID"]};";
                   $result = mysqli_query($conn, $sql);
 
                   ?>
@@ -235,7 +235,7 @@ $orderDetail = mysqli_fetch_assoc($result);
                         <th scope="col" style="width: 10%;" data-sortable="true">ID</th>
                         <th scope="col" style="width: 40%;" data-sortable="true">Name</th>
                         <th scope="col" style="width: 20%;text-align:center;">photo</th>
-                        <th scope="col" style="width: 10%;" data-sortable="true">Price</th>
+                        <th scope="col" style="width: 10%;" data-sortable="true">Unit Price</th>
                         <th scope="col" style="width: 10%;" data-sortable="true">Quantity</th>
                         <th scope="col" style="width: 10%;" data-sortable="true">Amount</th>
                       </tr>
@@ -253,9 +253,9 @@ $orderDetail = mysqli_fetch_assoc($result);
                               <img class="table-img" src="<?php echo $row["sparePartImage"]; ?>" />
                             </div>
                           </td>
-                          <td><?php echo $row["sparePartOrderPrice"]; ?></td>
+                          <td><?php echo $row["price"]; ?></td>
                           <td><?php echo $row["orderQty"]; ?></td>
-                          <td>$<?php echo $row["sparePartOrderPrice"] * $row["orderQty"]; ?></td>
+                          <td>$<?php echo $row["sparePartOrderPrice"]; ?></td>
                         </tr>
                         <!-- /record -->
                       <?php } ?>
