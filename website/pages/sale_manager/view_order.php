@@ -51,7 +51,7 @@ if (isset($_GET["show"])) {
   } else if ($_GET["show"] == "R") {
     $condition = "$condition 'RU' like concat('%',o.state,'%') and salesManagerID = " . $_SESSION['salesManagerID'] . " ";
   }elseif ($_GET["show"] == "NP") {
-    $condition = "$condition 'CRU' like concat('%',o.state,'%') and salesManagerID = {$_SESSION['salesManagerID']} and isPaid = 0 ";
+    $condition = "$condition 'ATFU' like concat('%',o.state,'%') and salesManagerID = {$_SESSION['salesManagerID']} and isPaid = 0 ";
   }elseif ($_GET["show"] == "ALL"){
     $condition = "$condition (salesManagerID = {$_SESSION['salesManagerID']} or o.state = 'C') ";
   }
