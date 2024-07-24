@@ -67,6 +67,9 @@ $row = mysqli_fetch_array($result);
 $orderCount = $row[0];
 $totalPage = ceil($orderCount / 10);
 if (isset($_GET['pages']) && $_GET['pages'] > 0) {
+  if ($totalPage == 0) {
+    $totalPage = 1;
+  }
   $currentPage = min(max(1, $_GET['pages']), $totalPage);
 } else {
   $currentPage = 1;
@@ -98,6 +101,7 @@ $sql = "SELECT
   o.state AS orderStatus
 FROM `order` o
 $condition Limit " . ($currentPage - 1) * 10 . ", 10;";
+
 $result = mysqli_query($conn, $sql);
 if ($result) {
   $order = mysqli_fetch_all($result, MYSQLI_ASSOC);
