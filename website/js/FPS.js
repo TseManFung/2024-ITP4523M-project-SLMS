@@ -2,7 +2,7 @@
 function generateQRCode(target,width, height) {
     const transactionAmount = target.getAttribute('data-price');
     fpsData = new FPS();
-    fpsData.setMobile("+852-94606151");
+    fpsData.setMobile("+852-XXXXXXXX");//hk phone number
     fpsData.setAmount(transactionAmount);
     fpsData.setBank("949")
 
